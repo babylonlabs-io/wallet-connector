@@ -11,7 +11,6 @@ export default defineConfig({
       exclude: ["src/**/*.stories.(ts|tsx)"],
     }),
   ],
-
   build: {
     sourcemap: true,
     lib: {
@@ -20,11 +19,14 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "tailwind-merge"],
+      external: ["react", "react-dom", "react/jsx-runtime", "tailwind-merge"],
       output: {
         sourcemapExcludeSources: true,
       },
     },
   },
   esbuild: { legalComments: "none" },
+  resolve: {
+    alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+  },
 });
