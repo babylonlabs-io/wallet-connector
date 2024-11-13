@@ -102,7 +102,7 @@
 }
 
 body {
-  @apply font-sans text-base font-normal leading-normal tracking-normal;
+  @apply font-sans text-base font-normal leading-normal tracking-normal text-primary-dark;
 
   font-feature-settings:
     "liga" off,
