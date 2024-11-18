@@ -24,5 +24,8 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
+    rules: {
+      "@typescript-eslint/no-explicit-any": 0,
+    },
   },
 );
