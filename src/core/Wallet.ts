@@ -1,4 +1,4 @@
-import { IWallet, Network, IProvider, type NetworkConfig, type WalletMetadata } from "@/core/types";
+import { IWallet, Network, IProvider, type NetworkConfig, type WalletMetadata, Account } from "@/core/types";
 
 interface Options<P extends IProvider> {
   id: string;
@@ -20,6 +20,7 @@ export class Wallet<P extends IProvider> implements IWallet {
   readonly docs: string;
   readonly networkds: Network[];
   readonly provider: P | null = null;
+  account: Account | null = null;
 
   static create = async <P extends IProvider>(metadata: WalletMetadata<P>, context: any, config: NetworkConfig) => {
     const {
@@ -87,7 +88,22 @@ export class Wallet<P extends IProvider> implements IWallet {
     }
 
     await this.provider.connectWallet();
+    const [address, publicKeyHex] = await Promise.all([this.provider.getAddress(), this.provider.getPublicKeyHex()]);
+
+    this.account = { address, publicKeyHex };
 
     return this;
+  }
+
+  clone() {
+    return new Wallet({
+      id: this.id,
+      origin: this.origin,
+      name: this.name,
+      icon: this.icon,
+      docs: this.docs,
+      networks: this.networkds,
+      provider: this.provider,
+    });
   }
 }

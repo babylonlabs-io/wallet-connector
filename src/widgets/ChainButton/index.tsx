@@ -9,22 +9,25 @@ interface ChainButtonProps extends PropsWithChildren {
   logo?: string | JSX.Element;
   title?: string | JSX.Element;
   alt?: string;
+  onClick?: () => void;
 }
 
-export function ChainButton({ className, disabled, alt, logo, title, children }: ChainButtonProps) {
+export function ChainButton({ className, disabled, alt, logo, title, children, onClick }: ChainButtonProps) {
   const avatar = typeof logo === "string" ? <Avatar url={logo} alt={alt} /> : <Avatar>{logo}</Avatar>;
 
   return (
     <Text
       disabled={disabled}
-      as="buttons"
+      as={disabled ? "div" : "button"}
       className={twMerge(
-        "flex flex-col gap-2.5 rounded border border-primary-main/30 p-4",
+        "flex w-full flex-col gap-2.5 rounded border border-primary-main/30 p-4",
+        disabled ? "pointer-events-none" : "pointer-events-auto",
         disabled ? "cursor-default" : "cursor-pointer",
         className,
       )}
+      onClick={onClick}
     >
-      <div className="flex items-center gap-2.5">
+      <div className="flex w-full items-center gap-2.5">
         {avatar}
         {title}
 
@@ -45,7 +48,11 @@ export function ChainButton({ className, disabled, alt, logo, title, children }:
         )}
       </div>
 
-      {children && <div onClick={(e) => e.stopPropagation()}>{children}</div>}
+      {children && (
+        <div className="pointer-events-auto w-full" onClick={(e) => e.stopPropagation()}>
+          {children}
+        </div>
+      )}
     </Text>
   );
 }

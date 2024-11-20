@@ -2,32 +2,36 @@ import {} from "react";
 import { twMerge } from "tailwind-merge";
 
 import { Avatar, Text } from "@/index";
+import { withAppState } from "@/hocs/withAppState";
 
 interface ConnectedWalletProps {
   className?: string;
+  chainId: string;
   logo: string;
   name: string;
   address: string;
-  onDisconnect?: () => void;
+  onDisconnect?: (chainId: string) => void;
 }
 
-export function ConnectedWallet({ className, logo, name, address, onDisconnect }: ConnectedWalletProps) {
+export function ConnectedWallet({ className, chainId, logo, name, address, onDisconnect }: ConnectedWalletProps) {
   return (
     <div
       className={twMerge("flex shrink-0 items-center gap-2.5 rounded border border-secondary-main/30 p-2", className)}
     >
       <Avatar variant="rounded" size="medium" url={logo} />
 
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col items-start">
         <Text as="div" variant="body2" className="leading-4">
           {name}
         </Text>
-        <Text as="div" variant="caption" className="leading-4 text-primary-light">
-          {address}
-        </Text>
+        {Boolean(address) && (
+          <Text as="div" variant="caption" className="leading-4 text-primary-light">
+            {address}
+          </Text>
+        )}
       </div>
 
-      <button className="shrink-0" onClick={onDisconnect}>
+      <button className="shrink-0 cursor-pointer" onClick={() => void onDisconnect?.(chainId)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -45,3 +49,21 @@ export function ConnectedWallet({ className, logo, name, address, onDisconnect }
     </div>
   );
 }
+
+interface OuterProps {
+  className?: string;
+  chainId: string;
+  logo: string;
+  name: string;
+  address: string;
+}
+
+interface InnerProps {
+  onDisconnect?: (chainId: string) => void;
+}
+
+export default withAppState<OuterProps, InnerProps, ConnectedWalletProps>((state) => ({
+  onDisconnect: (chainId: string) => {
+    state.removeWallet?.(chainId);
+  },
+}))(ConnectedWallet);

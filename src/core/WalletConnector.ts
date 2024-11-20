@@ -1,34 +1,47 @@
 import { Wallet } from "@/core/Wallet";
-import type { NetworkConfig, IProvider, IChain, ConnectMetadata } from "@/core/types";
+import type { NetworkConfig, IProvider, IChain, ChainMetadata } from "@/core/types";
 
-export class WalletConnector<P extends IProvider> implements IChain {
-  connectedWallet: Wallet<P> | null = null;
+export class WalletConnector<N extends string, P extends IProvider> implements IChain {
+  private _connectedWallet: Wallet<P> | null = null;
 
-  static async create<P extends IProvider>(
-    metadata: ConnectMetadata<P>,
-    config: NetworkConfig,
+  static async create<N extends string, P extends IProvider>(
+    metadata: ChainMetadata<N, P>,
     context: any,
-  ): Promise<WalletConnector<P>> {
+    config: NetworkConfig,
+  ): Promise<WalletConnector<N, P>> {
     const wallets: Wallet<P>[] = [];
 
     for (const walletMetadata of metadata.wallets) {
       wallets.push(await Wallet.create(walletMetadata, context, config));
     }
 
-    return new WalletConnector(metadata.chain, metadata.icon, wallets);
+    return new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets);
   }
 
   constructor(
-    public readonly chain: string,
+    public readonly id: N,
+    public readonly name: string,
     public readonly icon: string,
     public readonly wallets: Wallet<P>[],
   ) {}
 
-  async connect(name: string) {
-    const wallet = this.wallets.find((wallet) => wallet.name.toLowerCase() === name.toLowerCase());
+  get connectedWallet() {
+    return this._connectedWallet;
+  }
 
-    this.connectedWallet = (await wallet?.connect()) ?? null;
+  async connect(walletId: string) {
+    const wallet = this.wallets.find((wallet) => wallet.id === walletId);
+
+    this._connectedWallet = (await wallet?.connect()) ?? null;
 
     return this.connectedWallet;
+  }
+
+  disconnect() {
+    this._connectedWallet = null;
+  }
+
+  clone() {
+    return new WalletConnector(this.id, this.name, this.icon, this.wallets);
   }
 }
