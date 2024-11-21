@@ -1,11 +1,13 @@
 import { createContext, PropsWithChildren, useEffect, useState, useCallback, useContext } from "react";
-import { useAppState } from "@/state/state";
-import { WalletConnector } from "@/core/WalletConnector";
-import type { NetworkConfig } from "@/core/types";
 
+import { useAppState } from "@/state/state";
+
+import { createWalletConnector } from "@/core";
 import metadata from "@/core/wallets";
+import { WalletConnector } from "@/core/WalletConnector";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
+import type { NetworkConfig } from "@/core/types";
 
 interface ProviderProps {
   context: any;
@@ -34,7 +36,7 @@ export function ChainProvider({ children, context, config }: PropsWithChildren<P
     displayLoader?.();
 
     const metadataArr = Object.values(metadata);
-    const connectorArr = await Promise.all(metadataArr.map((data) => WalletConnector.create(data, context, config)));
+    const connectorArr = await Promise.all(metadataArr.map((data) => createWalletConnector(data, context, config)));
 
     return connectorArr.reduce((acc, connector) => ({ ...acc, [connector.id]: connector }), {} as Connectors);
   }, []);

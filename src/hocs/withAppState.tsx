@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { ComponentType, memo, useMemo } from "react";
 import { useAppState } from "@/state/state";
-import type { Actions, State } from "@/state/state.d";
+import type { Actions, State } from "@/state/types";
 
 export const withAppState =
   <OP, IP = {}, P = {}>(stateMapper: (state: State & Actions) => IP) =>

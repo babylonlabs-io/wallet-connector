@@ -1,6 +1,6 @@
-import { IWallet, Network, IProvider, type NetworkConfig, type WalletMetadata, Account } from "@/core/types";
+import type { IWallet, IProvider, Network, Account } from "@/core/types";
 
-interface Options<P extends IProvider> {
+export interface WalletOptions<P extends IProvider> {
   id: string;
   name: string;
   icon: string;
@@ -9,8 +9,6 @@ interface Options<P extends IProvider> {
   origin: any;
   provider: P | null;
 }
-
-const defaultWalletGetter = (key: string) => (context: any) => context[key];
 
 export class Wallet<P extends IProvider> implements IWallet {
   readonly id: string;
@@ -22,53 +20,7 @@ export class Wallet<P extends IProvider> implements IWallet {
   readonly provider: P | null = null;
   account: Account | null = null;
 
-  static create = async <P extends IProvider>(metadata: WalletMetadata<P>, context: any, config: NetworkConfig) => {
-    const {
-      id,
-      wallet: walletGetter,
-      name: nameGetter,
-      icon: iconGetter,
-      docs = "",
-      networks = [],
-      createProvider,
-    } = metadata;
-
-    const options: Options<P> = {
-      id,
-      name: "",
-      icon: "",
-      origin: null,
-      provider: null,
-      docs,
-      networks,
-    };
-
-    if (walletGetter) {
-      const getWallet = typeof walletGetter === "string" ? defaultWalletGetter(walletGetter) : walletGetter;
-
-      options.origin = getWallet(context, config) ?? null;
-      options.provider = options.origin ? createProvider(options.origin, config) : null;
-    } else {
-      options.origin = null;
-      options.provider = createProvider(null, config);
-    }
-
-    if (typeof nameGetter === "string") {
-      options.name = nameGetter ?? "";
-    } else {
-      options.name = options.origin ? await nameGetter(options.origin, config) : "";
-    }
-
-    if (typeof iconGetter === "string") {
-      options.icon = iconGetter ?? "";
-    } else {
-      options.icon = options.origin ? await iconGetter(options.origin, config) : "";
-    }
-
-    return new Wallet(options);
-  };
-
-  constructor({ id, origin, name, icon, docs, networks, provider }: Options<P>) {
+  constructor({ id, origin, name, icon, docs, networks, provider }: WalletOptions<P>) {
     this.id = id;
     this.origin = origin;
     this.name = name;
