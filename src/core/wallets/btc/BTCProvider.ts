@@ -1,11 +1,11 @@
-import type { Fees, InscriptionIdentifier, Network, NetworkConfig, UTXO, Provider } from "../../types";
+import type { Fees, InscriptionIdentifier, Network, NetworkConfig, UTXO, IProvider } from "../../types";
 import { createMempoolAPI, MempoolApi } from "../../utils/mempool";
 
 /**
  * Abstract class representing a wallet provider.
  * Provides methods for connecting to a wallet, retrieving wallet information, signing transactions, and more.
  */
-export abstract class BTCProvider implements Provider {
+export abstract class BTCProvider implements IProvider {
   protected mempool: MempoolApi;
 
   constructor(protected config: NetworkConfig) {

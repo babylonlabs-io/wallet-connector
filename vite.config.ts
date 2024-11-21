@@ -8,10 +8,13 @@ export default defineConfig({
     react(),
     dts({
       tsconfigPath: "./tsconfig.app.json",
-      exclude: ["src/**/*.stories.(ts|tsx)"],
+      insertTypesEntry: true,
+      include: ["src"],
+      exclude: ["src/**/*.stories.tsx"],
     }),
   ],
   build: {
+    outDir: "dist",
     sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, "src/index.tsx"),
