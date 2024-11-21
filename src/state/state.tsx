@@ -15,10 +15,6 @@ const StateContext = createContext<State & Actions>(defaultState);
 export function StateProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<State>(defaultState);
 
-  // useEffect(() => {
-  //   console.log(state);
-  // }, [state]);
-
   const actions: Actions = useMemo(
     () => ({
       open: () => {
@@ -29,8 +25,8 @@ export function StateProvider({ children }: PropsWithChildren) {
         setState((state) => ({ ...state, visible: false }));
       },
 
-      displayLoading: () => {
-        setState((state) => ({ ...state, screen: { type: "LOADING" } }));
+      displayLoader: () => {
+        setState((state) => ({ ...state, screen: { type: "LOADER" } }));
       },
 
       displayTermsOfService: () => {

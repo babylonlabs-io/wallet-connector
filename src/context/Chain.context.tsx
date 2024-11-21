@@ -28,10 +28,10 @@ const Context = createContext<Connectors>(defaultState);
 
 export function ChainProvider({ children, context, config }: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
-  const { addChain, displayLoading, displayTermsOfService } = useAppState();
+  const { addChain, displayLoader, displayTermsOfService } = useAppState();
 
   const init = useCallback(async () => {
-    displayLoading?.();
+    displayLoader?.();
 
     const metadataArr = Object.values(metadata);
     const connectorArr = await Promise.all(metadataArr.map((data) => WalletConnector.create(data, context, config)));
@@ -40,9 +40,9 @@ export function ChainProvider({ children, context, config }: PropsWithChildren<P
   }, []);
 
   useEffect(() => {
-    if (!displayLoading || !addChain || !setConnectors || !displayTermsOfService) return;
+    if (!displayLoader || !addChain || !setConnectors || !displayTermsOfService) return;
 
-    displayLoading();
+    displayLoader();
 
     init().then((connectors) => {
       setConnectors(connectors);
@@ -53,7 +53,7 @@ export function ChainProvider({ children, context, config }: PropsWithChildren<P
 
       displayTermsOfService();
     });
-  }, [displayLoading, addChain, setConnectors, init, displayTermsOfService]);
+  }, [displayLoader, addChain, setConnectors, init, displayTermsOfService]);
 
   return <Context.Provider value={connectors}>{children}</Context.Provider>;
 }

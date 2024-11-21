@@ -9,13 +9,13 @@ import type { IChain, IWallet } from "@/core/types";
 import { Screen } from "./Screen";
 
 export function WalletDialog() {
-  const { visible, screen, close, selectWallet, displayLoading, displayChains, displayInscriptions } = useAppState();
+  const { visible, screen, close, selectWallet, displayLoader, displayChains, displayInscriptions } = useAppState();
   const { showAgain, toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
 
   const handleSelectWallet = useCallback(
     async (chain: IChain, wallet: IWallet) => {
-      displayLoading?.();
+      displayLoader?.();
 
       const connector = connectors[chain.id];
       const connectedWallet = await connector?.connect(wallet.id);
@@ -30,7 +30,7 @@ export function WalletDialog() {
         displayChains?.();
       }
     },
-    [displayLoading, selectWallet, displayInscriptions, connectors, showAgain],
+    [displayLoader, selectWallet, displayInscriptions, connectors, showAgain],
   );
 
   const handleToggleInscriptions = useCallback(

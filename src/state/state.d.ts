@@ -6,7 +6,7 @@ type Screen<T extends string = string> = {
 };
 
 type Screens =
-  | Screen<"LOADING">
+  | Screen<"LOADER">
   | Screen<"TERMS_OF_SERVICE">
   | Screen<"CHAINS">
   | Screen<"WALLETS">
@@ -22,7 +22,7 @@ export interface State {
 export interface Actions {
   open?: () => void;
   close?: () => void;
-  displayLoading?: () => void;
+  displayLoader?: () => void;
   displayChains?: () => void;
   displayWallets?: (chain: string) => void;
   displayInscriptions?: () => void;
