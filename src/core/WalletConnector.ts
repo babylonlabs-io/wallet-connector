@@ -32,7 +32,11 @@ export class WalletConnector<N extends string, P extends IProvider> implements I
   async connect(walletId: string) {
     const wallet = this.wallets.find((wallet) => wallet.id === walletId);
 
-    this._connectedWallet = (await wallet?.connect()) ?? null;
+    if (!wallet) {
+      throw new Error("Wallet not found");
+    }
+
+    this._connectedWallet = await wallet.connect();
 
     return this.connectedWallet;
   }
