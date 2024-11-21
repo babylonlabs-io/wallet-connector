@@ -1,20 +1,33 @@
 import type { IChain, IWalllet } from "@/core/types";
 
-type Step = "loading" | "acceptTermsOfService" | "selectChain" | "selectWallet" | "lockInscriptions";
+type Screen<T extends string = string> = {
+  type: T;
+  params?: Record<string, string | number>;
+};
+
+type Screens =
+  | Screen<"LOADER">
+  | Screen<"TERMS_OF_SERVICE">
+  | Screen<"CHAINS">
+  | Screen<"WALLETS">
+  | Screen<"INSCRIPTIONS">;
 
 export interface State {
   visible: boolean;
-  loading: boolean;
-  step: Step;
+  screen: Screens;
   selectedWallets: Record<string, IWalllet>;
-  visibleWallets: string;
   chains: Record<string, IChain>;
-  displayTermsOfService?: () => void;
-  displayChains?: () => void;
-  displayWallets?: (chain: string) => void;
-  selectWallet?: (chain: string, wallet: IWalllet) => void;
-  addChain?: (chain: IChain) => void;
-  setLoading?: (value: boolean) => void;
+}
+
+export interface Actions {
   open?: () => void;
   close?: () => void;
+  displayLoader?: () => void;
+  displayChains?: () => void;
+  displayWallets?: (chain: string) => void;
+  displayInscriptions?: () => void;
+  displayTermsOfService?: () => void;
+  selectWallet?: (chain: string, wallet: IWalllet) => void;
+  removeWallet?: (chain: string) => void;
+  addChain?: (chain: IChain) => void;
 }

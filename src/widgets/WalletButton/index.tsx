@@ -15,9 +15,9 @@ export function WalletButton({ className, disabled = false, name, logo, label, o
   return (
     <Text
       disabled={disabled}
-      as="buttons"
+      as="button"
       className={twMerge(
-        "flex h-14 cursor-pointer items-center gap-2.5 rounded border border-primary-main/30 px-2",
+        "flex h-14 w-full cursor-pointer items-center gap-2.5 rounded border border-primary-main/30 px-2",
         disabled ? "cursor-default" : "cursor-pointer",
         className,
       )}

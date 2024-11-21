@@ -52,6 +52,8 @@ export interface NetworkConfig {
 
 export interface IProvider {
   connectWallet: () => Promise<this>;
+  getAddress: () => Promise<string>;
+  getPublicKeyHex: () => Promise<string>;
 }
 
 export interface IWallet {
@@ -61,14 +63,20 @@ export interface IWallet {
   docs: string;
   installed: boolean;
   provider: IProvider | null;
+  account: Account | null;
 }
 
 export interface IChain {
-  chain: string;
+  id: string;
+  name: string;
   icon: string;
   wallets: IWallet[];
 }
 
+export interface Account {
+  address: string;
+  publicKeyHex: string;
+}
 export interface WalletMetadata<P extends IProvider> {
   id: string;
   wallet?: string | ((context: any, config: NetworkConfig) => any);
@@ -79,8 +87,9 @@ export interface WalletMetadata<P extends IProvider> {
   createProvider: (wallet: any, config: NetworkConfig) => P;
 }
 
-export interface ConnectMetadata<P extends IProvider> {
-  chain: string;
+export interface ChainMetadata<N extends string, P extends IProvider> {
+  chain: N;
+  name: string;
   icon: string;
   wallets: WalletMetadata<P>[];
 }

@@ -1,13 +1,18 @@
 import { Text, Radio, Button, DialogBody, DialogFooter, DialogHeader, Checkbox } from "@/index";
 
 import { FieldControl } from "@/widgets/FieldControl";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 export interface Props {
   className?: string;
+  onSubmit?: (value: boolean, showAgain: boolean) => void;
 }
 
-export function Inscriptions({ className }: Props) {
+export function Inscriptions({ className, onSubmit }: Props) {
+  const [lockInscriptions = true, toggleInscriptions] = useState<boolean | undefined>();
+  const [showAgain = true, toggleShowAgain] = useState<boolean | undefined>();
+
   return (
     <div className={twMerge("mb-8 flex flex-1 flex-col", className)}>
       <DialogHeader title="Bitcoin Inscriptions" className="mb-8">
@@ -22,21 +27,33 @@ export function Inscriptions({ className }: Props) {
       </DialogHeader>
 
       <DialogBody>
-        <FieldControl label="Lock bitcoin UTXOs with detected Inscriptions so they will not be spent." className="mb-8">
-          <Radio />
-        </FieldControl>
+        <form action="">
+          <FieldControl
+            label="Lock bitcoin UTXOs with detected Inscriptions so they will not be spent."
+            className="mb-8"
+          >
+            <Radio name="inscriptions" checked={lockInscriptions} onChange={() => toggleInscriptions(true)} />
+          </FieldControl>
 
-        <FieldControl
-          label="Unlock bitcoin UTXOs with detected Inscriptions in my stakable balance. I understand and agree that doing so can cause the complete and permanent loss of Inscriptions and that I am solely liable and responsible for their loss."
-          className="mb-8"
-        >
-          <Radio />
-        </FieldControl>
+          <FieldControl
+            label="Unlock bitcoin UTXOs with detected Inscriptions in my stakable balance. I understand and agree that doing so can cause the complete and permanent loss of Inscriptions and that I am solely liable and responsible for their loss."
+            className="mb-8"
+          >
+            <Radio name="inscriptions" checked={!lockInscriptions} onChange={() => toggleInscriptions(false)} />
+          </FieldControl>
+        </form>
       </DialogBody>
 
       <DialogFooter className="mt-auto pt-10">
-        <Checkbox label="Do not show again" labelClassName="mb-6" />
-        <Button fluid>Save</Button>
+        <Checkbox
+          checked={!showAgain}
+          label="Do not show again"
+          labelClassName="mb-6"
+          onChange={(value) => toggleShowAgain(!value)}
+        />
+        <Button fluid onClick={() => void onSubmit?.(lockInscriptions, showAgain)}>
+          Save
+        </Button>
       </DialogFooter>
     </div>
   );
