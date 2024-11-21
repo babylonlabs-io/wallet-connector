@@ -1,7 +1,7 @@
 import { type PropsWithChildren, createContext, useContext, useMemo, useState } from "react";
 
-import { Actions, type State } from "./state.d";
 import { IChain, IWallet } from "@/core/types";
+import { Actions, type State } from "./types";
 
 const defaultState: State = {
   visible: false,
@@ -55,7 +55,7 @@ export function StateProvider({ children }: PropsWithChildren) {
       removeWallet: (chain: string) => {
         setState((state) => ({
           ...state,
-          selectedWallets: { ...state.selectedWallets, [chain]: null },
+          selectedWallets: { ...state.selectedWallets, [chain]: undefined },
         }));
       },
 

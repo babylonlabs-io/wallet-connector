@@ -1,22 +1,8 @@
 import { Wallet } from "@/core/Wallet";
-import type { NetworkConfig, IProvider, IChain, ChainMetadata } from "@/core/types";
+import type { IProvider, IChain } from "@/core/types";
 
 export class WalletConnector<N extends string, P extends IProvider> implements IChain {
   private _connectedWallet: Wallet<P> | null = null;
-
-  static async create<N extends string, P extends IProvider>(
-    metadata: ChainMetadata<N, P>,
-    context: any,
-    config: NetworkConfig,
-  ): Promise<WalletConnector<N, P>> {
-    const wallets: Wallet<P>[] = [];
-
-    for (const walletMetadata of metadata.wallets) {
-      wallets.push(await Wallet.create(walletMetadata, context, config));
-    }
-
-    return new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets);
-  }
 
   constructor(
     public readonly id: N,
