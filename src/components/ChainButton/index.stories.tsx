@@ -27,7 +27,7 @@ export const Connected: Story = {
     children: (
       <ConnectedWallet
         chainId="BTC"
-        className="cursor-default"
+        className="b-cursor-default"
         logo="/images/wallets/okx.png"
         name="OKX"
         address="bc1pnT..e4Vtc"

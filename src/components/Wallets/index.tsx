@@ -27,13 +27,13 @@ export function Wallets({ chain, className, append, onClose, onBack, onSelectWal
   const wallets = useMemo(() => chain.wallets.filter((wallet) => wallet.id !== "injectable"), [chain]);
 
   return (
-    <div className={twMerge("flex flex-1 flex-col", className)}>
-      <DialogHeader className="mb-10" title="Select Wallet" onClose={onClose}>
+    <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
+      <DialogHeader className="b-mb-10" title="Select Wallet" onClose={onClose}>
         <Text>Connect a {chain.name} Wallet</Text>
       </DialogHeader>
 
       <DialogBody>
-        <div className={twMerge("grid gap-6", countOfVisibleWallets === 1 ? "grid-cols-1" : "grid-cols-2")}>
+        <div className={twMerge("b-grid b-gap-6", countOfVisibleWallets === 1 ? "b-grid-cols-1" : "b-grid-cols-2")}>
           {injectableWallet && (
             <WalletButton
               name={injectableWallet.name}
@@ -57,7 +57,7 @@ export function Wallets({ chain, className, append, onClose, onBack, onSelectWal
         {append}
       </DialogBody>
 
-      <DialogFooter className="mt-auto pt-10">
+      <DialogFooter className="b-mt-auto b-pt-10">
         <Button variant="outlined" fluid onClick={onBack}>
           Back
         </Button>

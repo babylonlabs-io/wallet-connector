@@ -23,12 +23,12 @@ export function Chains({ chains, selectedWallets = {}, className, onClose, onSel
   const activeChains = useMemo(() => chains.filter((chain) => chain.wallets.length > 0), [chains]);
 
   return (
-    <div className={twMerge("flex flex-1 flex-col", className)}>
-      <DialogHeader className="mb-10" title="Connect Wallets" onClose={onClose}>
+    <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
+      <DialogHeader className="b-mb-10" title="Connect Wallets" onClose={onClose}>
         <Text>Connect to both Bitcoin and Babylon Chain Wallets</Text>
       </DialogHeader>
 
-      <DialogBody className="flex flex-col gap-6">
+      <DialogBody className="b-flex b-flex-col b-gap-6">
         {activeChains.map((chain) => {
           const selectedWallet = selectedWallets[chain.id];
 
@@ -54,10 +54,11 @@ export function Chains({ chains, selectedWallets = {}, className, onClose, onSel
         })}
       </DialogBody>
 
-      <DialogFooter className="mt-auto flex gap-4 pt-10">
+      <DialogFooter className="b-mt-auto b-flex b-gap-4 b-pt-10">
         <Button variant="outlined" fluid onClick={onClose}>
           Cancel
         </Button>
+
         <Button disabled={countOfSelectedWallets < activeChains.length} fluid onClick={onClose}>
           Done
         </Button>

@@ -54,7 +54,7 @@ export function WalletDialog({ onError }: WalletDialogProps) {
     <Dialog open={visible}>
       <Screen
         current={screen}
-        className="size-[600px]"
+        className="b-size-[600px]"
         onClose={close}
         onSelectWallet={handleSelectWallet}
         onAccepTermsOfService={displayChains}

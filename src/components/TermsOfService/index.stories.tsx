@@ -14,6 +14,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     onClose: console.log,
-    className: "h-[600px]",
+    className: "b-h-[600px]",
   },
 };
