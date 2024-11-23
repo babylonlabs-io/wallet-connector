@@ -107,6 +107,13 @@ export class OKXProvider extends BTCProvider {
     return await this.provider.signMessage(message, "bip322-simple");
   };
 
+  async signMessage(message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> {
+    if (!this.walletInfo) {
+      throw new Error("OKX Wallet not connected");
+    }
+    return await this.provider.signMessage(message, type);
+  }
+
   getNetwork = async (): Promise<Network> => {
     // OKX does not provide a way to get the network for Signet and Testnet
     // So we pass the check on connection and return the environment network
