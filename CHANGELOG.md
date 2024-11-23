@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.7
+
+### Patch Changes
+
+- 957fc84: add unsubscribe method to BTCProvider
+
 ## 0.0.6
 
 ### Patch Changes
