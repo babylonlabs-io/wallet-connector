@@ -11,7 +11,7 @@
 
     /* Bundler Resolution */
     "moduleResolution": "Bundler",
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "isolatedModules": true,
@@ -20,7 +20,6 @@
 
     /* Declarations */
     "declaration": true,
-    "emitDeclarationOnly": true,
     "declarationDir": "dist",
 
     /* Linting */
