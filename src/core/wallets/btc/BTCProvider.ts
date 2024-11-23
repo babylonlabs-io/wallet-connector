@@ -68,6 +68,8 @@ export abstract class BTCProvider implements IProvider {
    */
   abstract on(eventName: string, callBack: () => void): void;
 
+  abstract off(eventName: string, callBack: () => void): void;
+
   /**
    * Gets the balance for the connected wallet address.
    * By default, this method will return the mempool balance if not implemented by the child class.

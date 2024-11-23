@@ -133,6 +133,16 @@ export class OKXProvider extends BTCProvider {
     }
   };
 
+  off = (eventName: string, callBack: () => void) => {
+    if (!this.walletInfo) {
+      throw new Error("OKX Wallet not connected");
+    }
+    // subscribe to account change event
+    if (eventName === "accountChanged") {
+      return this.provider.off(eventName, callBack);
+    }
+  };
+
   // Mempool calls
   getBalance = async (): Promise<number> => {
     return await this.mempool.getAddressBalance(await this.getAddress());
