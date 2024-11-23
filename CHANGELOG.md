@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.5
+
+### Patch Changes
+
+- 061cf1a: add ee to wallet connector
+
 ## 0.0.4
 
 ### Patch Changes
