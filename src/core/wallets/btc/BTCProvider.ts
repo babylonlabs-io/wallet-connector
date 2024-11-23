@@ -58,6 +58,8 @@ export abstract class BTCProvider implements IProvider {
    */
   abstract signMessageBIP322(message: string): Promise<string>;
 
+  abstract signMessage(message: string, type: "ecdsa" | "bip322-simple"): Promise<string>;
+
   /**
    * Registers an event listener for the specified event.
    * At the moment, only the "accountChanged" event is supported.
