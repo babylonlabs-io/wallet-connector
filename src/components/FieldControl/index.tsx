@@ -8,7 +8,12 @@ interface FieldControl {
 
 export function FieldControl({ label, className, children }: PropsWithChildren<FieldControl>) {
   return (
-    <label className={twMerge("flex cursor-pointer gap-4 rounded border border-primary-main/30 p-4", className)}>
+    <label
+      className={twMerge(
+        "b-flex b-cursor-pointer b-gap-4 b-rounded b-border b-border-primary-main/30 b-p-4",
+        className,
+      )}
+    >
       {children}
       {label}
     </label>

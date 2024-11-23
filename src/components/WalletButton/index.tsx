@@ -16,16 +16,16 @@ export function WalletButton({ className, disabled = false, name, logo, label, o
       disabled={disabled}
       as="button"
       className={twMerge(
-        "flex h-14 w-full cursor-pointer items-center gap-2.5 rounded border border-primary-main/30 px-2",
-        disabled ? "cursor-default" : "cursor-pointer",
+        "b-flex b-h-14 b-w-full b-cursor-pointer b-items-center b-gap-2.5 b-rounded b-border b-border-primary-main/30 b-px-2",
+        disabled ? "b-cursor-default" : "b-cursor-pointer",
         className,
       )}
       onClick={onClick}
     >
-      <Avatar variant="rounded" className="shrink-0" alt={name} url={logo} />
+      <Avatar variant="rounded" className="b-shrink-0" alt={name} url={logo} />
       {name}
 
-      {label && <Chip className="ml-auto shrink-0">{label}</Chip>}
+      {label && <Chip className="b-ml-auto b-shrink-0">{label}</Chip>}
     </Text>
   );
 }

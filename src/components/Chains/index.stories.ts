@@ -43,7 +43,7 @@ export const Default: Story = {
         account: null,
       },
     },
-    className: "h-[600px]",
+    className: "b-h-[600px]",
     onSelectChain: console.log,
   },
 };
