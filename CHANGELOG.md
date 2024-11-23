@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.9
+
+### Patch Changes
+
+- b837146: update core-ui
+
 ## 0.0.8
 
 ### Patch Changes
