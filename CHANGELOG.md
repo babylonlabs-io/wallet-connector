@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.6
+
+### Patch Changes
+
+- e21503b: add signMessage to BTCProvider
+
 ## 0.0.5
 
 ### Patch Changes
