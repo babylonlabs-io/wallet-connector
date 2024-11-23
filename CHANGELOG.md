@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.8
+
+### Patch Changes
+
+- 32b8695: remove body selector from result css
+
 ## 0.0.7
 
 ### Patch Changes
