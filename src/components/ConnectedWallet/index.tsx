@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { Avatar, Text } from "@babylonlabs-io/bbn-core-ui";
-
-import { withAppState } from "@/hocs/withAppState";
+import { memo } from "react";
 
 interface ConnectedWalletProps {
   className?: string;
@@ -12,8 +11,8 @@ interface ConnectedWalletProps {
   onDisconnect?: (chainId: string) => void;
 }
 
-export function ConnectedWallet({ className, chainId, logo, name, address, onDisconnect }: ConnectedWalletProps) {
-  return (
+export const ConnectedWallet = memo(
+  ({ className, chainId, logo, name, address, onDisconnect }: ConnectedWalletProps) => (
     <div
       className={twMerge(
         "b-flex b-shrink-0 b-items-center b-gap-2.5 b-rounded b-border b-border-secondary-main/30 b-p-2",
@@ -49,23 +48,5 @@ export function ConnectedWallet({ className, chainId, logo, name, address, onDis
         </svg>
       </button>
     </div>
-  );
-}
-
-interface OuterProps {
-  className?: string;
-  chainId: string;
-  logo: string;
-  name: string;
-  address: string;
-}
-
-interface InnerProps {
-  onDisconnect?: (chainId: string) => void;
-}
-
-export default withAppState<OuterProps, InnerProps, ConnectedWalletProps>((state) => ({
-  onDisconnect: (chainId: string) => {
-    state.removeWallet?.(chainId);
-  },
-}))(ConnectedWallet);
+  ),
+);
