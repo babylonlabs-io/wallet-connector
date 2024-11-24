@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.11
+
+### Patch Changes
+
+- 9f1223d: add new custom hooks
+
 ## 0.0.10
 
 ### Patch Changes
