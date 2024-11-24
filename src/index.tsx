@@ -2,7 +2,8 @@ import "./index.css";
 
 export { WalletProvider } from "@/components/WalletProvider";
 export { useChainConnector } from "@/hooks/useChainConnector";
-export { useAppState } from "@/state/state";
+export { useWidgetState } from "@/hooks/useWidgetState";
+export { useWalletConnect } from "@/hooks/useWalletConnect";
 export * from "@/state/types";
 
 export * from "@/core/wallets/btc/BTCProvider";

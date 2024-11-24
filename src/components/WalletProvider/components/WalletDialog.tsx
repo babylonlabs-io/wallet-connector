@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Dialog } from "@babylonlabs-io/bbn-core-ui";
 
-import { useAppState } from "@/state/state";
+import { useWidgetState } from "@/hooks/useWidgetState";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
 import type { IChain, IWallet } from "@/core/types";
@@ -13,7 +13,7 @@ interface WalletDialogProps {
 }
 
 export function WalletDialog({ onError }: WalletDialogProps) {
-  const { visible, screen, close, selectWallet, displayLoader, displayChains, displayInscriptions } = useAppState();
+  const { visible, screen, close, selectWallet, displayLoader, displayChains, displayInscriptions } = useWidgetState();
   const { showAgain, toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
 

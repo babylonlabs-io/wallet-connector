@@ -1,4 +1,4 @@
-import { type PropsWithChildren, createContext, useContext, useMemo, useState } from "react";
+import { type PropsWithChildren, createContext, useMemo, useState } from "react";
 
 import { IChain, IWallet } from "@/core/types";
 import { Actions, type State } from "./types";
@@ -10,7 +10,7 @@ const defaultState: State = {
   selectedWallets: {},
 };
 
-const StateContext = createContext<State & Actions>(defaultState);
+export const StateContext = createContext<State & Actions>(defaultState);
 
 export function StateProvider({ children }: PropsWithChildren) {
   const [state, setState] = useState<State>(defaultState);
@@ -18,11 +18,15 @@ export function StateProvider({ children }: PropsWithChildren) {
   const actions: Actions = useMemo(
     () => ({
       open: () => {
-        setState(({ chains }) => ({ ...defaultState, chains, visible: true }));
+        setState((state) => ({ ...state, visible: true }));
       },
 
       close: () => {
         setState((state) => ({ ...state, visible: false }));
+      },
+
+      reset: () => {
+        setState(({ chains }) => ({ ...defaultState, chains }));
       },
 
       displayLoader: () => {
@@ -76,5 +80,3 @@ export function StateProvider({ children }: PropsWithChildren) {
 
   return <StateContext.Provider value={context}>{children}</StateContext.Provider>;
 }
-
-export const useAppState = () => useContext(StateContext);
