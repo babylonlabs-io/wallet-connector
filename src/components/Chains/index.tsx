@@ -1,13 +1,13 @@
-import { useMemo } from "react";
+import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
 
-import ConnectedWallet from "@/components/ConnectedWallet";
+import ConnectedWallet from "@/components/ConnectedWallet/container";
 import { ChainButton } from "@/components/ChainButton";
-import { withAppState } from "@/hocs/withAppState";
 import type { IChain, IWallet } from "@/core/types";
 
 interface ChainsProps {
+  disabled?: boolean;
   chains: IChain[];
   className?: string;
   selectedWallets?: Record<string, IWallet | undefined>;
@@ -15,21 +15,15 @@ interface ChainsProps {
   onSelectChain?: (chain: IChain) => void;
 }
 
-export function Chains({ chains, selectedWallets = {}, className, onClose, onSelectChain }: ChainsProps) {
-  const countOfSelectedWallets = useMemo(
-    () => Object.values(selectedWallets).filter(Boolean).length,
-    [selectedWallets],
-  );
-  const activeChains = useMemo(() => chains.filter((chain) => chain.wallets.length > 0), [chains]);
-
-  return (
+export const Chains = memo(
+  ({ disabled = false, chains, selectedWallets = {}, className, onClose, onSelectChain }: ChainsProps) => (
     <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
       <DialogHeader className="b-mb-10" title="Connect Wallets" onClose={onClose}>
         <Text>Connect to both Bitcoin and Babylon Chain Wallets</Text>
       </DialogHeader>
 
       <DialogBody className="b-flex b-flex-col b-gap-6">
-        {activeChains.map((chain) => {
+        {chains.map((chain) => {
           const selectedWallet = selectedWallets[chain.id];
 
           return (
@@ -59,23 +53,10 @@ export function Chains({ chains, selectedWallets = {}, className, onClose, onSel
           Cancel
         </Button>
 
-        <Button disabled={countOfSelectedWallets < activeChains.length} fluid onClick={onClose}>
+        <Button disabled={disabled} fluid onClick={onClose}>
           Done
         </Button>
       </DialogFooter>
     </div>
-  );
-}
-
-interface OuterProps {
-  className?: string;
-  onClose?: () => void;
-}
-
-export default withAppState<OuterProps, ChainsProps, ChainsProps>((state) => ({
-  chains: Object.values(state.chains),
-  selectedWallets: state.selectedWallets,
-  onSelectChain: (chain: IChain) => {
-    state.displayWallets?.(chain.id);
-  },
-}))(Chains);
+  ),
+);

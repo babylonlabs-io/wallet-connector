@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { type JSX, useCallback } from "react";
 import { Dialog } from "@babylonlabs-io/bbn-core-ui";
 
 import { useWidgetState } from "@/hooks/useWidgetState";
@@ -10,9 +10,10 @@ import { Screen } from "./Screen";
 
 interface WalletDialogProps {
   onError?: (e: Error) => void;
+  widgets?: Record<string, JSX.Element | undefined>;
 }
 
-export function WalletDialog({ onError }: WalletDialogProps) {
+export function WalletDialog({ widgets, onError }: WalletDialogProps) {
   const { visible, screen, close, selectWallet, displayLoader, displayChains, displayInscriptions } = useWidgetState();
   const { showAgain, toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
@@ -54,6 +55,7 @@ export function WalletDialog({ onError }: WalletDialogProps) {
     <Dialog open={visible}>
       <Screen
         current={screen}
+        widgets={widgets}
         className="b-size-[600px]"
         onClose={close}
         onSelectWallet={handleSelectWallet}

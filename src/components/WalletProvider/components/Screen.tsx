@@ -1,5 +1,6 @@
-import Chains from "@/components/Chains";
-import Wallets from "@/components/Wallets";
+import { type JSX } from "react";
+import Chains from "@/components/Chains/container";
+import Wallets from "@/components/Wallets/container";
 import { Inscriptions } from "@/components/Inscriptions";
 import { TermsOfService } from "@/components/TermsOfService";
 
@@ -7,9 +8,10 @@ import type { IChain, IWallet } from "@/core/types";
 import type { Screen } from "@/state/types";
 
 interface ScreenProps {
-  current: Screen;
   className?: string;
+  current: Screen;
   lockInscriptions?: boolean;
+  widgets?: Record<string, JSX.Element | undefined>;
   onSelectWallet?: (chain: IChain, wallet: IWallet) => void;
   onAccepTermsOfService?: () => void;
   onToggleInscriptions?: (value: boolean, showAgain: boolean) => void;
@@ -21,8 +23,8 @@ const SCREENS = {
     <TermsOfService className={className} onClose={onClose} onSubmit={onAccepTermsOfService} />
   ),
   CHAINS: ({ className, onClose }: ScreenProps) => <Chains className={className} onClose={onClose} />,
-  WALLETS: ({ className, onClose, onSelectWallet }: ScreenProps) => (
-    <Wallets className={className} onClose={onClose} onSelectWallet={onSelectWallet} />
+  WALLETS: ({ className, widgets, onClose, onSelectWallet }: ScreenProps) => (
+    <Wallets widgets={widgets} className={className} onClose={onClose} onSelectWallet={onSelectWallet} />
   ),
   INSCRIPTIONS: ({ onToggleInscriptions }: ScreenProps) => <Inscriptions onSubmit={onToggleInscriptions} />,
   EMPTY: ({ className }: ScreenProps) => <div className={className} />,

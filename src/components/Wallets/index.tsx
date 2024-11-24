@@ -1,9 +1,8 @@
 import { twMerge } from "tailwind-merge";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { Text, Button, DialogBody, DialogFooter, DialogHeader } from "@babylonlabs-io/bbn-core-ui";
 
 import { WalletButton } from "@/components/WalletButton";
-import { withAppState } from "@/hocs/withAppState";
 import type { IChain, IWallet } from "@/core/types";
 
 export interface WalletsProps {
@@ -15,16 +14,16 @@ export interface WalletsProps {
   onBack?: () => void;
 }
 
-export function Wallets({ chain, className, append, onClose, onBack, onSelectWallet }: WalletsProps) {
-  const countOfVisibleWallets = useMemo(
-    () => chain.wallets.filter((wallet) => wallet.id === "injectable" && !wallet.installed).length,
-    [chain],
-  );
+export const Wallets = memo(({ chain, className, append, onClose, onBack, onSelectWallet }: WalletsProps) => {
   const injectableWallet = useMemo(
     () => chain.wallets.find((wallet) => wallet.id === "injectable" && wallet.installed),
     [chain],
   );
   const wallets = useMemo(() => chain.wallets.filter((wallet) => wallet.id !== "injectable"), [chain]);
+  const countOfVisibleWallets = useMemo(
+    () => chain.wallets.filter((wallet) => wallet.id === "injectable" && !wallet.installed).length,
+    [chain],
+  );
 
   return (
     <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
@@ -64,16 +63,4 @@ export function Wallets({ chain, className, append, onClose, onBack, onSelectWal
       </DialogFooter>
     </div>
   );
-}
-
-interface OuterProps {
-  className?: string;
-  onClose?: () => void;
-  append?: JSX.Element;
-  onSelectWallet?: (chain: IChain, wallet: IWallet) => void;
-}
-
-export default withAppState<OuterProps, WalletsProps, WalletsProps>((state) => ({
-  chain: state.chains?.[state.screen.params?.chain ?? ""],
-  onBack: () => void state.displayChains?.(),
-}))(Wallets);
+});

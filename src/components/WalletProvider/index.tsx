@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren, JSX } from "react";
 
 import { StateProvider } from "@/state/state";
 import { ChainProvider } from "@/context/Chain.context";
@@ -11,12 +11,14 @@ interface WalletProviderProps {
   context?: any;
   config: NetworkConfig;
   onError?: (e: Error) => void;
+  walletWidgets?: Record<string, JSX.Element | undefined>;
 }
 
 export function WalletProvider({
   children,
   config,
   context = window,
+  walletWidgets,
   onError,
 }: PropsWithChildren<WalletProviderProps>) {
   return (
@@ -24,7 +26,7 @@ export function WalletProvider({
       <ChainProvider context={context} config={config}>
         <InscriptionProvider context={context}>
           {children}
-          <WalletDialog onError={onError} />
+          <WalletDialog widgets={walletWidgets} onError={onError} />
         </InscriptionProvider>
       </ChainProvider>
     </StateProvider>
