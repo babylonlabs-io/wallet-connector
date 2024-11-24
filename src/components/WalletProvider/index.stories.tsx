@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button, ScrollLocker } from "@babylonlabs-io/bbn-core-ui";
 
-import { useAppState } from "@/state/state";
+import { useWidgetState } from "@/hooks/useWidgetState";
 import { Network } from "@/core/types";
 
 import { WalletProvider } from "./index";
@@ -37,7 +37,7 @@ export const Default: Story = {
     ),
   ],
   render: () => {
-    const { open } = useAppState();
+    const { open } = useWidgetState();
 
     return <Button onClick={open}>Connect Wallet</Button>;
   },

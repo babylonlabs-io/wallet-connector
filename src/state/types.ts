@@ -30,4 +30,5 @@ export interface Actions {
   selectWallet?: (chain: string, wallet: IWallet) => void;
   removeWallet?: (chain: string) => void;
   addChain?: (chain: IChain) => void;
+  reset?: () => void;
 }

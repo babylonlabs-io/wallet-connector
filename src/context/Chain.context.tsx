@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useEffect, useState, useCallback, useContext } from "react";
 
-import { useAppState } from "@/state/state";
+import { useWidgetState } from "@/hooks/useWidgetState";
 
 import { createWalletConnector } from "@/core";
 import metadata from "@/core/wallets";
@@ -26,11 +26,11 @@ const defaultState: Connectors = {
   BBN: null,
 };
 
-const Context = createContext<Connectors>(defaultState);
+export const Context = createContext<Connectors>(defaultState);
 
 export function ChainProvider({ children, context, config }: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
-  const { addChain, displayLoader, displayTermsOfService } = useAppState();
+  const { addChain, displayLoader, displayTermsOfService } = useWidgetState();
 
   const init = useCallback(async () => {
     displayLoader?.();
