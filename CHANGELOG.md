@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.13
+
+### Patch Changes
+
+- 37bc8ae: wallet widgets
+
 ## 0.0.12
 
 ### Patch Changes
