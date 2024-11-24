@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.12
+
+### Patch Changes
+
+- b0d5b10: export wallet button
+
 ## 0.0.11
 
 ### Patch Changes
