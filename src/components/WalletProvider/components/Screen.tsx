@@ -3,6 +3,7 @@ import Chains from "@/components/Chains/container";
 import Wallets from "@/components/Wallets/container";
 import { Inscriptions } from "@/components/Inscriptions";
 import { TermsOfService } from "@/components/TermsOfService";
+import { LoaderScreen } from "@/components/Loader";
 
 import type { IChain, IWallet } from "@/core/types";
 import type { Screen } from "@/state/types";
@@ -27,6 +28,9 @@ const SCREENS = {
     <Wallets widgets={widgets} className={className} onClose={onClose} onSelectWallet={onSelectWallet} />
   ),
   INSCRIPTIONS: ({ onToggleInscriptions }: ScreenProps) => <Inscriptions onSubmit={onToggleInscriptions} />,
+  LOADER: ({ className, current }: ScreenProps) => (
+    <LoaderScreen className={className} title={current?.params?.message as string} />
+  ),
   EMPTY: ({ className }: ScreenProps) => <div className={className} />,
 } as const;
 
