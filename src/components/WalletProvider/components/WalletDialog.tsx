@@ -21,7 +21,7 @@ export function WalletDialog({ widgets, onError }: WalletDialogProps) {
   const handleSelectWallet = useCallback(
     async (chain: IChain, wallet: IWallet) => {
       try {
-        displayLoader?.();
+        displayLoader?.(`Connecting ${wallet.name}`);
 
         const connector = connectors[chain.id as keyof typeof connectors];
         const connectedWallet = await connector?.connect(wallet.id);

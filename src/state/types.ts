@@ -22,7 +22,7 @@ export interface State {
 export interface Actions {
   open?: () => void;
   close?: () => void;
-  displayLoader?: () => void;
+  displayLoader?: (message?: string) => void;
   displayChains?: () => void;
   displayWallets?: (chain: string) => void;
   displayInscriptions?: () => void;

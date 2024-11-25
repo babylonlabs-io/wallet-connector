@@ -29,8 +29,8 @@ export function StateProvider({ children }: PropsWithChildren) {
         setState(({ chains }) => ({ ...defaultState, chains }));
       },
 
-      displayLoader: () => {
-        setState((state) => ({ ...state, screen: { type: "LOADER" } }));
+      displayLoader: (message = "") => {
+        setState((state) => ({ ...state, screen: { type: "LOADER", params: { message } } }));
       },
 
       displayTermsOfService: () => {
