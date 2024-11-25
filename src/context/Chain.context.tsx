@@ -12,6 +12,7 @@ import type { NetworkConfig } from "@/core/types";
 interface ProviderProps {
   context: any;
   config: NetworkConfig;
+  onError?: (e: Error) => void;
 }
 
 export interface Connectors {
@@ -28,7 +29,7 @@ const defaultState: Connectors = {
 
 export const Context = createContext<Connectors>(defaultState);
 
-export function ChainProvider({ children, context, config }: PropsWithChildren<ProviderProps>) {
+export function ChainProvider({ children, context, config, onError }: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
   const { addChain, displayLoader, displayTermsOfService } = useWidgetState();
 
@@ -46,16 +47,17 @@ export function ChainProvider({ children, context, config }: PropsWithChildren<P
 
     displayLoader();
 
-    init().then((connectors) => {
-      setConnectors(connectors);
+    init()
+      .then((connectors) => {
+        setConnectors(connectors);
 
-      Object.values(connectors).forEach((connector) => {
-        addChain(connector);
-      });
-
-      displayTermsOfService();
-    });
-  }, [displayLoader, addChain, setConnectors, init, displayTermsOfService]);
+        Object.values(connectors).forEach((connector) => {
+          addChain(connector);
+        });
+      })
+      .catch(onError)
+      .finally(displayTermsOfService);
+  }, [displayLoader, addChain, setConnectors, init, displayTermsOfService, onError]);
 
   return <Context.Provider value={connectors}>{children}</Context.Provider>;
 }
