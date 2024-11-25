@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.15
+
+### Patch Changes
+
+- 44eaef3: better error handling
+
 ## 0.0.14
 
 ### Patch Changes
