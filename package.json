@@ -31,6 +31,9 @@
   },
   "dependencies": {
     "@babylonlabs-io/bbn-core-ui": "^0.2.0",
+    "@cosmjs/stargate": "^0.32.4",
+    "@keplr-wallet/types": "^0.12.156",
+    "buffer": "^6.0.3",
     "nanoevents": "^9.1.0",
     "react-icons": "^5.3.0"
   },
@@ -48,7 +51,6 @@
     "@eslint/js": "^9.13.0",
     "@storybook/addon-essentials": "^8.4.2",
     "@storybook/addon-interactions": "^8.4.2",
-    "@storybook/addon-onboarding": "^8.4.2",
     "@storybook/blocks": "^8.4.2",
     "@storybook/react": "^8.4.2",
     "@storybook/react-vite": "^8.4.2",
@@ -88,5 +90,6 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "packageManager": "pnpm@9.13.0+sha512.beb9e2a803db336c10c9af682b58ad7181ca0fbd0d4119f2b33d5f2582e96d6c0d93c85b23869295b765170fbdaa92890c0da6ada457415039769edf3c959efe"
 }
