@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.14
+
+### Patch Changes
+
+- e7549fd: add loader screen
+
 ## 0.0.13
 
 ### Patch Changes
