@@ -23,7 +23,7 @@ export function WalletProvider({
 }: PropsWithChildren<WalletProviderProps>) {
   return (
     <StateProvider>
-      <ChainProvider context={context} config={config}>
+      <ChainProvider context={context} config={config} onError={onError}>
         <InscriptionProvider context={context}>
           {children}
           <WalletDialog widgets={walletWidgets} onError={onError} />

@@ -37,6 +37,7 @@ export function WalletDialog({ widgets, onError }: WalletDialogProps) {
         }
       } catch (e: any) {
         onError?.(e);
+        displayChains?.();
       }
     },
     [displayLoader, selectWallet, displayInscriptions, connectors, showAgain],
