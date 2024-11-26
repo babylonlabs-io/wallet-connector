@@ -21,7 +21,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
   );
   const wallets = useMemo(() => chain.wallets.filter((wallet) => wallet.id !== "injectable"), [chain]);
   const countOfVisibleWallets = useMemo(
-    () => chain.wallets.filter((wallet) => wallet.id === "injectable" && !wallet.installed).length,
+    () => chain.wallets.filter((wallet) => wallet.id !== "injectable" || wallet.installed).length,
     [chain],
   );
 
@@ -32,7 +32,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
       </DialogHeader>
 
       <DialogBody>
-        <div className={twMerge("b-grid b-gap-6", countOfVisibleWallets === 1 ? "b-grid-cols-1" : "b-grid-cols-2")}>
+        <div className={twMerge("b-grid b-gap-6", countOfVisibleWallets > 1 ? "b-grid-cols-2" : "b-grid-cols-1")}>
           {injectableWallet && (
             <WalletButton
               name={injectableWallet.name}
