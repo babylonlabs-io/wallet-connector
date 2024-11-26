@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.16
+
+### Patch Changes
+
+- 385cf2f: fix wallet display
+
 ## 0.0.15
 
 ### Patch Changes
