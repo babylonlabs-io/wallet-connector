@@ -29,11 +29,7 @@ const config = [
   },
   {
     chain: "BBN",
-    config: {
-      chainId: "2",
-      rpc: "https://rpc.devnet.babylonlabs.io",
-      chainData: keplrRegistry,
-    },
+    config: keplrRegistry,
   },
 ] as const;
 

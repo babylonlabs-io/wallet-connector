@@ -50,11 +50,7 @@ export interface BTCConfig {
   network: Network;
 }
 
-export interface BBNConfig {
-  chainId: string;
-  rpc: string;
-  chainData: any;
-}
+export type BBNConfig = any;
 
 export interface IProvider {
   connectWallet: () => Promise<this>;
