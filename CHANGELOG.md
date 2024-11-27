@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.17
+
+### Patch Changes
+
+- 51acbba: add bbn config
+
 ## 0.0.16
 
 ### Patch Changes
