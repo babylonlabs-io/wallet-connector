@@ -1,6 +1,8 @@
-export const keplrRegistry = {
-  chainId: "devnet-6",
-  chainName: "Babylon Devnet 6",
+import { ChainInfo } from "@keplr-wallet/types";
+
+export const bbnDevnet: ChainInfo = {
+  chainId: "devnet-7",
+  chainName: "Babylon Devnet 7",
   chainSymbolImageUrl:
     "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn-dev/chain.png",
   rpc: "https://rpc.devnet.babylonlabs.io",
