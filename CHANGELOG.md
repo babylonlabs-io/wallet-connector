@@ -1,5 +1,12 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.18
+
+### Patch Changes
+
+- a540f70: fix type long import build error
+- b9fc59f: initial keplr cosmos implementation
+
 ## 0.0.17
 
 ### Patch Changes
