@@ -1,4 +1,4 @@
-import btc from "./btc";
-import bbn from "./bbn";
+import BTC from "./btc";
+import BBN from "./bbn";
 
-export default { btc, bbn } as const;
+export default { BTC, BBN } as const;

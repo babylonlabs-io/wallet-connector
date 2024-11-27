@@ -1,6 +1,6 @@
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 import { validateAddress } from "@/core/utils/wallet";
-import type { Fees, InscriptionIdentifier, NetworkConfig, UTXO, WalletInfo } from "@/core/types";
+import type { Fees, InscriptionIdentifier, BTCConfig, UTXO, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 
 const PROVIDER_NAMES = {
@@ -15,7 +15,7 @@ export class OKXProvider extends BTCProvider {
 
   constructor(
     private wallet: any,
-    config: NetworkConfig,
+    config: BTCConfig,
   ) {
     super(config);
 

@@ -42,13 +42,15 @@ export type WalletInfo = {
   address: string;
 };
 
-export interface NetworkConfig {
+export interface BTCConfig {
   coinName: string;
   coinSymbol: string;
   networkName: string;
   mempoolApiUrl: string;
   network: Network;
 }
+
+export type BBNConfig = any;
 
 export interface IProvider {
   connectWallet: () => Promise<this>;
@@ -77,19 +79,19 @@ export interface Account {
   address: string;
   publicKeyHex: string;
 }
-export interface WalletMetadata<P extends IProvider> {
+export interface WalletMetadata<P extends IProvider, C> {
   id: string;
-  wallet?: string | ((context: any, config: NetworkConfig) => any);
-  name: string | ((wallet: any, config: NetworkConfig) => Promise<string>);
-  icon: string | ((wallet: any, config: NetworkConfig) => Promise<string>);
+  wallet?: string | ((context: any, config: C) => any);
+  name: string | ((wallet: any, config: C) => Promise<string>);
+  icon: string | ((wallet: any, config: C) => Promise<string>);
   docs: string;
   networks: Network[];
-  createProvider: (wallet: any, config: NetworkConfig) => P;
+  createProvider: (wallet: any, config: C) => P;
 }
 
-export interface ChainMetadata<N extends string, P extends IProvider> {
+export interface ChainMetadata<N extends string, P extends IProvider, C> {
   chain: N;
   name: string;
   icon: string;
-  wallets: WalletMetadata<P>[];
+  wallets: WalletMetadata<P, C>[];
 }

@@ -1,4 +1,4 @@
-import type { Fees, InscriptionIdentifier, Network, NetworkConfig, UTXO, IProvider } from "../../types";
+import type { Fees, InscriptionIdentifier, Network, BTCConfig, UTXO, IProvider } from "../../types";
 import { createMempoolAPI, MempoolApi } from "../../utils/mempool";
 
 /**
@@ -8,7 +8,7 @@ import { createMempoolAPI, MempoolApi } from "../../utils/mempool";
 export abstract class BTCProvider implements IProvider {
   protected mempool: MempoolApi;
 
-  constructor(protected config: NetworkConfig) {
+  constructor(protected config: BTCConfig) {
     this.mempool = createMempoolAPI(this.config.mempoolApiUrl);
   }
   /**

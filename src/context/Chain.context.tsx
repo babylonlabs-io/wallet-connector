@@ -7,11 +7,20 @@ import metadata from "@/core/wallets";
 import { WalletConnector } from "@/core/WalletConnector";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
-import type { NetworkConfig } from "@/core/types";
+import type { BBNConfig, IProvider, BTCConfig } from "@/core/types";
+
+interface ChainConfig<K extends string, C> {
+  chain: K;
+  name?: string;
+  icon?: string;
+  config: C;
+}
+
+export type ChainConfigArr = (ChainConfig<"BTC", BTCConfig> | ChainConfig<"BBN", BBNConfig>)[];
 
 interface ProviderProps {
   context: any;
-  config: NetworkConfig;
+  config: Readonly<ChainConfigArr>;
   onError?: (e: Error) => void;
 }
 
@@ -19,8 +28,6 @@ export interface Connectors {
   BTC: WalletConnector<"BTC", BTCProvider> | null;
   BBN: WalletConnector<"BBN", BBNProvider> | null;
 }
-
-export type SupportedChains = keyof Connectors;
 
 const defaultState: Connectors = {
   BTC: null,
@@ -34,10 +41,10 @@ export function ChainProvider({ children, context, config, onError }: PropsWithC
   const { addChain, displayLoader, displayTermsOfService } = useWidgetState();
 
   const init = useCallback(async () => {
-    displayLoader?.();
-
-    const metadataArr = Object.values(metadata);
-    const connectorArr = await Promise.all(metadataArr.map((data) => createWalletConnector(data, context, config)));
+    const connectorPromises = config
+      .filter((c) => metadata[c.chain])
+      .map(({ chain, config }) => createWalletConnector<string, IProvider, any>(metadata[chain], context, config));
+    const connectorArr = await Promise.all(connectorPromises);
 
     return connectorArr.reduce((acc, connector) => ({ ...acc, [connector.id]: connector }), {} as Connectors);
   }, []);

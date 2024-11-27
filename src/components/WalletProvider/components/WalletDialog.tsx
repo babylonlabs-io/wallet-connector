@@ -53,7 +53,7 @@ export function WalletDialog({ widgets, onError }: WalletDialogProps) {
   );
 
   return (
-    <Dialog open={visible}>
+    <Dialog open={visible} onClose={close}>
       <Screen
         current={screen}
         widgets={widgets}
