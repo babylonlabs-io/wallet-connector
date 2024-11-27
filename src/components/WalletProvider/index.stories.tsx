@@ -5,6 +5,7 @@ import { useWidgetState } from "@/hooks/useWidgetState";
 import { Network } from "@/core/types";
 
 import { WalletProvider } from "./index";
+import { keplrRegistry } from "./mocks";
 
 const meta: Meta<typeof WalletProvider> = {
   component: WalletProvider,
@@ -15,13 +16,26 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const networkConfig = {
-  coinName: "Signet BTC",
-  coinSymbol: "sBTC",
-  networkName: "BTC signet",
-  mempoolApiUrl: "https://mempool.space/signet",
-  network: Network.SIGNET,
-};
+const config = [
+  {
+    chain: "BTC",
+    config: {
+      coinName: "Signet BTC",
+      coinSymbol: "sBTC",
+      networkName: "BTC signet",
+      mempoolApiUrl: "https://mempool.space/signet",
+      network: Network.SIGNET,
+    },
+  },
+  {
+    chain: "BBN",
+    config: {
+      chainId: "2",
+      rpc: "https://rpc.devnet.babylonlabs.io",
+      chainData: keplrRegistry,
+    },
+  },
+] as const;
 
 export const Default: Story = {
   args: {
@@ -30,7 +44,7 @@ export const Default: Story = {
   decorators: [
     (Story) => (
       <ScrollLocker>
-        <WalletProvider context={window.parent} config={networkConfig}>
+        <WalletProvider context={window.parent} config={config}>
           <Story />
         </WalletProvider>
       </ScrollLocker>

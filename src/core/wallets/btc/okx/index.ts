@@ -1,10 +1,10 @@
-import { Network, type WalletMetadata } from "@/core/types";
+import { Network, type BTCConfig, type WalletMetadata } from "@/core/types";
 
 import logo from "./logo.svg";
 import type { BTCProvider } from "../BTCProvider";
 import { OKXProvider } from "./provider";
 
-const metadata: WalletMetadata<BTCProvider> = {
+const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
   id: "okx",
   name: "OKX",
   icon: logo,

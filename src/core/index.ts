@@ -1,14 +1,10 @@
 import { type WalletOptions, Wallet } from "./Wallet";
 import { WalletConnector } from "./WalletConnector";
-import { ChainMetadata, IProvider, NetworkConfig, WalletMetadata } from "./types";
+import { ChainMetadata, IProvider, WalletMetadata } from "./types";
 
 const defaultWalletGetter = (key: string) => (context: any) => context[key];
 
-export const createWallet = async <P extends IProvider>(
-  metadata: WalletMetadata<P>,
-  context: any,
-  config: NetworkConfig,
-) => {
+export const createWallet = async <P extends IProvider, C>(metadata: WalletMetadata<P, C>, context: any, config: C) => {
   const {
     id,
     wallet: walletGetter,
@@ -54,10 +50,10 @@ export const createWallet = async <P extends IProvider>(
   return new Wallet(options);
 };
 
-export const createWalletConnector = async <N extends string, P extends IProvider>(
-  metadata: ChainMetadata<N, P>,
+export const createWalletConnector = async <N extends string, P extends IProvider, C>(
+  metadata: ChainMetadata<N, P, C>,
   context: any,
-  config: NetworkConfig,
+  config: C,
 ): Promise<WalletConnector<N, P>> => {
   const wallets: Wallet<P>[] = [];
 
