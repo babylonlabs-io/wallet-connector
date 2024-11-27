@@ -1,13 +1,11 @@
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import { Buffer } from "buffer";
 
-import { WalletInfo } from "@/core/types";
+import { BBNConfig, WalletInfo } from "@/core/types";
 import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
 
 import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types/src/cosmjs";
 import { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
-
-const DEFAULT_RPC = "https://cosmoshub.validator.network:443";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -16,24 +14,31 @@ declare global {
 
 export class KeplrProvider extends BBNProvider {
   private walletInfo: WalletInfo | undefined;
-  private chainId = "devnet-6";
+  private chainId: string | undefined;
+  private rpc: string | undefined;
   private offlineSigner?: OfflineAminoSigner & OfflineDirectSigner;
   private stargateClient?: Promise<SigningStargateClient>;
 
-  constructor(private keplr: Window["keplr"]) {
+  constructor(
+    private keplr: Window["keplr"],
+    config: BBNConfig,
+  ) {
     super();
     if (!keplr) {
       throw new Error("Keplr extension not found");
     }
+    this.chainId = config.chainId;
+    this.rpc = config.rpc;
   }
 
   async connectWallet(): Promise<this> {
+    if (!this.chainId) throw new Error("Chain ID is not initialized");
+    if (!this.rpc) throw new Error("RPC URL is not initialized");
+
     await this.keplr?.enable(this.chainId);
     const key = await this.keplr?.getKey(this.chainId);
 
-    if (!key) {
-      throw new Error("Failed to get Keplr key");
-    }
+    if (!key) throw new Error("Failed to get Keplr key");
 
     this.offlineSigner = this.keplr?.getOfflineSigner(this.chainId);
 
@@ -68,11 +73,9 @@ export class KeplrProvider extends BBNProvider {
   }
 
   async createSigningStargateClient(options?: SigningStargateClientOptions) {
-    const rpcUrl = DEFAULT_RPC;
-    if (!this.offlineSigner) {
-      throw new Error("Offline signer is not initialized");
-    }
-    return await SigningStargateClient.connectWithSigner(rpcUrl, this.offlineSigner, options);
+    if (!this.rpc) throw new Error("RPC URL is not initialized");
+    if (!this.offlineSigner) throw new Error("Offline signer is not initialized");
+    return await SigningStargateClient.connectWithSigner(this.rpc, this.offlineSigner, options);
   }
 
   async getBalance(searchDenom: string) {

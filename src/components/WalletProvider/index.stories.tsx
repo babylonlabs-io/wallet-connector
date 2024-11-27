@@ -5,7 +5,7 @@ import { useWidgetState } from "@/hooks/useWidgetState";
 import { Network } from "@/core/types";
 
 import { WalletProvider } from "./index";
-import { keplrRegistry } from "./mocks";
+import { bbnDevnet } from "@/core/chains/bbnDevnet";
 
 const meta: Meta<typeof WalletProvider> = {
   component: WalletProvider,
@@ -29,7 +29,11 @@ const config = [
   },
   {
     chain: "BBN",
-    config: keplrRegistry,
+    config: {
+      chainId: bbnDevnet.chainId,
+      rpc: bbnDevnet.rpc,
+      chainData: bbnDevnet,
+    },
   },
 ] as const;
 

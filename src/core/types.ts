@@ -1,3 +1,5 @@
+import { ChainInfo } from "@keplr-wallet/types";
+
 export type Fees = {
   // fee for inclusion in the next block
   fastestFee: number;
@@ -50,7 +52,11 @@ export interface BTCConfig {
   network: Network;
 }
 
-export type BBNConfig = any;
+export type BBNConfig = {
+  chainId: string;
+  rpc: string;
+  chainData: ChainInfo;
+};
 
 export interface IProvider {
   connectWallet: () => Promise<this>;
