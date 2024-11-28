@@ -30,7 +30,7 @@ export function WalletDialog({ widgets, onError }: WalletDialogProps) {
           selectWallet?.(chain.id, connectedWallet);
         }
 
-        if (showAgain) {
+        if (showAgain && chain.id === "BTC") {
           displayInscriptions?.();
         } else {
           displayChains?.();
