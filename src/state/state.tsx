@@ -4,6 +4,7 @@ import { IChain, IWallet } from "@/core/types";
 import { Actions, type State } from "./types";
 
 const defaultState: State = {
+  confirmed: false,
   visible: false,
   screen: { type: "TERMS_OF_SERVICE" },
   chains: {},
@@ -65,6 +66,10 @@ export function StateProvider({ children }: PropsWithChildren) {
 
       addChain: (chain: IChain) => {
         setState((state) => ({ ...state, chains: { ...state.chains, [chain.id]: chain } }));
+      },
+
+      confirm: () => {
+        setState((state) => ({ ...state, confirmed: true }));
       },
     }),
     [],

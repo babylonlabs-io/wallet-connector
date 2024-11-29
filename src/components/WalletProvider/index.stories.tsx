@@ -3,9 +3,9 @@ import { Button, ScrollLocker } from "@babylonlabs-io/bbn-core-ui";
 
 import { useWidgetState } from "@/hooks/useWidgetState";
 import { Network } from "@/core/types";
+import { bbnDevnet } from "@/core/chains/bbnDevnet";
 
 import { WalletProvider } from "./index";
-import { bbnDevnet } from "@/core/chains/bbnDevnet";
 
 const meta: Meta<typeof WalletProvider> = {
   component: WalletProvider,

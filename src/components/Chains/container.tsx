@@ -9,11 +9,12 @@ import { useWalletConnect } from "@/hooks/useWalletConnect";
 interface ContainerProps {
   className?: string;
   onClose?: () => void;
+  onConfirm?: () => void;
 }
 
 export default function ChainsContainer(props: ContainerProps) {
   const { chains, selectedWallets, displayWallets } = useWidgetState();
-  const { connected } = useWalletConnect();
+  const { selected } = useWalletConnect();
 
   const chainArr = useMemo(() => Object.values(chains), [chains]);
 
@@ -26,7 +27,7 @@ export default function ChainsContainer(props: ContainerProps) {
 
   return (
     <Chains
-      disabled={!connected}
+      disabled={!selected}
       chains={chainArr}
       selectedWallets={selectedWallets}
       onSelectChain={handleSelectChain}

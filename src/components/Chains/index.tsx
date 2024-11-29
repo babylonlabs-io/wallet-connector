@@ -12,11 +12,12 @@ interface ChainsProps {
   className?: string;
   selectedWallets?: Record<string, IWallet | undefined>;
   onClose?: () => void;
+  onConfirm?: () => void;
   onSelectChain?: (chain: IChain) => void;
 }
 
 export const Chains = memo(
-  ({ disabled = false, chains, selectedWallets = {}, className, onClose, onSelectChain }: ChainsProps) => (
+  ({ disabled = false, chains, selectedWallets = {}, className, onClose, onConfirm, onSelectChain }: ChainsProps) => (
     <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
       <DialogHeader className="b-mb-10" title="Connect Wallets" onClose={onClose}>
         <Text>Connect to both Bitcoin and Babylon Chain Wallets</Text>
@@ -53,7 +54,7 @@ export const Chains = memo(
           Cancel
         </Button>
 
-        <Button disabled={disabled} fluid onClick={onClose}>
+        <Button disabled={disabled} fluid onClick={onConfirm}>
           Done
         </Button>
       </DialogFooter>
