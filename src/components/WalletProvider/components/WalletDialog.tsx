@@ -13,8 +13,20 @@ interface WalletDialogProps {
   widgets?: Record<string, JSX.Element | undefined>;
 }
 
+const ANIMATION_DELAY = 1000;
+
 export function WalletDialog({ widgets, onError }: WalletDialogProps) {
-  const { visible, screen, close, selectWallet, displayLoader, displayChains, displayInscriptions } = useWidgetState();
+  const {
+    visible,
+    screen,
+    close,
+    reset = () => {},
+    confirm,
+    selectWallet,
+    displayLoader,
+    displayChains,
+    displayInscriptions,
+  } = useWidgetState();
   const { showAgain, toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
 
@@ -52,13 +64,24 @@ export function WalletDialog({ widgets, onError }: WalletDialogProps) {
     [toggleShowAgain, toggleLockInscriptions, displayChains],
   );
 
+  const handleClose = useCallback(() => {
+    close?.();
+    setTimeout(reset, ANIMATION_DELAY);
+  }, [close, reset]);
+
+  const handleConfirm = useCallback(() => {
+    confirm?.();
+    close?.();
+  }, [confirm]);
+
   return (
-    <Dialog open={visible} onClose={close}>
+    <Dialog open={visible} onClose={handleClose}>
       <Screen
         current={screen}
         widgets={widgets}
         className="b-size-[600px]"
-        onClose={close}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
         onSelectWallet={handleSelectWallet}
         onAccepTermsOfService={displayChains}
         onToggleInscriptions={handleToggleInscriptions}

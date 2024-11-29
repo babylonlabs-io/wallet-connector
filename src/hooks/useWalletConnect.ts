@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useWidgetState } from "./useWidgetState";
 
 export function useWalletConnect() {
-  const { chains: chainMap, selectedWallets, open: openModal, close, reset } = useWidgetState();
+  const { confirmed, chains: chainMap, selectedWallets, open: openModal, close, reset } = useWidgetState();
 
   const open = useCallback(() => {
     reset?.();
@@ -13,7 +13,7 @@ export function useWalletConnect() {
     reset?.();
   }, [close]);
 
-  const connected = useMemo(() => {
+  const selected = useMemo(() => {
     const chains = Object.values(chainMap).filter(Boolean);
     const result = chains.map((chain) => selectedWallets[chain.id]);
 
@@ -21,7 +21,8 @@ export function useWalletConnect() {
   }, [chainMap, selectedWallets]);
 
   return {
-    connected,
+    selected,
+    connected: selected && confirmed,
     open,
     disconnect,
   };

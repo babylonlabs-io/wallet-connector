@@ -17,13 +17,16 @@ interface ScreenProps {
   onAccepTermsOfService?: () => void;
   onToggleInscriptions?: (value: boolean, showAgain: boolean) => void;
   onClose?: () => void;
+  onConfirm?: () => void;
 }
 
 const SCREENS = {
   TERMS_OF_SERVICE: ({ className, onClose, onAccepTermsOfService }: ScreenProps) => (
     <TermsOfService className={className} onClose={onClose} onSubmit={onAccepTermsOfService} />
   ),
-  CHAINS: ({ className, onClose }: ScreenProps) => <Chains className={className} onClose={onClose} />,
+  CHAINS: ({ className, onClose, onConfirm }: ScreenProps) => (
+    <Chains className={className} onClose={onClose} onConfirm={onConfirm} />
+  ),
   WALLETS: ({ className, widgets, onClose, onSelectWallet }: ScreenProps) => (
     <Wallets widgets={widgets} className={className} onClose={onClose} onSelectWallet={onSelectWallet} />
   ),

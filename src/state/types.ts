@@ -13,6 +13,7 @@ export type Screens =
   | Screen<"INSCRIPTIONS">;
 
 export interface State {
+  confirmed: boolean;
   visible: boolean;
   screen: Screens;
   selectedWallets: Record<string, IWallet | undefined>;
@@ -30,5 +31,6 @@ export interface Actions {
   selectWallet?: (chain: string, wallet: IWallet) => void;
   removeWallet?: (chain: string) => void;
   addChain?: (chain: IChain) => void;
+  confirm?: () => void;
   reset?: () => void;
 }
