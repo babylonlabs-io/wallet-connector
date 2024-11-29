@@ -1,6 +1,6 @@
-import { ChainInfo } from "@keplr-wallet/types";
+// import { ChainInfo } from "@keplr-wallet/types";
 
-export const bbnDevnet: ChainInfo = {
+export const bbnDevnet: any = {
   chainId: "devnet-7",
   chainName: "Babylon Devnet 7",
   chainSymbolImageUrl:
