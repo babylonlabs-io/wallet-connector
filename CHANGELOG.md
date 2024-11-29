@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.19
+
+### Patch Changes
+
+- 4400548: feat: change wallet connection flow
+
 ## 0.0.18
 
 ### Patch Changes
