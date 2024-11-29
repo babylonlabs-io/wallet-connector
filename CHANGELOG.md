@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.20
+
+### Patch Changes
+
+- 1db5b42: exclude core ui
+
 ## 0.0.19
 
 ### Patch Changes
