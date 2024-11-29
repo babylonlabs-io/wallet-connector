@@ -1,4 +1,4 @@
-import { ChainInfo } from "@keplr-wallet/types";
+// import { ChainInfo } from "@keplr-wallet/types";
 
 export type Fees = {
   // fee for inclusion in the next block
@@ -55,7 +55,7 @@ export interface BTCConfig {
 export type BBNConfig = {
   chainId: string;
   rpc: string;
-  chainData: ChainInfo;
+  chainData: any;
 };
 
 export interface IProvider {

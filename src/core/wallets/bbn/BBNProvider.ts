@@ -1,5 +1,5 @@
 import { IProvider } from "@/core/types";
-import { SigningStargateClient } from "@cosmjs/stargate";
+// import { SigningStargateClient } from "@cosmjs/stargate";
 
 export abstract class BBNProvider implements IProvider {
   /**
@@ -25,7 +25,7 @@ export abstract class BBNProvider implements IProvider {
    * Gets the signing stargate client.
    * @returns A promise that resolves to the signing stargate client.
    */
-  abstract getSigningStargateClient(): Promise<SigningStargateClient>;
+  abstract getSigningStargateClient(): Promise<any>;
   /**
    * Gets the balance of the connected wallet.
    * @param searchDenom - The denomination to search for in the wallet's balance.
