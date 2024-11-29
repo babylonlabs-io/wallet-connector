@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.22
+
+### Patch Changes
+
+- d064396: keplr poc
+
 ## 0.0.21
 
 ### Patch Changes
