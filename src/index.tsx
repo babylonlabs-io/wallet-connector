@@ -5,6 +5,7 @@ export { useChainConnector } from "@/hooks/useChainConnector";
 export { useWidgetState } from "@/hooks/useWidgetState";
 export { useWalletConnect } from "@/hooks/useWalletConnect";
 export { WalletButton } from "@/components/WalletButton";
+export { useInscriptionProvider } from "@/context/Inscriptions.context";
 export * from "@/state/types";
 
 export * from "@/core/wallets/btc/BTCProvider";
