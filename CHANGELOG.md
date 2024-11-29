@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.21
+
+### Patch Changes
+
+- 4e67a39: export inscriptions
+
 ## 0.0.20
 
 ### Patch Changes
