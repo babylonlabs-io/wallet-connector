@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.0.23
+
+### Patch Changes
+
+- 651f91f: Re-add @cosmjs/stargate
+
 ## 0.0.22
 
 ### Patch Changes
