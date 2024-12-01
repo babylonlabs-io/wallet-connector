@@ -1,7 +1,40 @@
-import { type PropsWithChildren, createContext, useMemo, useState } from "react";
+import { type PropsWithChildren, createContext, useEffect, useMemo, useState } from "react";
 
-import { IChain, IWallet } from "@/core/types";
-import { Actions, type State } from "./types";
+import type { IChain, IWallet } from "@/core/types";
+
+export type Screen<T extends string = string> = {
+  type: T;
+  params?: Record<string, string | number>;
+};
+
+export type Screens =
+  | Screen<"LOADER">
+  | Screen<"TERMS_OF_SERVICE">
+  | Screen<"CHAINS">
+  | Screen<"WALLETS">
+  | Screen<"INSCRIPTIONS">;
+
+export interface State {
+  confirmed: boolean;
+  visible: boolean;
+  screen: Screens;
+  selectedWallets: Record<string, IWallet | undefined>;
+  chains: Record<string, IChain>;
+}
+
+export interface Actions {
+  open?: () => void;
+  close?: () => void;
+  displayLoader?: (message?: string) => void;
+  displayChains?: () => void;
+  displayWallets?: (chain: string) => void;
+  displayInscriptions?: () => void;
+  displayTermsOfService?: () => void;
+  selectWallet?: (chain: string, wallet: IWallet) => void;
+  removeWallet?: (chain: string) => void;
+  confirm?: () => void;
+  reset?: () => void;
+}
 
 const defaultState: State = {
   confirmed: false,
@@ -13,8 +46,16 @@ const defaultState: State = {
 
 export const StateContext = createContext<State & Actions>(defaultState);
 
-export function StateProvider({ children }: PropsWithChildren) {
+interface StateProviderProps {
+  chains: IChain[];
+}
+
+export function StateProvider({ children, chains }: PropsWithChildren<StateProviderProps>) {
   const [state, setState] = useState<State>(defaultState);
+
+  useEffect(() => {
+    setState((state) => ({ ...state, chains: chains.reduce((acc, chain) => ({ ...acc, [chain.id]: chain }), {}) }));
+  }, [chains]);
 
   const actions: Actions = useMemo(
     () => ({
@@ -62,10 +103,6 @@ export function StateProvider({ children }: PropsWithChildren) {
           ...state,
           selectedWallets: { ...state.selectedWallets, [chain]: undefined },
         }));
-      },
-
-      addChain: (chain: IChain) => {
-        setState((state) => ({ ...state, chains: { ...state.chains, [chain.id]: chain } }));
       },
 
       confirm: () => {

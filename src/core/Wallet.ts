@@ -16,7 +16,7 @@ export class Wallet<P extends IProvider> implements IWallet {
   readonly name: string;
   readonly icon: string;
   readonly docs: string;
-  readonly networkds: Network[];
+  readonly networks: Network[];
   readonly provider: P | null = null;
   account: Account | null = null;
 
@@ -26,7 +26,7 @@ export class Wallet<P extends IProvider> implements IWallet {
     this.name = name;
     this.icon = icon;
     this.docs = docs;
-    this.networkds = networks;
+    this.networks = networks;
     this.provider = provider;
   }
 
@@ -54,7 +54,7 @@ export class Wallet<P extends IProvider> implements IWallet {
       name: this.name,
       icon: this.icon,
       docs: this.docs,
-      networks: this.networkds,
+      networks: this.networks,
       provider: this.provider,
     });
   }

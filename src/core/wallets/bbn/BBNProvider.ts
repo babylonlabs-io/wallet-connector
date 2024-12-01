@@ -1,13 +1,13 @@
-import { IProvider } from "@/core/types";
+import { IBBNProvider } from "@/core/types";
 import { SigningStargateClient } from "@cosmjs/stargate";
 
-export abstract class BBNProvider implements IProvider {
+export abstract class BBNProvider implements IBBNProvider {
   /**
    * Connects to the wallet and returns the instance of the wallet provider.
    * @returns A promise that resolves to an instance of the wrapper wallet provider.
    * @throws An error if the wallet is not installed or if connection fails.
    */
-  abstract connectWallet(): Promise<this>;
+  abstract connectWallet(): Promise<void>;
 
   /**
    * Gets the address of the connected wallet.

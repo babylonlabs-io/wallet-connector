@@ -31,7 +31,7 @@ export class KeplrProvider extends BBNProvider {
     this.rpc = config.rpc;
   }
 
-  async connectWallet(): Promise<this> {
+  async connectWallet(): Promise<void> {
     if (!this.chainId) throw new Error("Chain ID is not initialized");
     if (!this.rpc) throw new Error("RPC URL is not initialized");
 
@@ -49,7 +49,6 @@ export class KeplrProvider extends BBNProvider {
         publicKeyHex: Buffer.from(key.pubKey).toString("hex"),
         address: bech32Address,
       };
-      return this;
     } else {
       throw new Error("Could not connect to Keplr");
     }

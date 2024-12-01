@@ -10,6 +10,7 @@ interface ContainerProps {
   className?: string;
   onClose?: () => void;
   onConfirm?: () => void;
+  onDisconnectWallet?: (chainId: string) => void;
 }
 
 export default function ChainsContainer(props: ContainerProps) {
