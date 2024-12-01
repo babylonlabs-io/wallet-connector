@@ -1,22 +1,27 @@
-import { createContext, PropsWithChildren, useEffect, useState, useCallback, useContext } from "react";
-
-import { useWidgetState } from "@/hooks/useWidgetState";
+import { createContext, PropsWithChildren, useEffect, useState, useCallback, useContext, useMemo } from "react";
 
 import { createWalletConnector } from "@/core";
 import metadata from "@/core/wallets";
 import { WalletConnector } from "@/core/WalletConnector";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
-import type { BBNConfig, IProvider, BTCConfig } from "@/core/types";
+import type { BBNConfig, IProvider, BTCConfig, ExternalConnector, IBTCProvider, IBBNProvider } from "@/core/types";
 
-interface ChainConfig<K extends string, C> {
+import { StateProvider } from "./State.context";
+import { InscriptionProvider } from "./Inscriptions.context";
+
+interface ChainConfig<K extends string = string, P extends IProvider = IProvider, C = any> {
   chain: K;
   name?: string;
   icon?: string;
   config: C;
+  connectors?: ExternalConnector<P>[];
 }
 
-export type ChainConfigArr = (ChainConfig<"BTC", BTCConfig> | ChainConfig<"BBN", BBNConfig>)[];
+export type ChainConfigArr = (
+  | ChainConfig<"BTC", IBTCProvider, BTCConfig>
+  | ChainConfig<"BBN", IBBNProvider, BBNConfig>
+)[];
 
 interface ProviderProps {
   context: any;
@@ -38,7 +43,6 @@ export const Context = createContext<Connectors>(defaultState);
 
 export function ChainProvider({ children, context, config, onError }: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
-  const { addChain, displayLoader, displayTermsOfService } = useWidgetState();
 
   const init = useCallback(async () => {
     const connectorPromises = config
@@ -50,23 +54,22 @@ export function ChainProvider({ children, context, config, onError }: PropsWithC
   }, []);
 
   useEffect(() => {
-    if (!displayLoader || !addChain || !setConnectors || !displayTermsOfService) return;
-
-    displayLoader();
-
     init()
       .then((connectors) => {
         setConnectors(connectors);
-
-        Object.values(connectors).forEach((connector) => {
-          addChain(connector);
-        });
       })
-      .catch(onError)
-      .finally(displayTermsOfService);
-  }, [displayLoader, addChain, setConnectors, init, displayTermsOfService, onError]);
+      .catch(onError);
+  }, [setConnectors, init, onError]);
 
-  return <Context.Provider value={connectors}>{children}</Context.Provider>;
+  const supportedChains = useMemo(() => Object.values(connectors).filter(Boolean), [connectors]);
+
+  return (
+    <InscriptionProvider context={context}>
+      <StateProvider chains={supportedChains}>
+        <Context.Provider value={connectors}>{children}</Context.Provider>
+      </StateProvider>
+    </InscriptionProvider>
+  );
 }
 
 export const useChainProviders = () => {

@@ -1,11 +1,11 @@
-import type { Fees, InscriptionIdentifier, Network, BTCConfig, UTXO, IProvider } from "../../types";
+import type { Fees, InscriptionIdentifier, Network, BTCConfig, UTXO, IBTCProvider } from "../../types";
 import { createMempoolAPI, MempoolApi } from "../../utils/mempool";
 
 /**
  * Abstract class representing a wallet provider.
  * Provides methods for connecting to a wallet, retrieving wallet information, signing transactions, and more.
  */
-export abstract class BTCProvider implements IProvider {
+export abstract class BTCProvider implements IBTCProvider {
   protected mempool: MempoolApi;
 
   constructor(protected config: BTCConfig) {
@@ -17,7 +17,7 @@ export abstract class BTCProvider implements IProvider {
    * @returns A promise that resolves to an instance of the wrapper wallet provider in babylon friendly format.
    * @throws An error if the wallet is not installed or if connection fails.
    */
-  abstract connectWallet(): Promise<this>;
+  abstract connectWallet(): Promise<void>;
 
   /**
    * Gets the address of the connected wallet.

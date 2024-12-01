@@ -1,6 +1,6 @@
 import { type WalletOptions, Wallet } from "./Wallet";
 import { WalletConnector } from "./WalletConnector";
-import { ChainMetadata, IProvider, WalletMetadata } from "./types";
+import { ChainMetadata, ExternalWalletProps, IProvider, Network, WalletMetadata } from "./types";
 
 const defaultWalletGetter = (key: string) => (context: any) => context[key];
 
@@ -49,6 +49,17 @@ export const createWallet = async <P extends IProvider, C>(metadata: WalletMetad
 
   return new Wallet(options);
 };
+
+export const createExternalWallet = <P extends IProvider>({ id, name, icon, provider }: ExternalWalletProps<P>) =>
+  new Wallet({
+    id,
+    origin: null,
+    name,
+    icon,
+    docs: "",
+    networks: [Network.MAINNET, Network.SIGNET],
+    provider,
+  });
 
 export const createWalletConnector = async <N extends string, P extends IProvider, C>(
   metadata: ChainMetadata<N, P, C>,

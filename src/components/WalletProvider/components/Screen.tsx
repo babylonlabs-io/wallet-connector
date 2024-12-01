@@ -6,7 +6,7 @@ import { TermsOfService } from "@/components/TermsOfService";
 import { LoaderScreen } from "@/components/Loader";
 
 import type { IChain, IWallet } from "@/core/types";
-import type { Screen } from "@/state/types";
+import type { Screen } from "@/context/State.context";
 
 interface ScreenProps {
   className?: string;
@@ -14,6 +14,7 @@ interface ScreenProps {
   lockInscriptions?: boolean;
   widgets?: Record<string, JSX.Element | undefined>;
   onSelectWallet?: (chain: IChain, wallet: IWallet) => void;
+  onDisconnectWallet?: (chainId: string) => void;
   onAccepTermsOfService?: () => void;
   onToggleInscriptions?: (value: boolean, showAgain: boolean) => void;
   onClose?: () => void;
@@ -24,8 +25,8 @@ const SCREENS = {
   TERMS_OF_SERVICE: ({ className, onClose, onAccepTermsOfService }: ScreenProps) => (
     <TermsOfService className={className} onClose={onClose} onSubmit={onAccepTermsOfService} />
   ),
-  CHAINS: ({ className, onClose, onConfirm }: ScreenProps) => (
-    <Chains className={className} onClose={onClose} onConfirm={onConfirm} />
+  CHAINS: ({ className, onClose, onConfirm, onDisconnectWallet }: ScreenProps) => (
+    <Chains className={className} onClose={onClose} onConfirm={onConfirm} onDisconnectWallet={onDisconnectWallet} />
   ),
   WALLETS: ({ className, widgets, onClose, onSelectWallet }: ScreenProps) => (
     <Wallets widgets={widgets} className={className} onClose={onClose} onSelectWallet={onSelectWallet} />

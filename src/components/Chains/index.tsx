@@ -2,7 +2,7 @@ import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
 
-import ConnectedWallet from "@/components/ConnectedWallet/container";
+import { ConnectedWallet } from "@/components/ConnectedWallet";
 import { ChainButton } from "@/components/ChainButton";
 import type { IChain, IWallet } from "@/core/types";
 
@@ -13,11 +13,21 @@ interface ChainsProps {
   selectedWallets?: Record<string, IWallet | undefined>;
   onClose?: () => void;
   onConfirm?: () => void;
+  onDisconnectWallet?: (chainId: string) => void;
   onSelectChain?: (chain: IChain) => void;
 }
 
 export const Chains = memo(
-  ({ disabled = false, chains, selectedWallets = {}, className, onClose, onConfirm, onSelectChain }: ChainsProps) => (
+  ({
+    disabled = false,
+    chains,
+    selectedWallets = {},
+    className,
+    onClose,
+    onConfirm,
+    onSelectChain,
+    onDisconnectWallet,
+  }: ChainsProps) => (
     <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
       <DialogHeader className="b-mb-10" title="Connect Wallets" onClose={onClose}>
         <Text>Connect to both Bitcoin and Babylon Chain Wallets</Text>
@@ -42,6 +52,7 @@ export const Chains = memo(
                   logo={selectedWallet.icon}
                   name={selectedWallet.name}
                   address={selectedWallet.account?.address ?? ""}
+                  onDisconnect={onDisconnectWallet}
                 />
               )}
             </ChainButton>
