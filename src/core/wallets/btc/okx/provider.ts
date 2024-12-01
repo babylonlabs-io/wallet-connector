@@ -33,7 +33,7 @@ export class OKXProvider extends BTCProvider {
     this.provider = wallet[providerName];
   }
 
-  connectWallet = async (): Promise<this> => {
+  connectWallet = async (): Promise<void> => {
     try {
       await this.wallet.enable(); // Connect to OKX Wallet extension
     } catch (error) {
@@ -60,7 +60,6 @@ export class OKXProvider extends BTCProvider {
         publicKeyHex: compressedPublicKey,
         address,
       };
-      return this;
     } else {
       throw new Error("Could not connect to OKX Wallet");
     }
