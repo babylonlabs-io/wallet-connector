@@ -1,17 +1,26 @@
 import { useCallback, useMemo } from "react";
+
+import { useChainProviders } from "@/context/Chain.context";
 import { useWidgetState } from "./useWidgetState";
 
 export function useWalletConnect() {
-  const { confirmed, chains: chainMap, selectedWallets, open: openModal, close, reset } = useWidgetState();
+  const { confirmed, chains: chainMap, selectedWallets, open: openModal, reset } = useWidgetState();
+  const connectors = useChainProviders();
 
   const open = useCallback(() => {
     reset?.();
     openModal?.();
   }, [openModal, reset]);
 
-  const disconnect = useCallback(() => {
+  const disconnect = useCallback(async () => {
+    for (const connector of Object.values(connectors)) {
+      if (!connector) continue;
+
+      await connector.disconnect();
+    }
+
     reset?.();
-  }, [close]);
+  }, []);
 
   const selected = useMemo(() => {
     const chains = Object.values(chainMap).filter(Boolean);
