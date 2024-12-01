@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.0
+
+### Minor Changes
+
+- f5d09c0: add external connectors
+
 ## 0.0.23
 
 ### Patch Changes
