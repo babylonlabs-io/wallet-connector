@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.1
+
+### Patch Changes
+
+- 1717074: update disconnect method
+
 ## 0.1.0
 
 ### Minor Changes
