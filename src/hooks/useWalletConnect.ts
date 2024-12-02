@@ -20,7 +20,7 @@ export function useWalletConnect() {
     }
 
     reset?.();
-  }, []);
+  }, [connectors, reset]);
 
   const selected = useMemo(() => {
     const chains = Object.values(chainMap).filter(Boolean);
