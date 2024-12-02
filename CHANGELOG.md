@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.3
+
+### Patch Changes
+
+- 56cb7b3: update wallet connector
+
 ## 0.1.2
 
 ### Patch Changes
