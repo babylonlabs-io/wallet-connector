@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.5
+
+### Patch Changes
+
+- 457604d: add registry
+
 ## 0.1.4
 
 ### Patch Changes
