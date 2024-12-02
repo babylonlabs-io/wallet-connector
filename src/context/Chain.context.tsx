@@ -3,8 +3,6 @@ import { createContext, PropsWithChildren, useEffect, useState, useCallback, use
 import { createWalletConnector } from "@/core";
 import metadata from "@/core/wallets";
 import { WalletConnector } from "@/core/WalletConnector";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
-import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
 import type { BBNConfig, IProvider, BTCConfig, ExternalConnector, IBTCProvider, IBBNProvider } from "@/core/types";
 
 import { StateProvider } from "./State.context";
@@ -30,8 +28,8 @@ interface ProviderProps {
 }
 
 export interface Connectors {
-  BTC: WalletConnector<"BTC", BTCProvider> | null;
-  BBN: WalletConnector<"BBN", BBNProvider> | null;
+  BTC: WalletConnector<"BTC", IBTCProvider> | null;
+  BBN: WalletConnector<"BBN", IBBNProvider> | null;
 }
 
 const defaultState: Connectors = {
