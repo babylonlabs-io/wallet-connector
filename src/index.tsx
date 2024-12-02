@@ -14,3 +14,4 @@ export { type ChainConfigArr } from "@/context/Chain.context";
 export * from "@/core/wallets/btc/BTCProvider";
 export * from "@/core/wallets/bbn/BBNProvider";
 export * from "@/core/types";
+export { createExternalWallet } from "@/core";
