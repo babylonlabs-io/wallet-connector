@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.6
+
+### Patch Changes
+
+- 3ac1e3d: rpc lcd dapp urls
+
 ## 0.1.5
 
 ### Patch Changes
