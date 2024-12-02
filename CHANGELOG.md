@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.2
+
+### Patch Changes
+
+- a8d224a: export createExternalWallet factory
+
 ## 0.1.1
 
 ### Patch Changes
