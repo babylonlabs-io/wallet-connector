@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.4
+
+### Patch Changes
+
+- f8bf66c: disconnect wallets on modal close
+
 ## 0.1.3
 
 ### Patch Changes
