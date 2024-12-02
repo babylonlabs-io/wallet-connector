@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import { ChainInfo } from "@keplr-wallet/types";
-import { SigningStargateClient } from "@cosmjs/stargate";
+import type { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
 
 export type Fees = {
   // fee for inclusion in the next block
@@ -260,7 +260,7 @@ export interface IBBNProvider extends IProvider {
    * Gets the signing stargate client.
    * @returns A promise that resolves to the signing stargate client.
    */
-  getSigningStargateClient(): Promise<SigningStargateClient>;
+  getSigningStargateClient(options?: SigningStargateClientOptions): Promise<SigningStargateClient>;
   /**
    * Gets the balance of the connected wallet.
    * @param searchDenom - The denomination to search for in the wallet's balance.
