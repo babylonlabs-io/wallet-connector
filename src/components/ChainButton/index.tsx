@@ -1,6 +1,6 @@
+import { Avatar, Text } from "@babylonlabs-io/bbn-core-ui";
 import type { JSX, PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
-import { Avatar, Text } from "@babylonlabs-io/bbn-core-ui";
 
 interface ChainButtonProps extends PropsWithChildren {
   className?: string;

@@ -1,6 +1,7 @@
 import { createNanoEvents } from "nanoevents";
+
 import { Wallet } from "@/core/Wallet";
-import type { IProvider, IConnector } from "@/core/types";
+import type { IConnector, IProvider } from "@/core/types";
 
 export interface ConnectorEvents<P extends IProvider> {
   connecting: (message?: string) => void;

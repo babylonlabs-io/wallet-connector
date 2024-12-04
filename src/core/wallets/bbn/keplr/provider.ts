@@ -1,11 +1,10 @@
+import { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types/src/cosmjs";
 import { Buffer } from "buffer";
 
 import { BBNConfig, WalletInfo } from "@/core/types";
 import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
-
-import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types/src/cosmjs";
-import { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type

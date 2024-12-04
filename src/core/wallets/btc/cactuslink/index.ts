@@ -3,15 +3,15 @@ import { Network, type BTCConfig, type WalletMetadata } from "@/core/types";
 import type { BTCProvider } from "../BTCProvider";
 
 import logo from "./logo.svg";
-import { OKXProvider } from "./provider";
+import { CactusLinkProvider } from "./provider";
 
 const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
-  id: "okx",
-  name: "OKX",
+  id: "cactus",
+  name: "Cactus Link",
   icon: logo,
-  docs: "https://www.okx.com/web3",
-  wallet: "okxwallet",
-  createProvider: (wallet, config) => new OKXProvider(wallet, config),
+  docs: "https://chromewebstore.google.com/detail/cactus-link/chiilpgkfmcopocdffapngjcbggdehmj",
+  wallet: "cactuslink",
+  createProvider: (wallet, config) => new CactusLinkProvider(wallet, config),
   networks: [Network.MAINNET, Network.SIGNET],
 };
 

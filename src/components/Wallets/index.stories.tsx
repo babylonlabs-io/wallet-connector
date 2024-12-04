@@ -1,7 +1,8 @@
+import { Text } from "@babylonlabs-io/bbn-core-ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Text } from "@babylonlabs-io/bbn-core-ui";
 import { WalletButton } from "@/components/WalletButton";
+
 import { Wallets } from "./index";
 
 const meta: Meta<typeof Wallets> = {

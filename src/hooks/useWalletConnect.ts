@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 
 import { useChainProviders } from "@/context/Chain.context";
+
 import { useWidgetState } from "./useWidgetState";
 
 export function useWalletConnect() {

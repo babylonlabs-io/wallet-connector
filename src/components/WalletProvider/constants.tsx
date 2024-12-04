@@ -1,9 +1,9 @@
-import { ChainInfo } from "@keplr-wallet/types";
 import { Text } from "@babylonlabs-io/bbn-core-ui";
+import { ChainInfo } from "@keplr-wallet/types";
 
-import { Network } from "@/core/types";
 import { WalletButton } from "@/components/WalletButton";
 import { ChainConfigArr } from "@/context/Chain.context";
+import { Network } from "@/core/types";
 
 export const config: ChainConfigArr = [
   {

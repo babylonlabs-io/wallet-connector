@@ -2,8 +2,9 @@ import { useCallback, useEffect } from "react";
 
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
-import { useWidgetState } from "./useWidgetState";
 import { IChain, IWallet } from "@/core/types";
+
+import { useWidgetState } from "./useWidgetState";
 
 export function useWalletConnectors(onError?: (e: Error) => void) {
   const connectors = useChainProviders();
