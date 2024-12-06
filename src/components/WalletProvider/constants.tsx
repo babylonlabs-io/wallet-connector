@@ -42,7 +42,7 @@ export const config: ChainConfigArr = [
     ],
     config: {
       chainId: "devnet-7",
-      rpc: "https://rpc.devnet.babylonlabs.io",
+      rpc: "https://rpc-dapp.devnet.babylonlabs.io",
       chainData: {
         chainId: "devnet-7",
         chainName: "Babylon Devnet 7",
