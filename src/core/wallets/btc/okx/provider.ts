@@ -93,15 +93,6 @@ export class OKXProvider extends BTCProvider {
     }
     // Use signPsbt since it shows the fees
     return await this.provider.signPsbt(psbtHex);
-    // return await this.provider.signPsbt(psbtHex, {
-    //   toSignInputs: [
-    //     {
-    //       index: 0,
-    //       address: this.walletInfo.address,
-    //       disableTweakSigner: true,
-    //     },
-    //   ],
-    // });
   };
 
   signPsbts = async (psbtsHexes: string[]): Promise<string[]> => {
