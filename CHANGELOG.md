@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.8
+
+### Patch Changes
+
+- 6602a73: fix: typo on Runes
+
 ## 0.1.7
 
 ### Patch Changes
