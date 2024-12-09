@@ -43,7 +43,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
         </FieldControl>
 
         <FieldControl
-          label="I certify that I wish to stake bitcoin and agree that doing so may cause some or all of the bitcoin ordinals, NFTs, Ruins, and other inscriptions in the connected bitcoin wallet to be lost. I acknowledge that this interface will not detect all Inscriptions."
+          label="I certify that I wish to stake bitcoin and agree that doing so may cause some or all of the bitcoin ordinals, NFTs, Runes, and other inscriptions in the connected bitcoin wallet to be lost. I acknowledge that this interface will not detect all Inscriptions."
           className="b-mb-8"
         >
           <Checkbox checked={state["inscriptions"]} onChange={handleChange("inscriptions")} />
