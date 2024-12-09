@@ -17,7 +17,7 @@ export function Inscriptions({ className, onSubmit }: Props) {
     <div className={twMerge("b-mb-8 b-flex b-flex-1 b-flex-col", className)}>
       <DialogHeader title="Bitcoin Inscriptions" className="b-mb-8">
         <Text className="b-mb-6">
-          This staking interface attempts to detect bitcoin ordinals, NFTs, Ruins, and other inscriptions
+          This staking interface attempts to detect bitcoin ordinals, NFTs, Runes, and other inscriptions
           (“Inscriptions”) within the Unspent Transaction Outputs (“UTXOs”) in your wallet. If you stake bitcoin with
           Inscriptions, those UTXOs may be spent on staking, unbonding, or withdrawal fees, which will cause you to lose
           those Inscriptions permanently. This interface will not detect all Inscriptions.
