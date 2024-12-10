@@ -3,7 +3,6 @@ import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
-// Internal network names
 const INTERNAL_NETWORK_NAMES = {
   [Network.MAINNET]: "livenet",
   [Network.TESTNET]: "testnet",
@@ -174,7 +173,6 @@ export class OneKeyProvider extends BTCProvider {
   // Inscriptions are only available on OneKey Wallet BTC mainnet
   getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
     if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-
     if (this.config.network !== Network.MAINNET) {
       throw new Error("Inscriptions are only available on OneKey Wallet BTC Mainnet");
     }
