@@ -79,6 +79,7 @@ export class BitgetProvider extends BTCProvider {
     if (!this.walletInfo) throw new Error("Bitget Wallet not connected");
     if (!psbtHex) throw new Error("psbt hex is required");
 
+    // for BBN we use internal function to sign psbts
     const data = {
       method: "signPsbt",
       params: {
@@ -109,6 +110,8 @@ export class BitgetProvider extends BTCProvider {
         autoFinalized: true,
       };
     });
+
+    // for BBN we use internal function to sign psbts
     const data = {
       method: "signPsbt",
       params: {
