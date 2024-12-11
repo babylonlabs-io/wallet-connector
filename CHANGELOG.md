@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.14
+
+### Patch Changes
+
+- 07245d0: node polyfills
+
 ## 0.1.13
 
 ### Patch Changes
