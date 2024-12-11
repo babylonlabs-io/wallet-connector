@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ChainButton } from "./index";
 import { ConnectedWallet } from "../ConnectedWallet";
+
+import { ChainButton } from "./index";
 
 const meta: Meta<typeof ChainButton> = {
   component: ChainButton,

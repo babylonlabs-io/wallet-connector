@@ -1,12 +1,12 @@
-import { createContext, PropsWithChildren, useEffect, useState, useCallback, useContext, useMemo } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { createWalletConnector } from "@/core";
-import metadata from "@/core/wallets";
 import { WalletConnector } from "@/core/WalletConnector";
-import type { BBNConfig, IProvider, BTCConfig, ExternalConnector, IBTCProvider, IBBNProvider } from "@/core/types";
+import type { BBNConfig, BTCConfig, ExternalConnector, IBBNProvider, IBTCProvider, IProvider } from "@/core/types";
+import metadata from "@/core/wallets";
 
-import { StateProvider } from "./State.context";
 import { InscriptionProvider } from "./Inscriptions.context";
+import { StateProvider } from "./State.context";
 
 interface ChainConfig<K extends string = string, P extends IProvider = IProvider, C = any> {
   chain: K;

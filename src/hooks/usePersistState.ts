@@ -1,6 +1,6 @@
 "use client";
 
-import { type SetStateAction, type Dispatch, useState, useEffect } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 
 export function usePersistState<S>(key: string, storage: Storage, initialState: S): [S, Dispatch<SetStateAction<S>>] {
   function getDefaultState() {

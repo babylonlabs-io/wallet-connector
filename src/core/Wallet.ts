@@ -1,4 +1,4 @@
-import type { IWallet, IProvider, Network, Account } from "@/core/types";
+import type { Account, IProvider, IWallet, Network } from "@/core/types";
 
 export interface WalletOptions<P extends IProvider> {
   id: string;

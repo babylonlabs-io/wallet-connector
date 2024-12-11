@@ -1,6 +1,7 @@
 import { type PropsWithChildren } from "react";
 
 import { ChainConfigArr, ChainProvider } from "@/context/Chain.context";
+
 import { WalletDialog } from "./components/WalletDialog";
 
 interface WalletProviderProps {

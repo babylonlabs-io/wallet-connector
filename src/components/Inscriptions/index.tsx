@@ -1,6 +1,6 @@
+import { Button, Checkbox, DialogBody, DialogFooter, DialogHeader, Radio, Text } from "@babylonlabs-io/bbn-core-ui";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { Text, Radio, Button, DialogBody, DialogFooter, DialogHeader, Checkbox } from "@babylonlabs-io/bbn-core-ui";
 
 import { FieldControl } from "@/components/FieldControl";
 
