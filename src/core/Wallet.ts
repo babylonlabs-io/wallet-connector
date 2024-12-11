@@ -8,6 +8,7 @@ export interface WalletOptions<P extends IProvider> {
   networks: Network[];
   origin: any;
   provider: P | null;
+  hardware?: boolean;
 }
 
 export class Wallet<P extends IProvider> implements IWallet {
@@ -18,9 +19,10 @@ export class Wallet<P extends IProvider> implements IWallet {
   readonly docs: string;
   readonly networks: Network[];
   readonly provider: P | null = null;
+  readonly hardware?: boolean;
   account: Account | null = null;
 
-  constructor({ id, origin, name, icon, docs, networks, provider }: WalletOptions<P>) {
+  constructor({ id, origin, name, icon, docs, networks, provider, hardware }: WalletOptions<P>) {
     this.id = id;
     this.origin = origin;
     this.name = name;
@@ -28,6 +30,7 @@ export class Wallet<P extends IProvider> implements IWallet {
     this.docs = docs;
     this.networks = networks;
     this.provider = provider;
+    this.hardware = hardware;
   }
 
   get installed() {

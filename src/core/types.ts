@@ -73,6 +73,7 @@ export interface IWallet<P extends IProvider = IProvider> {
   installed: boolean;
   provider: P | null;
   account: Account | null;
+  hardware?: boolean;
 }
 
 export interface IChain<K extends string = string, P extends IProvider = IProvider> {
@@ -96,6 +97,7 @@ export interface Account {
 export interface WalletMetadata<P extends IProvider, C> {
   id: string;
   wallet?: string | ((context: any, config: C) => any);
+  hardware?: boolean;
   name: string | ((wallet: any, config: C) => Promise<string>);
   icon: string | ((wallet: any, config: C) => Promise<string>);
   docs: string;

@@ -13,6 +13,7 @@ export const createWallet = async <P extends IProvider, C>(metadata: WalletMetad
     docs = "",
     networks = [],
     createProvider,
+    hardware,
   } = metadata;
 
   const options: WalletOptions<P> = {
@@ -23,6 +24,7 @@ export const createWallet = async <P extends IProvider, C>(metadata: WalletMetad
     provider: null,
     docs,
     networks,
+    hardware,
   };
 
   if (walletGetter) {
