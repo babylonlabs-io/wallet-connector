@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.12
+
+### Patch Changes
+
+- 7517ed5: Bitget wallet
+
 ## 0.1.11
 
 ### Patch Changes
