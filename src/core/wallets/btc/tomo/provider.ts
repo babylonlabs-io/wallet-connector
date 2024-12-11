@@ -26,12 +26,6 @@ export class TomoProvider extends BTCProvider {
   }
 
   connectWallet = async (): Promise<void> => {
-    const workingVersion = "1.2.0";
-    const currentVersion = await this.provider.getVersion();
-    if (!currentVersion || currentVersion < workingVersion) {
-      throw new Error("Please update Tomo Wallet to the latest version");
-    }
-
     try {
       // Switch to the required network
       await this.provider.switchNetwork(INTERNAL_NETWORK_NAMES[this.config.network]);
