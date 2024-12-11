@@ -1,14 +1,14 @@
-import { useCallback } from "react";
 import { Dialog } from "@babylonlabs-io/bbn-core-ui";
+import { useCallback } from "react";
 
-import { useWidgetState } from "@/hooks/useWidgetState";
-import { useWalletWidgets } from "@/hooks/useWalletWidgets";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
+import { useWalletConnect } from "@/hooks/useWalletConnect";
+import { useWalletConnectors } from "@/hooks/useWalletConnectors";
+import { useWalletWidgets } from "@/hooks/useWalletWidgets";
+import { useWidgetState } from "@/hooks/useWidgetState";
 
 import { Screen } from "./Screen";
-import { useWalletConnectors } from "@/hooks/useWalletConnectors";
-import { useWalletConnect } from "@/hooks/useWalletConnect";
 
 interface WalletDialogProps {
   onError?: (e: Error) => void;

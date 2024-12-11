@@ -3,15 +3,15 @@ import { Network, type BTCConfig, type WalletMetadata } from "@/core/types";
 import type { BTCProvider } from "../BTCProvider";
 
 import logo from "./logo.svg";
-import { OKXProvider } from "./provider";
+import { OneKeyProvider } from "./provider";
 
 const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
-  id: "okx",
-  name: "OKX",
+  id: "onekey",
+  name: "OneKey",
   icon: logo,
-  docs: "https://www.okx.com/web3",
-  wallet: "okxwallet",
-  createProvider: (wallet, config) => new OKXProvider(wallet, config),
+  docs: "https://onekey.so/download",
+  wallet: "$onekey",
+  createProvider: (wallet, config) => new OneKeyProvider(wallet, config),
   networks: [Network.MAINNET, Network.SIGNET],
 };
 

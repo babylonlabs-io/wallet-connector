@@ -1,5 +1,17 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.11
+
+### Patch Changes
+
+- 9fe039c: OneKey wallet
+
+## 0.1.10
+
+### Patch Changes
+
+- ae24940: organize imports, format codebase
+
 ## 0.1.9
 
 ### Patch Changes

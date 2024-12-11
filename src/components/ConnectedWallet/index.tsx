@@ -1,6 +1,6 @@
-import { twMerge } from "tailwind-merge";
 import { Avatar, Text } from "@babylonlabs-io/bbn-core-ui";
 import { memo } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface ConnectedWalletProps {
   className?: string;

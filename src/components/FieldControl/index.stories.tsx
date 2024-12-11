@@ -1,7 +1,7 @@
+import { Checkbox, Radio } from "@babylonlabs-io/bbn-core-ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { FieldControl } from "./index";
-import { Checkbox, Radio } from "@babylonlabs-io/bbn-core-ui";
 
 const meta: Meta<typeof FieldControl> = {
   component: FieldControl,

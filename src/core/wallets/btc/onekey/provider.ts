@@ -3,143 +3,129 @@ import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
-const PROVIDER_NAMES = {
-  [Network.MAINNET]: "bitcoin",
-  [Network.TESTNET]: "bitcoinTestnet",
-  [Network.SIGNET]: "bitcoinSignet",
+const INTERNAL_NETWORK_NAMES = {
+  [Network.MAINNET]: "livenet",
+  [Network.TESTNET]: "testnet",
+  [Network.SIGNET]: "signet",
 };
 
-export class OKXProvider extends BTCProvider {
+export class OneKeyProvider extends BTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
 
-  constructor(
-    private wallet: any,
-    config: BTCConfig,
-  ) {
+  constructor(wallet: any, config: BTCConfig) {
     super(config);
 
-    // check whether there is an OKX Wallet extension
-    if (!wallet) {
-      throw new Error("OKX Wallet extension not found");
+    // check whether there is an OneKey extension
+    if (!wallet?.btcwallet) {
+      throw new Error("OneKey Wallet extension not found");
     }
 
-    const providerName = PROVIDER_NAMES[config.network];
-
-    if (!providerName) {
-      throw new Error("Unsupported network");
-    }
-
-    this.provider = wallet[providerName];
+    this.provider = wallet.btcwallet;
   }
 
   connectWallet = async (): Promise<void> => {
     try {
-      await this.wallet.enable(); // Connect to OKX Wallet extension
+      await this.provider.connectWallet();
     } catch (error) {
       if ((error as Error)?.message?.includes("rejected")) {
-        throw new Error("Connection to OKX Wallet was rejected");
+        throw new Error("Connection to OneKey Wallet was rejected");
       } else {
         throw new Error((error as Error)?.message);
       }
     }
-    let result;
-    try {
-      // this will not throw an error even if user has no network enabled
-      result = await this.provider.connect();
-    } catch {
-      throw new Error(`BTC ${this.config.network} is not enabled in OKX Wallet`);
-    }
 
-    const { address, compressedPublicKey } = result;
-
+    const address = await this.provider.getAddress();
     validateAddress(this.config.network, address);
 
-    if (compressedPublicKey && address) {
+    const publicKeyHex = await this.provider.getPublicKeyHex();
+
+    if (publicKeyHex && address) {
       this.walletInfo = {
-        publicKeyHex: compressedPublicKey,
+        publicKeyHex,
         address,
       };
     } else {
-      throw new Error("Could not connect to OKX Wallet");
+      throw new Error("Could not connect to OneKey Wallet");
     }
   };
 
   getWalletProviderName = async (): Promise<string> => {
-    return "OKX";
+    return "OneKey";
   };
 
   getAddress = async (): Promise<string> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
     return this.walletInfo.address;
   };
 
   getPublicKeyHex = async (): Promise<string> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
     return this.walletInfo.publicKeyHex;
   };
 
   signPsbt = async (psbtHex: string): Promise<string> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
-    // Use signPsbt since it shows the fees
-    return await this.provider.signPsbt(psbtHex);
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!psbtHex) throw new Error("psbt hex is required");
+
+    return this.provider.signPsbt(psbtHex);
   };
 
   signPsbts = async (psbtsHexes: string[]): Promise<string[]> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!psbtsHexes && !Array.isArray(psbtsHexes)) throw new Error("psbts hexes are required");
+
+    return this.provider.signPsbts(psbtsHexes);
+  };
+
+  getNetwork = async (): Promise<Network> => {
+    const internalNetwork = await this.provider.getNetwork();
+
+    for (const [key, value] of Object.entries(INTERNAL_NETWORK_NAMES)) {
+      // TODO remove as soon as OneKey implements
+      if (value === "testnet") {
+        // in case of testnet return signet
+        return Network.SIGNET;
+      } else if (value === internalNetwork) {
+        return key as Network;
+      }
     }
-    // sign the PSBTs
-    return await this.provider.signPsbts(psbtsHexes);
+
+    throw new Error("Unsupported network");
   };
 
   signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
-    return await this.provider.signMessage(message, "bip322-simple");
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
+    return await this.provider.signMessageBIP322(message);
   };
 
-  async signMessage(message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
-    return await this.provider.signMessage(message, type);
-  }
+  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
 
-  getNetwork = async (): Promise<Network> => {
-    // OKX does not provide a way to get the network for Signet and Testnet
-    // So we pass the check on connection and return the environment network
-    if (!this.config.network) {
-      throw new Error("Network not set");
-    }
-    return this.config.network;
+    return await this.provider.signMessage(message, type);
   };
 
   on = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
-    // subscribe to account change event
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
+    // subscribe to account change event: `accountChanged` -> `accountsChanged`
     if (eventName === "accountChanged") {
-      return this.provider.on(eventName, callBack);
+      return this.provider.on("accountsChanged", callBack);
     }
+    return this.provider.on(eventName, callBack);
   };
 
   off = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
-    // subscribe to account change event
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
+    // unsubscribe to account change event
     if (eventName === "accountChanged") {
-      return this.provider.off(eventName, callBack);
+      return this.provider.off("accountsChanged", callBack);
     }
+    return this.provider.off(eventName, callBack);
   };
 
   // Mempool calls
@@ -156,7 +142,6 @@ export class OKXProvider extends BTCProvider {
   };
 
   getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    // mempool call
     return await this.mempool.getFundingUTXOs(address, amount);
   };
 
@@ -164,14 +149,13 @@ export class OKXProvider extends BTCProvider {
     return await this.mempool.getTipHeight();
   };
 
-  // Inscriptions are only available on OKX Wallet BTC mainnet (i.e okxWallet.bitcoin)
+  // Inscriptions are only available on OneKey Wallet BTC mainnet
   getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    if (!this.walletInfo) {
-      throw new Error("OKX Wallet not connected");
-    }
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
     if (this.config.network !== Network.MAINNET) {
-      throw new Error("Inscriptions are only available on OKX Wallet BTC mainnet");
+      throw new Error("Inscriptions are only available on OneKey Wallet BTC Mainnet");
     }
+
     // max num of iterations to prevent infinite loop
     const MAX_ITERATIONS = 100;
     // Fetch inscriptions in batches of 100
@@ -200,7 +184,7 @@ export class OKXProvider extends BTCProvider {
         }
       }
     } catch {
-      throw new Error("Failed to get inscriptions from OKX Wallet");
+      throw new Error("Failed to get inscriptions from OneKey Wallet");
     }
 
     return inscriptionIdentifiers;

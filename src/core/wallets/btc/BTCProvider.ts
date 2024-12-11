@@ -1,4 +1,4 @@
-import type { Fees, InscriptionIdentifier, Network, BTCConfig, UTXO, IBTCProvider } from "../../types";
+import type { BTCConfig, Fees, IBTCProvider, InscriptionIdentifier, Network, UTXO } from "../../types";
 import { createMempoolAPI, MempoolApi } from "../../utils/mempool";
 
 /**

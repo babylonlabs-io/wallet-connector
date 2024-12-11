@@ -1,4 +1,5 @@
 import { Network, type BTCConfig, type WalletMetadata } from "@/core/types";
+
 import { BTCProvider } from "../BTCProvider";
 
 const metadata: WalletMetadata<BTCProvider, BTCConfig> = {

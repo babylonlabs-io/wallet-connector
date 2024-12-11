@@ -1,9 +1,9 @@
+import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
-import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
 
-import { ConnectedWallet } from "@/components/ConnectedWallet";
 import { ChainButton } from "@/components/ChainButton";
+import { ConnectedWallet } from "@/components/ConnectedWallet";
 import type { IChain, IWallet } from "@/core/types";
 
 interface ChainsProps {
