@@ -1,5 +1,6 @@
-import { IBBNProvider } from "@/core/types";
 import type { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
+
+import { IBBNProvider } from "@/core/types";
 
 export abstract class BBNProvider implements IBBNProvider {
   /**

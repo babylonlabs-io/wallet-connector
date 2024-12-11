@@ -1,12 +1,12 @@
 import { type JSX } from "react";
-import Chains from "@/components/Chains/container";
-import Wallets from "@/components/Wallets/container";
-import { Inscriptions } from "@/components/Inscriptions";
-import { TermsOfService } from "@/components/TermsOfService";
-import { LoaderScreen } from "@/components/Loader";
 
-import type { IChain, IWallet } from "@/core/types";
+import Chains from "@/components/Chains/container";
+import { Inscriptions } from "@/components/Inscriptions";
+import { LoaderScreen } from "@/components/Loader";
+import { TermsOfService } from "@/components/TermsOfService";
+import Wallets from "@/components/Wallets/container";
 import type { Screen } from "@/context/State.context";
+import type { IChain, IWallet } from "@/core/types";
 
 interface ScreenProps {
   className?: string;

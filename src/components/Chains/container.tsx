@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from "react";
 
-import { useWidgetState } from "@/hooks/useWidgetState";
-import { Chains } from "./index";
-
 import type { IChain } from "@/core/types";
 import { useWalletConnect } from "@/hooks/useWalletConnect";
+import { useWidgetState } from "@/hooks/useWidgetState";
+
+import { Chains } from "./index";
 
 interface ContainerProps {
   className?: string;

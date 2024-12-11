@@ -1,7 +1,7 @@
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
-import { validateAddress } from "@/core/utils/wallet";
-import type { Fees, InscriptionIdentifier, BTCConfig, UTXO, WalletInfo } from "@/core/types";
+import type { BTCConfig, Fees, InscriptionIdentifier, UTXO, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
+import { validateAddress } from "@/core/utils/wallet";
+import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
 const PROVIDER_NAMES = {
   [Network.MAINNET]: "bitcoin",

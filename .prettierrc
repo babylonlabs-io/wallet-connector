@@ -1,9 +1,25 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
+  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-organize-imports"],
   "trailingComma": "all",
   "tabWidth": 2,
   "semi": true,
   "printWidth": 120,
   "bracketSpacing": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "singleQuote": false,
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "options": {
+        "parser": "babel"
+      }
+    }
+  ]
 }

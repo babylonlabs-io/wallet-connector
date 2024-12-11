@@ -1,6 +1,6 @@
-import { ComponentType } from "react";
-import { ChainInfo } from "@keplr-wallet/types";
 import type { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
+import { ChainInfo } from "@keplr-wallet/types";
+import { ComponentType } from "react";
 
 export type Fees = {
   // fee for inclusion in the next block

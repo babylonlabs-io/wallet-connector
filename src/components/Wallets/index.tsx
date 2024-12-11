@@ -1,6 +1,6 @@
-import { twMerge } from "tailwind-merge";
+import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
 import { memo, useMemo } from "react";
-import { Text, Button, DialogBody, DialogFooter, DialogHeader } from "@babylonlabs-io/bbn-core-ui";
+import { twMerge } from "tailwind-merge";
 
 import { WalletButton } from "@/components/WalletButton";
 import type { IChain, IWallet } from "@/core/types";

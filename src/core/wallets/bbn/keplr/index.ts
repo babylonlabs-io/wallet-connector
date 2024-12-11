@@ -1,7 +1,8 @@
-import { Network, type WalletMetadata, type BBNConfig } from "@/core/types";
+import { Network, type BBNConfig, type WalletMetadata } from "@/core/types";
+
+import type { BBNProvider } from "../BBNProvider";
 
 import logo from "./logo.svg";
-import type { BBNProvider } from "../BBNProvider";
 import { KeplrProvider } from "./provider";
 
 const metadata: WalletMetadata<BBNProvider, BBNConfig> = {
