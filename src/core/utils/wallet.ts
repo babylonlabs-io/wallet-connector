@@ -1,3 +1,5 @@
+import { networks } from "bitcoinjs-lib";
+
 import { Network } from "@/core/types";
 
 export function validateAddress(network: Network, address: string): void {
@@ -9,3 +11,15 @@ export function validateAddress(network: Network, address: string): void {
     throw new Error(`Unsupported network: ${network}. Please provide a valid network.`);
   }
 }
+
+export const toNetwork = (network: Network): networks.Network => {
+  switch (network) {
+    case Network.MAINNET:
+      return networks.bitcoin;
+    case Network.TESTNET:
+    case Network.SIGNET:
+      return networks.testnet;
+    default:
+      throw new Error("Unsupported network");
+  }
+};

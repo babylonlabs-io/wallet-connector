@@ -29,8 +29,12 @@ export default defineConfig({
         "react-dom",
         "react/jsx-runtime",
         "tailwind-merge",
-        "@babylonlabs-io/bbn-core-ui",
         "@cosmjs/stargate",
+        "@babylonlabs-io/bbn-core-ui",
+        "@keystonehq/animated-qr",
+        "@keystonehq/keystone-sdk",
+        "@keystonehq/sdk",
+        "@bitcoin-js/tiny-secp256k1-asmjs",
       ],
       output: {
         sourcemapExcludeSources: true,
