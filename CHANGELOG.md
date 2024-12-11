@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.13
+
+### Patch Changes
+
+- c98a484: Cactus Link wallet
+
 ## 0.1.12
 
 ### Patch Changes
