@@ -35,27 +35,6 @@ export class OneKeyProvider extends BTCProvider {
       }
     }
 
-    // TODO `window.$onekey.btcwallet.switchNetwork` does not support "signet" network at the moment
-    // switch (this.networkEnv) {
-    //   case Network.MAINNET:
-    //     await this.bitcoinNetworkProvider.switchNetwork(
-    //       INTERNAL_NETWORK_NAMES.mainnet,
-    //     );
-    //     break;
-    //   case Network.TESTNET:
-    //     await this.bitcoinNetworkProvider.switchNetwork(
-    //       INTERNAL_NETWORK_NAMES.testnet,
-    //     );
-    //     break;
-    //   case Network.SIGNET:
-    //     await this.bitcoinNetworkProvider.switchNetwork(
-    //       INTERNAL_NETWORK_NAMES.signet,
-    //     );
-    //     break;
-    //   default:
-    //     throw new Error("Unsupported network");
-    // }
-
     const address = await this.provider.getAddress();
     validateAddress(this.config.network, address);
 
