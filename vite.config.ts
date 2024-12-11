@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   plugins: [
@@ -12,6 +13,7 @@ export default defineConfig({
       include: ["src"],
       exclude: ["src/**/*.stories.tsx"],
     }),
+    nodePolyfills(),
   ],
   build: {
     outDir: "dist",
