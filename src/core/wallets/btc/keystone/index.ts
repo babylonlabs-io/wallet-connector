@@ -12,7 +12,7 @@ const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
   docs: "https://www.keyst.one/btc-only",
   createProvider: (wallet, config) => new KeystoneProvider(wallet, config),
   networks: [Network.MAINNET, Network.SIGNET],
-  hardware: true,
+  label: "Hardware wallet",
 };
 
 export default metadata;

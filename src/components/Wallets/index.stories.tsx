@@ -2,6 +2,7 @@ import { Text } from "@babylonlabs-io/bbn-core-ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { WalletButton } from "@/components/WalletButton";
+import { IWallet } from "@/core/types";
 
 import { Wallets } from "./index";
 
@@ -14,7 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const wallets = [
+const wallets: IWallet[] = [
   {
     id: "injectable",
     name: "Binance (Browser)",
@@ -23,6 +24,7 @@ const wallets = [
     docs: "",
     provider: null,
     account: null,
+    label: "Injected",
   },
   {
     id: "okx",
@@ -32,6 +34,7 @@ const wallets = [
     docs: "",
     provider: null,
     account: null,
+    label: "Installed",
   },
   {
     id: "keystone",
@@ -41,6 +44,7 @@ const wallets = [
     docs: "",
     provider: null,
     account: null,
+    label: "Hardware wallet",
   },
 ];
 

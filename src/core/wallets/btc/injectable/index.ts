@@ -10,6 +10,7 @@ const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
   wallet: "btcwallet",
   createProvider: (wallet) => wallet,
   networks: [Network.MAINNET, Network.SIGNET],
+  label: "Injectable",
 };
 
 export default metadata;

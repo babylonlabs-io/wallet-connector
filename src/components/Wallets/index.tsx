@@ -25,16 +25,6 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
     [chain],
   );
 
-  const getWalletLabel = (wallet: IWallet) => {
-    if (wallet.hardware) {
-      return "Hardware wallet";
-    } else if (wallet.installed) {
-      return "Installed";
-    } else {
-      return "Install";
-    }
-  };
-
   return (
     <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
       <DialogHeader className="b-mb-10" title="Select Wallet" onClose={onClose}>
@@ -47,7 +37,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
             <WalletButton
               name={injectableWallet.name}
               logo={injectableWallet.icon}
-              label="Injected"
+              label={injectableWallet.label}
               onClick={() => onSelectWallet?.(chain, injectableWallet)}
             />
           )}
@@ -57,7 +47,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
               key={wallet.id}
               name={wallet.name}
               logo={wallet.icon}
-              label={getWalletLabel(wallet)}
+              label={wallet.label}
               onClick={() => onSelectWallet?.(chain, wallet)}
             />
           ))}
