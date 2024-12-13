@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.18
+
+### Patch Changes
+
+- 91f1596: Add support for injectable BBN wallets
+
 ## 0.1.17
 
 ### Patch Changes
