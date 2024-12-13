@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.16
+
+### Patch Changes
+
+- c67b9eb: Keplr offline signer, minimize interface
+
 ## 0.1.15
 
 ### Patch Changes
