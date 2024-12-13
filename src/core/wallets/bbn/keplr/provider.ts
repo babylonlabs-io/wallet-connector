@@ -16,6 +16,7 @@ export class KeplrProvider extends BBNProvider {
   private walletInfo: WalletInfo | undefined;
   private chainId: string | undefined;
   private rpc: string | undefined;
+  private chainData: BBNConfig["chainData"];
 
   constructor(
     private keplr: Window["keplr"],
@@ -59,8 +60,6 @@ export class KeplrProvider extends BBNProvider {
     const key = await this.keplr.getKey(this.chainId);
 
     if (!key) throw new Error("Failed to get Keplr key");
-
-    this.offlineSigner = this.keplr.getOfflineSigner(this.chainId);
 
     const { bech32Address, pubKey } = key;
 
