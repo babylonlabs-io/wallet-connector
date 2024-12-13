@@ -1,5 +1,12 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.15
+
+### Patch Changes
+
+- 1a7f0e7: bump core-ui
+- 3749932: Keplr custom chain
+
 ## 0.1.14
 
 ### Patch Changes
