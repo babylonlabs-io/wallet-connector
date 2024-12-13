@@ -1,4 +1,4 @@
-import type { SigningStargateClient, SigningStargateClientOptions } from "@cosmjs/stargate";
+import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types";
 
 import { IBBNProvider } from "@/core/types";
 
@@ -23,14 +23,23 @@ export abstract class BBNProvider implements IBBNProvider {
   abstract getPublicKeyHex(): Promise<string>;
 
   /**
-   * Gets the signing stargate client.
-   * @returns A promise that resolves to the signing stargate client.
+   * Gets the name of the wallet provider.
+   * @returns A promise that resolves to the name of the wallet provider.
    */
-  abstract getSigningStargateClient(options?: SigningStargateClientOptions): Promise<SigningStargateClient>;
+  abstract getWalletProviderName(): Promise<string>;
+
   /**
-   * Gets the balance of the connected wallet.
-   * @param searchDenom - The denomination to search for in the wallet's balance.
-   * @returns A promise that resolves to the balance of the connected wallet.
+   * Gets the icon URL of the wallet provider.
+   * @returns A promise that resolves to the icon URL of the wallet provider.
    */
-  abstract getBalance(searchDenom: string): Promise<bigint>;
+  abstract getWalletProviderIcon(): Promise<string>;
+
+  /**
+   * Retrieves an offline signer that supports both Amino and Direct signing methods.
+   * This signer is used for signing transactions offline before broadcasting them to the network.
+   *
+   * @returns {Promise<OfflineAminoSigner & OfflineDirectSigner>} A promise that resolves to a signer supporting both Amino and Direct signing
+   * @throws {Error} If wallet connection is not established or signer cannot be retrieved
+   */
+  abstract getOfflineSigner(): Promise<OfflineAminoSigner & OfflineDirectSigner>;
 }
