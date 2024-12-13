@@ -37,7 +37,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
             <WalletButton
               name={injectableWallet.name}
               logo={injectableWallet.icon}
-              label="Injected"
+              label={injectableWallet.label}
               onClick={() => onSelectWallet?.(chain, injectableWallet)}
             />
           )}
@@ -47,7 +47,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
               key={wallet.id}
               name={wallet.name}
               logo={wallet.icon}
-              label={wallet.installed ? "Installed" : ""}
+              label={wallet.label}
               onClick={() => onSelectWallet?.(chain, wallet)}
             />
           ))}
