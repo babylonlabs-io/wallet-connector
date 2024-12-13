@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.17
+
+### Patch Changes
+
+- 621e270: Keystone wallet
+
 ## 0.1.16
 
 ### Patch Changes
