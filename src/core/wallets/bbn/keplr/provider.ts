@@ -27,16 +27,40 @@ export class KeplrProvider extends BBNProvider {
     }
     this.chainId = config.chainId;
     this.rpc = config.rpc;
+    this.chainData = config.chainData;
   }
 
   async connectWallet(): Promise<void> {
     if (!this.chainId) throw new Error("Chain ID is not initialized");
     if (!this.rpc) throw new Error("RPC URL is not initialized");
+    if (!this.keplr) throw new Error("Keplr extension not found");
 
-    await this.keplr?.enable(this.chainId);
-    const key = await this.keplr?.getKey(this.chainId);
+    try {
+      await this.keplr.enable(this.chainId);
+    } catch (error: Error | any) {
+      if (error?.message.includes(this.chainId)) {
+        try {
+          // User has no BBN chain in their wallet
+          await this.keplr.experimentalSuggestChain(this.chainData);
+          await this.keplr.enable(this.chainId);
+        } catch {
+          throw new Error("Failed to add BBN chain");
+        }
+      } else {
+        if (error?.message.includes("rejected")) {
+          throw new Error("Keplr wallet connection request rejected");
+        } else if (error?.message.includes("context invalidated")) {
+          throw new Error("Keplr extension context invalidated");
+        } else {
+          throw new Error(error?.message || "Failed to connect to Keplr");
+        }
+      }
+    }
+    const key = await this.keplr.getKey(this.chainId);
 
     if (!key) throw new Error("Failed to get Keplr key");
+
+    this.offlineSigner = this.keplr.getOfflineSigner(this.chainId);
 
     const { bech32Address, pubKey } = key;
 
