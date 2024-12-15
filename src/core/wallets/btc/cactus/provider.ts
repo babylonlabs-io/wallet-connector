@@ -1,7 +1,9 @@
-import type { BTCConfig, Fees, InscriptionIdentifier, UTXO, WalletInfo } from "@/core/types";
+import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
+
+import logo from "./logo.svg";
 
 const INTERNAL_NETWORK_NAMES = {
   [Network.MAINNET]: "mainnet",
@@ -55,17 +57,13 @@ export class CactusLinkProvider extends BTCProvider {
     }
   };
 
-  getWalletProviderName = async (): Promise<string> => {
-    return "Cactus Link";
-  };
-
-  async getAddress(): Promise<string> {
+  getAddress = async (): Promise<string> => {
     const accounts = (await this.provider.getAccounts()) || [];
     if (!accounts?.[0]) {
       throw new Error("Cactus Link Wallet not connected");
     }
     return accounts[0];
-  }
+  };
 
   getPublicKeyHex = async (): Promise<string> => {
     const publicKey = await this.provider.getPublicKey();
@@ -97,16 +95,6 @@ export class CactusLinkProvider extends BTCProvider {
     return await this.provider.signPsbts(psbtsHexes, options);
   };
 
-  signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.walletInfo) throw new Error("Cactus Link Wallet not connected");
-    return await this.provider.signMessage(message, "bip322-simple");
-  };
-
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
-    if (!this.walletInfo) throw new Error("Cactus Link Wallet not connected");
-    return await this.provider.signMessage(message, type);
-  };
-
   getNetwork = async (): Promise<Network> => {
     const internalNetwork = await this.provider.getNetwork();
 
@@ -117,6 +105,17 @@ export class CactusLinkProvider extends BTCProvider {
     }
 
     throw new Error("Unsupported network");
+  };
+
+  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+    if (!this.walletInfo) throw new Error("Cactus Link Wallet not connected");
+
+    return await this.provider.signMessage(message, type);
+  };
+
+  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
+    // Temporary solution to ignore inscriptions filtering for Cactus Link Wallet
+    return Promise.resolve([]);
   };
 
   on = (eventName: string, callBack: () => void) => {
@@ -139,29 +138,11 @@ export class CactusLinkProvider extends BTCProvider {
     return this.provider.off(eventName, callBack);
   };
 
-  // Mempool calls
-  getBalance = async (): Promise<number> => {
-    return await this.mempool.getAddressBalance(await this.getAddress());
+  getWalletProviderName = async (): Promise<string> => {
+    return "Cactus Link";
   };
 
-  getNetworkFees = async (): Promise<Fees> => {
-    return await this.mempool.getNetworkFees();
-  };
-
-  pushTx = async (txHex: string): Promise<string> => {
-    return await this.mempool.pushTx(txHex);
-  };
-
-  getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    return await this.mempool.getFundingUTXOs(address, amount);
-  };
-
-  getBTCTipHeight = async (): Promise<number> => {
-    return await this.mempool.getTipHeight();
-  };
-
-  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    // Temporary solution to ignore inscriptions filtering for Cactus Link Wallet
-    return Promise.resolve([]);
+  getWalletProviderIcon = async (): Promise<string> => {
+    return logo;
   };
 }

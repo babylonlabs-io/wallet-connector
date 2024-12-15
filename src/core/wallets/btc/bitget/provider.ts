@@ -1,9 +1,11 @@
 import { Psbt } from "bitcoinjs-lib";
 
-import type { BTCConfig, Fees, InscriptionIdentifier, UTXO, WalletInfo } from "@/core/types";
+import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
+
+import logo from "./logo.svg";
 
 const INTERNAL_NETWORK_NAMES = {
   [Network.MAINNET]: "livenet",
@@ -53,10 +55,6 @@ export class BitgetProvider extends BTCProvider {
     } else {
       throw new Error("Could not connect to Bitget Wallet");
     }
-  };
-
-  getWalletProviderName = async (): Promise<string> => {
-    return "Bitget";
   };
 
   getAddress = async (): Promise<string> => {
@@ -140,16 +138,6 @@ export class BitgetProvider extends BTCProvider {
     }
   };
 
-  signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.walletInfo) throw new Error("Bitget Wallet not connected");
-    return await this.provider.signMessage(message, "bip322-simple");
-  };
-
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
-    if (!this.walletInfo) throw new Error("Bitget Wallet not connected");
-    return await this.provider.signMessage(message, type);
-  };
-
   getNetwork = async (): Promise<Network> => {
     const internalNetwork = await this.provider.getNetwork();
 
@@ -160,6 +148,16 @@ export class BitgetProvider extends BTCProvider {
     }
 
     throw new Error("Unsupported network");
+  };
+
+  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+    if (!this.walletInfo) throw new Error("Bitget Wallet not connected");
+
+    return await this.provider.signMessage(message, type);
+  };
+
+  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
+    throw new Error("Method not implemented.");
   };
 
   on = (eventName: string, callBack: () => void) => {
@@ -182,28 +180,11 @@ export class BitgetProvider extends BTCProvider {
     return this.provider.off(eventName, callBack);
   };
 
-  // Mempool calls
-  getBalance = async (): Promise<number> => {
-    return await this.mempool.getAddressBalance(await this.getAddress());
+  getWalletProviderName = async (): Promise<string> => {
+    return "Bitget";
   };
 
-  getNetworkFees = async (): Promise<Fees> => {
-    return await this.mempool.getNetworkFees();
-  };
-
-  pushTx = async (txHex: string): Promise<string> => {
-    return await this.mempool.pushTx(txHex);
-  };
-
-  getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    return await this.mempool.getFundingUTXOs(address, amount);
-  };
-
-  getBTCTipHeight = async (): Promise<number> => {
-    return await this.mempool.getTipHeight();
-  };
-
-  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    throw new Error("Method not implemented.");
+  getWalletProviderIcon = async (): Promise<string> => {
+    return logo;
   };
 }

@@ -8,11 +8,13 @@ import { tapleafHash } from "bitcoinjs-lib/src/payments/bip341";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 
-import type { BTCConfig, Fees, InscriptionIdentifier, UTXO } from "@/core/types";
+import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
 import { Network } from "@/core/types";
 import BIP322 from "@/core/utils/bip322";
 import { toNetwork } from "@/core/utils/wallet";
 import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
+
+import logo from "./logo.svg";
 
 initEccLib(ecc);
 
@@ -107,10 +109,6 @@ export class KeystoneProvider extends BTCProvider {
     this.keystoneWaleltInfo.scriptPubKeyHex = scriptPubKeyHex;
   };
 
-  getWalletProviderName = async (): Promise<string> => {
-    return "Keystone";
-  };
-
   getAddress = async (): Promise<string> => {
     if (!this.keystoneWaleltInfo?.address) throw new Error("Could not retrieve the address");
 
@@ -196,6 +194,22 @@ export class KeystoneProvider extends BTCProvider {
     return "";
   };
 
+  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
+    throw new Error("Method not implemented.");
+  };
+
+  // Not implemented because of the Airgapped HW nature
+  on = (): void => {};
+  off = (): void => {};
+
+  getWalletProviderName = async (): Promise<string> => {
+    return "Keystone";
+  };
+
+  getWalletProviderIcon = async (): Promise<string> => {
+    return logo;
+  };
+
   /**
    * Sign the PSBT with the Keystone device.
    *
@@ -255,35 +269,6 @@ export class KeystoneProvider extends BTCProvider {
     });
     return psbt;
   };
-
-  // Not implemented because of the Airgapped HW nature
-  on = (): void => {};
-  off = (): void => {};
-
-  // Mempool calls
-  getBalance = async (): Promise<number> => {
-    return await this.mempool.getAddressBalance(await this.getAddress());
-  };
-
-  getNetworkFees = async (): Promise<Fees> => {
-    return await this.mempool.getNetworkFees();
-  };
-
-  pushTx = async (txHex: string): Promise<string> => {
-    return await this.mempool.pushTx(txHex);
-  };
-
-  getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    return await this.mempool.getFundingUTXOs(address, amount);
-  };
-
-  getBTCTipHeight = async (): Promise<number> => {
-    return await this.mempool.getTipHeight();
-  };
-
-  getInscriptions(): Promise<InscriptionIdentifier[]> {
-    throw new Error("Method not implemented.");
-  }
 }
 
 /**
