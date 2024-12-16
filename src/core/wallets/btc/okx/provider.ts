@@ -11,6 +11,8 @@ const PROVIDER_NAMES = {
   [Network.SIGNET]: "bitcoinSignet",
 };
 
+export const WALLET_PROVIDER_NAME = "OKX";
+
 export class OKXProvider extends BTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
@@ -165,7 +167,7 @@ export class OKXProvider extends BTCProvider {
   };
 
   getWalletProviderName = async (): Promise<string> => {
-    return "OKX";
+    return WALLET_PROVIDER_NAME;
   };
 
   getWalletProviderIcon = async (): Promise<string> => {
