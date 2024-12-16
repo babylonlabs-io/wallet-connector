@@ -13,6 +13,8 @@ const INTERNAL_NETWORK_NAMES = {
   [Network.SIGNET]: "signet",
 };
 
+export const WALLET_PROVIDER_NAME = "Bitget";
+
 export class BitgetProvider extends BTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
@@ -181,7 +183,7 @@ export class BitgetProvider extends BTCProvider {
   };
 
   getWalletProviderName = async (): Promise<string> => {
-    return "Bitget";
+    return WALLET_PROVIDER_NAME;
   };
 
   getWalletProviderIcon = async (): Promise<string> => {
