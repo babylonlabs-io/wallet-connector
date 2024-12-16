@@ -27,6 +27,8 @@ type KeystoneWalletInfo = {
   scriptPubKeyHex: string | undefined;
 };
 
+export const WALLET_PROVIDER_NAME = "Keystone";
+
 export class KeystoneProvider extends BTCProvider {
   private keystoneWaleltInfo: KeystoneWalletInfo | undefined;
   private viewSdk: typeof sdk;
@@ -203,7 +205,7 @@ export class KeystoneProvider extends BTCProvider {
   off = (): void => {};
 
   getWalletProviderName = async (): Promise<string> => {
-    return "Keystone";
+    return WALLET_PROVIDER_NAME;
   };
 
   getWalletProviderIcon = async (): Promise<string> => {
