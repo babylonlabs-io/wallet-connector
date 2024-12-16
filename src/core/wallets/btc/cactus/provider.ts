@@ -109,7 +109,7 @@ export class CactusLinkProvider implements IBTCProvider {
     throw new Error("Unsupported network");
   };
 
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+  signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
     if (!this.walletInfo) throw new Error("Cactus Link Wallet not connected");
 
     return await this.provider.signMessage(message, type);

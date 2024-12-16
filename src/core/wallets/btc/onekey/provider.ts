@@ -96,7 +96,7 @@ export class OneKeyProvider implements IBTCProvider {
     throw new Error("Unsupported network");
   };
 
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+  signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
     if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
 
     return await this.provider.signMessage(message, type);

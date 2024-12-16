@@ -3,14 +3,13 @@ import { KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
 import sdk, { PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
 import { HDKey } from "@scure/bip32";
 import { PsbtInput } from "bip174/src/lib/interfaces";
-import { Network as BitcoinNetwork, Psbt, Transaction, initEccLib, payments } from "bitcoinjs-lib";
+import { Network as BitcoinNetwork, Psbt, initEccLib, payments } from "bitcoinjs-lib";
 import { tapleafHash } from "bitcoinjs-lib/src/payments/bip341";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 
 import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
-import BIP322 from "@/core/utils/bip322";
 import { toNetwork } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
@@ -158,39 +157,8 @@ export class KeystoneProvider implements IBTCProvider {
     return this.config.network;
   };
 
-  /**
-   * https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki
-   * signMessageBIP322 signs a message using the BIP322 standard.
-   * @param message
-   * @returns signature
-   */
-  signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.keystoneWaleltInfo?.scriptPubKeyHex || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
-    }
-
-    // Construct the psbt of Bip322 message signing
-    const scriptPubKey = Buffer.from(this.keystoneWaleltInfo.scriptPubKeyHex, "hex");
-    const toSpendTx = BIP322.buildToSpendTx(message, scriptPubKey);
-    const internalPublicKey = toXOnly(Buffer.from(this.keystoneWaleltInfo.publicKeyHex, "hex"));
-    let psbt = BIP322.buildToSignTx(toSpendTx.getId(), scriptPubKey, false, internalPublicKey);
-
-    // Set the sighashType to bitcoin.Transaction.SIGHASH_ALL since it defaults to SIGHASH_DEFAULT
-    psbt.updateInput(0, {
-      sighashType: Transaction.SIGHASH_ALL,
-    });
-
-    // Ehance the PSBT with the BIP32 derivation information
-    psbt = this.enhancePsbt(psbt);
-    const signedPsbt = await this.sign(psbt.toHex());
-    return BIP322.encodeWitness(signedPsbt);
-  };
-
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+  signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
     if (!this.keystoneWaleltInfo) throw new Error("Keystone Wallet not connected");
-    if (type === "bip322-simple") {
-      return this.signMessageBIP322(message);
-    }
 
     // TODO implement
     console.log("signMessage", message, type);
