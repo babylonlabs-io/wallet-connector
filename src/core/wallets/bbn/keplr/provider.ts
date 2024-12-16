@@ -11,6 +11,8 @@ declare global {
   interface Window extends KeplrWindow {}
 }
 
+export const WALLET_PROVIDER_NAME = "Keplr";
+
 export class KeplrProvider implements IBBNProvider {
   private walletInfo: WalletInfo | undefined;
   private chainId: string | undefined;
@@ -82,7 +84,7 @@ export class KeplrProvider implements IBBNProvider {
   }
 
   async getWalletProviderName(): Promise<string> {
-    return "Keplr";
+    return WALLET_PROVIDER_NAME;
   }
 
   async getWalletProviderIcon(): Promise<string> {
