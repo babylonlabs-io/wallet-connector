@@ -11,6 +11,8 @@ const INTERNAL_NETWORK_NAMES = {
   [Network.SIGNET]: "signet",
 };
 
+export const WALLET_PROVIDER_NAME = "Cactus Link";
+
 export class CactusLinkProvider extends BTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
@@ -139,7 +141,7 @@ export class CactusLinkProvider extends BTCProvider {
   };
 
   getWalletProviderName = async (): Promise<string> => {
-    return "Cactus Link";
+    return WALLET_PROVIDER_NAME;
   };
 
   getWalletProviderIcon = async (): Promise<string> => {
