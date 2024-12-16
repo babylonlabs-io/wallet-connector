@@ -10,7 +10,7 @@ const metadata: WalletMetadata<BBNProvider, BBNConfig> = {
   wallet: "bbnwallet",
   createProvider: (wallet) => wallet,
   networks: [Network.MAINNET, Network.SIGNET],
-  label: 'Injectable'
+  label: "Injectable",
 };
 
 export default metadata;

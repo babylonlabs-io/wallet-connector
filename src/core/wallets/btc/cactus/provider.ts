@@ -1,7 +1,6 @@
-import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
+import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
 import logo from "./logo.svg";
 
@@ -13,12 +12,13 @@ const INTERNAL_NETWORK_NAMES = {
 
 export const WALLET_PROVIDER_NAME = "Cactus Link";
 
-export class CactusLinkProvider extends BTCProvider {
+export class CactusLinkProvider implements IBTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
+  private config: BTCConfig;
 
   constructor(wallet: any, config: BTCConfig) {
-    super(config);
+    this.config = config;
 
     // check whether there is a Cactus Link Wallet extension
     if (!wallet) {

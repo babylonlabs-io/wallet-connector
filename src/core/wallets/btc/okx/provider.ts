@@ -1,7 +1,6 @@
 import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
-import { Network } from "@/core/types";
+import { IBTCProvider, Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
 import logo from "./logo.svg";
 
@@ -13,15 +12,16 @@ const PROVIDER_NAMES = {
 
 export const WALLET_PROVIDER_NAME = "OKX";
 
-export class OKXProvider extends BTCProvider {
+export class OKXProvider implements IBTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
+  private config: BTCConfig;
 
   constructor(
     private wallet: any,
     config: BTCConfig,
   ) {
-    super(config);
+    this.config = config;
 
     // check whether there is an OKX Wallet extension
     if (!wallet) {

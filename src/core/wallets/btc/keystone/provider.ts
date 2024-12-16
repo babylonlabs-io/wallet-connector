@@ -9,10 +9,9 @@ import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 
 import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
-import { Network } from "@/core/types";
+import { IBTCProvider, Network } from "@/core/types";
 import BIP322 from "@/core/utils/bip322";
 import { toNetwork } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
 import logo from "./logo.svg";
 
@@ -29,13 +28,15 @@ type KeystoneWalletInfo = {
 
 export const WALLET_PROVIDER_NAME = "Keystone";
 
-export class KeystoneProvider extends BTCProvider {
+export class KeystoneProvider implements IBTCProvider {
   private keystoneWaleltInfo: KeystoneWalletInfo | undefined;
   private viewSdk: typeof sdk;
   private dataSdk: KeystoneSDK;
+  private config: BTCConfig;
 
   constructor(_wallet: any, config: BTCConfig) {
-    super(config);
+    this.config = config;
+
     if (sdk?.bootstrap) {
       sdk.bootstrap();
       this.viewSdk = sdk;

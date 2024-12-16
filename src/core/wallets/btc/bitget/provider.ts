@@ -1,9 +1,8 @@
 import { Psbt } from "bitcoinjs-lib";
 
-import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
+import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
 
 import logo from "./logo.svg";
 
@@ -15,12 +14,13 @@ const INTERNAL_NETWORK_NAMES = {
 
 export const WALLET_PROVIDER_NAME = "Bitget";
 
-export class BitgetProvider extends BTCProvider {
+export class BitgetProvider implements IBTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
+  private config: BTCConfig;
 
   constructor(wallet: any, config: BTCConfig) {
-    super(config);
+    this.config = config;
 
     // check whether there is an Bitget Wallet extension
     if (!wallet?.unisat) {
