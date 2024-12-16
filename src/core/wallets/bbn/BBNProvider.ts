@@ -29,8 +29,8 @@ export abstract class BBNProvider implements IBBNProvider {
   abstract getWalletProviderName(): Promise<string>;
 
   /**
-   * Gets the icon URL of the wallet provider.
-   * @returns A promise that resolves to the icon URL of the wallet provider.
+   * Gets the icon of the wallet provider.
+   * @returns A promise that resolves to the icon of the wallet provider.
    */
   abstract getWalletProviderIcon(): Promise<string>;
 
