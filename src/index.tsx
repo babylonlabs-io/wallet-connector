@@ -13,4 +13,3 @@ export * from "@/context/State.context";
 
 export { createExternalWallet } from "@/core";
 export * from "@/core/types";
-export * from "@/core/wallets/bbn/BBNProvider";

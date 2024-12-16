@@ -2,8 +2,7 @@ import { Window as KeplrWindow } from "@keplr-wallet/types";
 import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types/src/cosmjs";
 import { Buffer } from "buffer";
 
-import { BBNConfig, WalletInfo } from "@/core/types";
-import { BBNProvider } from "@/core/wallets/bbn/BBNProvider";
+import { BBNConfig, IBBNProvider, WalletInfo } from "@/core/types";
 
 import logo from "./logo.svg";
 
@@ -12,7 +11,7 @@ declare global {
   interface Window extends KeplrWindow {}
 }
 
-export class KeplrProvider extends BBNProvider {
+export class KeplrProvider implements IBBNProvider {
   private walletInfo: WalletInfo | undefined;
   private chainId: string | undefined;
   private rpc: string | undefined;
@@ -22,7 +21,6 @@ export class KeplrProvider extends BBNProvider {
     private keplr: Window["keplr"],
     config: BBNConfig,
   ) {
-    super();
     if (!keplr) {
       throw new Error("Keplr extension not found");
     }
