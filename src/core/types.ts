@@ -179,7 +179,7 @@ export interface IBTCProvider extends IProvider {
    * @param type - The signing method to use.
    * @returns A promise that resolves to the signed message.
    */
-  signMessage(message: string, type: "ecdsa" | "bip322-simple"): Promise<string>;
+  signMessage(message: string, type: "ecdsa"): Promise<string>;
 
   /**
    * Retrieves the inscriptions for the connected wallet.
