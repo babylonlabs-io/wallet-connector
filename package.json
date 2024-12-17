@@ -35,7 +35,7 @@
     "@keplr-wallet/types": "^0.12.156",
     "@keystonehq/animated-qr": "^0.8.6",
     "@keystonehq/keystone-sdk": "^0.4.1",
-    "@keystonehq/sdk": "^0.21.3",
+    "@keystonehq/sdk": "^0.22.0",
     "buffer": "^6.0.3",
     "nanoevents": "^9.1.0"
   },
