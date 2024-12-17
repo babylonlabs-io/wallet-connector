@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.21
+
+### Patch Changes
+
+- cd70787: New export of Keystone view SDK
+
 ## 0.1.20
 
 ### Patch Changes
