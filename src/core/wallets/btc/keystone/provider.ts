@@ -1,9 +1,9 @@
 import * as ecc from "@bitcoin-js/tiny-secp256k1-asmjs";
 import { KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
-import sdk, { PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
+import { viewSdk as keystoneViewSDK, PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
 import { HDKey } from "@scure/bip32";
 import { PsbtInput } from "bip174/src/lib/interfaces";
-import { Network as BitcoinNetwork, Psbt, initEccLib, payments } from "bitcoinjs-lib";
+import { Network as BitcoinNetwork, initEccLib, payments, Psbt } from "bitcoinjs-lib";
 import { tapleafHash } from "bitcoinjs-lib/src/payments/bip341";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
@@ -29,21 +29,14 @@ export const WALLET_PROVIDER_NAME = "Keystone";
 
 export class KeystoneProvider implements IBTCProvider {
   private keystoneWaleltInfo: KeystoneWalletInfo | undefined;
-  private viewSdk: typeof sdk;
+  private viewSDK: typeof keystoneViewSDK;
   private dataSdk: KeystoneSDK;
   private config: BTCConfig;
 
   constructor(_wallet: any, config: BTCConfig) {
     this.config = config;
-
-    if (sdk?.bootstrap) {
-      sdk.bootstrap();
-      this.viewSdk = sdk;
-    } else {
-      // commonjs -> esm npm link issue
-      (sdk as any).default.bootstrap();
-      this.viewSdk = (sdk as any).default;
-    }
+    keystoneViewSDK.bootstrap();
+    this.viewSDK = keystoneViewSDK;
     this.dataSdk = new KeystoneSDK({
       origin: "babylon staking app",
     });
@@ -55,7 +48,7 @@ export class KeystoneProvider implements IBTCProvider {
    * @throws An error if there is an issue reading the QR code or retrieving the extended public key.
    */
   connectWallet = async (): Promise<void> => {
-    const keystoneContainer = await this.viewSdk.getSdk();
+    const keystoneContainer = await this.viewSDK.getSdk();
 
     // Initialize the Keystone container and read the QR code for sync keystone device with the staking app.
     const decodedResult = await keystoneContainer.read([SupportedResult.UR_CRYPTO_ACCOUNT], {
@@ -195,7 +188,7 @@ export class KeystoneProvider implements IBTCProvider {
     // compose the signing process for the Keystone device
     const signPsbt = composeQRProcess(SupportedResult.UR_PSBT);
 
-    const keystoneContainer = await this.viewSdk.getSdk();
+    const keystoneContainer = await this.viewSDK.getSdk();
     const signePsbtUR = await signPsbt(keystoneContainer, ur);
 
     // extract the signed PSBT from the UR
