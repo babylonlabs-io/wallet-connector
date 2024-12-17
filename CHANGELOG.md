@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.19
+
+### Patch Changes
+
+- 353b4c4: Minimize BTC interface
+
 ## 0.1.18
 
 ### Patch Changes
