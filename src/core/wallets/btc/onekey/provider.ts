@@ -1,7 +1,8 @@
-import type { BTCConfig, Fees, InscriptionIdentifier, UTXO, WalletInfo } from "@/core/types";
+import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 import { validateAddress } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
+
+import logo from "./logo.svg";
 
 const INTERNAL_NETWORK_NAMES = {
   [Network.MAINNET]: "livenet",
@@ -9,12 +10,15 @@ const INTERNAL_NETWORK_NAMES = {
   [Network.SIGNET]: "signet",
 };
 
-export class OneKeyProvider extends BTCProvider {
+export const WALLET_PROVIDER_NAME = "OneKey";
+
+export class OneKeyProvider implements IBTCProvider {
   private provider: any;
   private walletInfo: WalletInfo | undefined;
+  private config: BTCConfig;
 
   constructor(wallet: any, config: BTCConfig) {
-    super(config);
+    this.config = config;
 
     // check whether there is an OneKey extension
     if (!wallet?.btcwallet) {
@@ -48,10 +52,6 @@ export class OneKeyProvider extends BTCProvider {
     } else {
       throw new Error("Could not connect to OneKey Wallet");
     }
-  };
-
-  getWalletProviderName = async (): Promise<string> => {
-    return "OneKey";
   };
 
   getAddress = async (): Promise<string> => {
@@ -96,57 +96,10 @@ export class OneKeyProvider extends BTCProvider {
     throw new Error("Unsupported network");
   };
 
-  signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-
-    return await this.provider.signMessageBIP322(message);
-  };
-
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+  signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
     if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
 
     return await this.provider.signMessage(message, type);
-  };
-
-  on = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-
-    // subscribe to account change event: `accountChanged` -> `accountsChanged`
-    if (eventName === "accountChanged") {
-      return this.provider.on("accountsChanged", callBack);
-    }
-    return this.provider.on(eventName, callBack);
-  };
-
-  off = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-
-    // unsubscribe to account change event
-    if (eventName === "accountChanged") {
-      return this.provider.off("accountsChanged", callBack);
-    }
-    return this.provider.off(eventName, callBack);
-  };
-
-  // Mempool calls
-  getBalance = async (): Promise<number> => {
-    return await this.mempool.getAddressBalance(await this.getAddress());
-  };
-
-  getNetworkFees = async (): Promise<Fees> => {
-    return await this.mempool.getNetworkFees();
-  };
-
-  pushTx = async (txHex: string): Promise<string> => {
-    return await this.mempool.pushTx(txHex);
-  };
-
-  getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    return await this.mempool.getFundingUTXOs(address, amount);
-  };
-
-  getBTCTipHeight = async (): Promise<number> => {
-    return await this.mempool.getTipHeight();
   };
 
   // Inscriptions are only available on OneKey Wallet BTC mainnet
@@ -188,5 +141,33 @@ export class OneKeyProvider extends BTCProvider {
     }
 
     return inscriptionIdentifiers;
+  };
+
+  on = (eventName: string, callBack: () => void) => {
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
+    // subscribe to account change event: `accountChanged` -> `accountsChanged`
+    if (eventName === "accountChanged") {
+      return this.provider.on("accountsChanged", callBack);
+    }
+    return this.provider.on(eventName, callBack);
+  };
+
+  off = (eventName: string, callBack: () => void) => {
+    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+
+    // unsubscribe to account change event
+    if (eventName === "accountChanged") {
+      return this.provider.off("accountsChanged", callBack);
+    }
+    return this.provider.off(eventName, callBack);
+  };
+
+  getWalletProviderName = async (): Promise<string> => {
+    return WALLET_PROVIDER_NAME;
+  };
+
+  getWalletProviderIcon = async (): Promise<string> => {
+    return logo;
   };
 }

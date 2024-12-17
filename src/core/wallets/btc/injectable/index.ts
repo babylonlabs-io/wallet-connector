@@ -1,8 +1,6 @@
-import { Network, type BTCConfig, type WalletMetadata } from "@/core/types";
+import { IBTCProvider, Network, type BTCConfig, type WalletMetadata } from "@/core/types";
 
-import { BTCProvider } from "../BTCProvider";
-
-const metadata: WalletMetadata<BTCProvider, BTCConfig> = {
+const metadata: WalletMetadata<IBTCProvider, BTCConfig> = {
   id: "injectable",
   name: (wallet) => wallet.getWalletProviderName?.(),
   icon: (wallet) => wallet.getWalletProviderIcon?.(),

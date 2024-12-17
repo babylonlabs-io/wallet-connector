@@ -174,13 +174,18 @@ export interface IBTCProvider extends IProvider {
   getNetwork(): Promise<Network>;
 
   /**
-   * Signs a message using BIP-322 simple.
+   * Signs a message using the specified signing method.
    * @param message - The message to sign.
+   * @param type - The signing method to use.
    * @returns A promise that resolves to the signed message.
    */
-  signMessageBIP322(message: string): Promise<string>;
-
   signMessage(message: string, type: "ecdsa" | "bip322-simple"): Promise<string>;
+
+  /**
+   * Retrieves the inscriptions for the connected wallet.
+   * @returns A promise that resolves to an array of inscriptions.
+   */
+  getInscriptions(): Promise<InscriptionIdentifier[]>;
 
   /**
    * Registers an event listener for the specified event.
@@ -190,51 +195,24 @@ export interface IBTCProvider extends IProvider {
    */
   on(eventName: string, callBack: () => void): void;
 
+  /**
+   * Unregisters an event listener for the specified event.
+   * @param eventName - The name of the event to listen for.
+   * @param callBack - The callback function to be executed when the event occurs.
+   */
   off(eventName: string, callBack: () => void): void;
 
   /**
-   * Gets the balance for the connected wallet address.
-   * By default, this method will return the mempool balance if not implemented by the child class.
-   * @returns A promise that resolves to the balance of the wallet.
+   * Gets the name of the wallet provider.
+   * @returns A promise that resolves to the name of the wallet provider.
    */
-  getBalance(): Promise<number>;
+  getWalletProviderName(): Promise<string>;
 
   /**
-   * Retrieves the network fees.
-   * @returns A promise that resolves to the network fees.
+   * Gets the icon of the wallet provider.
+   * @returns A promise that resolves to the icon of the wallet provider.
    */
-  getNetworkFees(): Promise<Fees>;
-
-  /**
-   * Pushes a transaction to the network.
-   * @param txHex - The hexadecimal representation of the transaction.
-   * @returns A promise that resolves to a string representing the transaction ID.
-   */
-  pushTx(txHex: string): Promise<string>;
-
-  /**
-   * Retrieves the unspent transaction outputs (UTXOs) for a given address and amount.
-   *
-   * If the amount is provided, it will return UTXOs that cover the specified amount.
-   * If the amount is not provided, it will return all available UTXOs for the address.
-   *
-   * @param address - The address to retrieve UTXOs for.
-   * @param amount - Optional amount of funds required.
-   * @returns A promise that resolves to an array of UTXOs.
-   */
-  getUtxos(address: string, amount?: number): Promise<UTXO[]>;
-
-  /**
-   * Retrieves the tip height of the BTC chain.
-   * @returns A promise that resolves to the block height.
-   */
-  getBTCTipHeight(): Promise<number>;
-
-  /**
-   * Retrieves the inscriptions for the connected wallet.
-   * @returns A promise that resolves to an array of inscriptions.
-   */
-  getInscriptions(): Promise<InscriptionIdentifier[]>;
+  getWalletProviderIcon(): Promise<string>;
 }
 
 export interface IBBNProvider extends IProvider {
@@ -264,8 +242,8 @@ export interface IBBNProvider extends IProvider {
   getWalletProviderName(): Promise<string>;
 
   /**
-   * Gets the icon URL of the wallet provider.
-   * @returns A promise that resolves to the icon URL of the wallet provider.
+   * Gets the icon of the wallet provider.
+   * @returns A promise that resolves to the icon of the wallet provider.
    */
   getWalletProviderIcon(): Promise<string>;
 

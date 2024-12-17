@@ -1,6 +1,5 @@
-import type { BTCConfig, ChainMetadata } from "@/core/types";
+import type { BTCConfig, ChainMetadata, IBTCProvider } from "@/core/types";
 
-import { BTCProvider } from "./BTCProvider";
 import icon from "./bitcoin.png";
 import bitget from "./bitget";
 import cactus from "./cactus";
@@ -9,7 +8,7 @@ import keystone from "./keystone";
 import okx from "./okx";
 import onekey from "./onekey";
 
-const metadata: ChainMetadata<"BTC", BTCProvider, BTCConfig> = {
+const metadata: ChainMetadata<"BTC", IBTCProvider, BTCConfig> = {
   chain: "BTC",
   name: "Bitcoin",
   icon,

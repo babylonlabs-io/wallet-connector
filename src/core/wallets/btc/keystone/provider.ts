@@ -3,16 +3,16 @@ import { KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
 import sdk, { PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
 import { HDKey } from "@scure/bip32";
 import { PsbtInput } from "bip174/src/lib/interfaces";
-import { Network as BitcoinNetwork, Psbt, Transaction, initEccLib, payments } from "bitcoinjs-lib";
+import { Network as BitcoinNetwork, Psbt, initEccLib, payments } from "bitcoinjs-lib";
 import { tapleafHash } from "bitcoinjs-lib/src/payments/bip341";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 
-import type { BTCConfig, Fees, InscriptionIdentifier, UTXO } from "@/core/types";
-import { Network } from "@/core/types";
-import BIP322 from "@/core/utils/bip322";
+import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
+import { IBTCProvider, Network } from "@/core/types";
 import { toNetwork } from "@/core/utils/wallet";
-import { BTCProvider } from "@/core/wallets/btc/BTCProvider";
+
+import logo from "./logo.svg";
 
 initEccLib(ecc);
 
@@ -25,13 +25,17 @@ type KeystoneWalletInfo = {
   scriptPubKeyHex: string | undefined;
 };
 
-export class KeystoneProvider extends BTCProvider {
+export const WALLET_PROVIDER_NAME = "Keystone";
+
+export class KeystoneProvider implements IBTCProvider {
   private keystoneWaleltInfo: KeystoneWalletInfo | undefined;
   private viewSdk: typeof sdk;
   private dataSdk: KeystoneSDK;
+  private config: BTCConfig;
 
   constructor(_wallet: any, config: BTCConfig) {
-    super(config);
+    this.config = config;
+
     if (sdk?.bootstrap) {
       sdk.bootstrap();
       this.viewSdk = sdk;
@@ -107,10 +111,6 @@ export class KeystoneProvider extends BTCProvider {
     this.keystoneWaleltInfo.scriptPubKeyHex = scriptPubKeyHex;
   };
 
-  getWalletProviderName = async (): Promise<string> => {
-    return "Keystone";
-  };
-
   getAddress = async (): Promise<string> => {
     if (!this.keystoneWaleltInfo?.address) throw new Error("Could not retrieve the address");
 
@@ -157,43 +157,28 @@ export class KeystoneProvider extends BTCProvider {
     return this.config.network;
   };
 
-  /**
-   * https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki
-   * signMessageBIP322 signs a message using the BIP322 standard.
-   * @param message
-   * @returns signature
-   */
-  signMessageBIP322 = async (message: string): Promise<string> => {
-    if (!this.keystoneWaleltInfo?.scriptPubKeyHex || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
-    }
-
-    // Construct the psbt of Bip322 message signing
-    const scriptPubKey = Buffer.from(this.keystoneWaleltInfo.scriptPubKeyHex, "hex");
-    const toSpendTx = BIP322.buildToSpendTx(message, scriptPubKey);
-    const internalPublicKey = toXOnly(Buffer.from(this.keystoneWaleltInfo.publicKeyHex, "hex"));
-    let psbt = BIP322.buildToSignTx(toSpendTx.getId(), scriptPubKey, false, internalPublicKey);
-
-    // Set the sighashType to bitcoin.Transaction.SIGHASH_ALL since it defaults to SIGHASH_DEFAULT
-    psbt.updateInput(0, {
-      sighashType: Transaction.SIGHASH_ALL,
-    });
-
-    // Ehance the PSBT with the BIP32 derivation information
-    psbt = this.enhancePsbt(psbt);
-    const signedPsbt = await this.sign(psbt.toHex());
-    return BIP322.encodeWitness(signedPsbt);
-  };
-
-  signMessage = async (message: string, type: "ecdsa" | "bip322-simple" = "ecdsa"): Promise<string> => {
+  signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
     if (!this.keystoneWaleltInfo) throw new Error("Keystone Wallet not connected");
-    if (type === "bip322-simple") {
-      return this.signMessageBIP322(message);
-    }
 
     // TODO implement
     console.log("signMessage", message, type);
     return "";
+  };
+
+  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
+    throw new Error("Method not implemented.");
+  };
+
+  // Not implemented because of the Airgapped HW nature
+  on = (): void => {};
+  off = (): void => {};
+
+  getWalletProviderName = async (): Promise<string> => {
+    return WALLET_PROVIDER_NAME;
+  };
+
+  getWalletProviderIcon = async (): Promise<string> => {
+    return logo;
   };
 
   /**
@@ -255,35 +240,6 @@ export class KeystoneProvider extends BTCProvider {
     });
     return psbt;
   };
-
-  // Not implemented because of the Airgapped HW nature
-  on = (): void => {};
-  off = (): void => {};
-
-  // Mempool calls
-  getBalance = async (): Promise<number> => {
-    return await this.mempool.getAddressBalance(await this.getAddress());
-  };
-
-  getNetworkFees = async (): Promise<Fees> => {
-    return await this.mempool.getNetworkFees();
-  };
-
-  pushTx = async (txHex: string): Promise<string> => {
-    return await this.mempool.pushTx(txHex);
-  };
-
-  getUtxos = async (address: string, amount: number): Promise<UTXO[]> => {
-    return await this.mempool.getFundingUTXOs(address, amount);
-  };
-
-  getBTCTipHeight = async (): Promise<number> => {
-    return await this.mempool.getTipHeight();
-  };
-
-  getInscriptions(): Promise<InscriptionIdentifier[]> {
-    throw new Error("Method not implemented.");
-  }
 }
 
 /**
