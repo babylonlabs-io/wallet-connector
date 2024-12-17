@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.20
+
+### Patch Changes
+
+- b056160: Removed BBN provider class, usage of IBBNProvider interface
+
 ## 0.1.19
 
 ### Patch Changes
