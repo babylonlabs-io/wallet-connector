@@ -1,13 +1,11 @@
-import { Network, type BBNConfig, type WalletMetadata } from "@/core/types";
-
-import type { BBNProvider } from "../BBNProvider";
+import { IBBNProvider, Network, type BBNConfig, type WalletMetadata } from "@/core/types";
 
 import logo from "./logo.svg";
-import { KeplrProvider } from "./provider";
+import { KeplrProvider, WALLET_PROVIDER_NAME } from "./provider";
 
-const metadata: WalletMetadata<BBNProvider, BBNConfig> = {
+const metadata: WalletMetadata<IBBNProvider, BBNConfig> = {
   id: "keplr",
-  name: "Keplr",
+  name: WALLET_PROVIDER_NAME,
   icon: logo,
   docs: "https://www.keplr.app/",
   wallet: "keplr",
