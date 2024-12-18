@@ -1,5 +1,5 @@
 import * as ecc from "@bitcoin-js/tiny-secp256k1-asmjs";
-import { KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
+import { KeystoneBitcoinSDK, KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
 import { viewSdk as keystoneViewSDK, PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
 import { HDKey } from "@scure/bip32";
 import { PsbtInput } from "bip174/src/lib/interfaces";
@@ -151,11 +151,30 @@ export class KeystoneProvider implements IBTCProvider {
   };
 
   signMessage = async (message: string, type: "ecdsa"): Promise<string> => {
+    if (type !== "ecdsa") throw new Error("Only ECDSA signature is supported");
     if (!this.keystoneWaleltInfo) throw new Error("Keystone Wallet not connected");
 
-    // TODO implement
-    console.log("signMessage", message, type);
-    return "";
+    const ur = this.dataSdk.btc.generateSignRequest({
+      requestId: "7afd5e09-9267-43fb-a02e-08c4a09417ec",
+      signData: Buffer.from(message, "utf-8").toString("hex"),
+      dataType: KeystoneBitcoinSDK.DataType.message,
+      accounts: [
+        {
+          path: `${this.keystoneWaleltInfo.path}/0/0`,
+          xfp: `${this.keystoneWaleltInfo.mfp}`,
+          address: this.keystoneWaleltInfo.address,
+        },
+      ],
+      origin: "babylon staking app",
+    });
+
+    const signMessage = composeQRProcess(SupportedResult.UR_BTC_SIGNATURE);
+
+    const keystoneContainer = await this.viewSDK.getSdk();
+    const signedMessageUR = await signMessage(keystoneContainer, ur);
+
+    const result = this.dataSdk.btc.parseSignature(signedMessageUR);
+    return Buffer.from(result.signature, "hex").toString("base64");
   };
 
   getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
