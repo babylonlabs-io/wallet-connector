@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.22
+
+### Patch Changes
+
+- db711ef: ECDSA as the only option in signMessage
+
 ## 0.1.21
 
 ### Patch Changes
