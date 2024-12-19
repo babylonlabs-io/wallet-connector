@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.23
+
+### Patch Changes
+
+- 3d79f1f: add fallback link
+
 ## 0.1.22
 
 ### Patch Changes
