@@ -7,20 +7,31 @@ interface WalletButtonProps {
   disabled?: boolean;
   name: string;
   label?: string;
+  fallbackLink?: string;
+  installed?: boolean;
   onClick?: () => void;
 }
 
-export function WalletButton({ className, disabled = false, name, logo, label, onClick }: WalletButtonProps) {
+export function WalletButton({
+  className,
+  disabled = false,
+  name,
+  logo,
+  label,
+  fallbackLink,
+  installed = true,
+  onClick,
+}: WalletButtonProps) {
+  const btnProps = installed ? { as: "button", disabled, onClick } : { as: "a", href: fallbackLink, target: "_blank" };
+
   return (
     <Text
-      disabled={disabled}
-      as="button"
       className={twMerge(
         "b-flex b-h-14 b-w-full b-cursor-pointer b-items-center b-gap-2.5 b-rounded b-border b-border-primary-main/30 b-px-2",
         disabled ? "b-cursor-default" : "b-cursor-pointer",
         className,
       )}
-      onClick={onClick}
+      {...btnProps}
     >
       <Avatar variant="rounded" className="b-shrink-0" alt={name} url={logo} />
       {name}
