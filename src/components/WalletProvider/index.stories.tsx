@@ -38,7 +38,6 @@ export const Default: Story = {
     return <Button onClick={open}>Connect Wallet</Button>;
   },
 };
-
 export const WithConnectedData: Story = {
   args: {
     onError: console.log,
@@ -53,69 +52,23 @@ export const WithConnectedData: Story = {
     ),
   ],
   render: () => {
-    const { open } = useWidgetState();
-    const [walletData, setWalletData] = useState<{
-      BTC?: { address: string; publicKeyHex: string };
-      BBN?: { address: string; publicKeyHex: string };
-    }>({});
-    const connectors = useChainProviders();
-
-    useEffect(() => {
-      // Subscribe to connect events for both chains
-      const btcUnsub = connectors.BTC?.on("connect", async (wallet) => {
-        console.log("BTC Wallet connected", wallet);
-        if (wallet.account) {
-          const { address, publicKeyHex } = wallet.account;
-          if (address && publicKeyHex) {
-            setWalletData((prev) => ({
-              ...prev,
-              BTC: { address, publicKeyHex },
-            }));
-          }
-        }
-      });
-
-      const bbnUnsub = connectors.BBN?.on("connect", async (wallet) => {
-        console.log("BBN Wallet connected", wallet);
-        if (wallet.account) {
-          const { address, publicKeyHex } = wallet.account;
-          if (address && publicKeyHex) {
-            setWalletData((prev) => ({
-              ...prev,
-              BBN: { address, publicKeyHex },
-            }));
-          }
-        }
-      });
-
-      return () => {
-        btcUnsub?.();
-        bbnUnsub?.();
-      };
-    }, [connectors]);
+    const { open, selectedWallets } = useWidgetState();
 
     return (
       <div>
         <Button onClick={open}>Connect Wallet</Button>
         <div className="b-flex b-flex-col b-gap-4">
-          {walletData.BTC && (
-            <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-              <Text variant="subtitle1" className="b-mb-2">
-                BTC Wallet
-              </Text>
-              <Text variant="body2">Address: {walletData.BTC.address}</Text>
-              <Text variant="body2">Public Key: {walletData.BTC.publicKeyHex}</Text>
-            </div>
-          )}
-
-          {walletData.BBN && (
-            <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-              <Text variant="subtitle1" className="b-mb-2">
-                BBN Wallet
-              </Text>
-              <Text variant="body2">Address: {walletData.BBN.address}</Text>
-              <Text variant="body2">Public Key: {walletData.BBN.publicKeyHex}</Text>
-            </div>
+          {Object.entries(selectedWallets).map(
+            ([chainName, wallet]) =>
+              wallet?.account && (
+                <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
+                  <Text variant="subtitle1" className="b-mb-2">
+                    {chainName} Wallet
+                  </Text>
+                  <Text variant="body2">Address: {wallet.account.address}</Text>
+                  <Text variant="body2">Public Key: {wallet.account.publicKeyHex}</Text>
+                </div>
+              ),
           )}
         </div>
       </div>
