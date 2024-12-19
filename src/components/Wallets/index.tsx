@@ -35,6 +35,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
         <div className={twMerge("b-grid b-gap-6", countOfVisibleWallets > 1 ? "b-grid-cols-2" : "b-grid-cols-1")}>
           {injectableWallet && (
             <WalletButton
+              installed
               name={injectableWallet.name}
               logo={injectableWallet.icon}
               label={injectableWallet.label}
@@ -44,10 +45,12 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
 
           {wallets.map((wallet) => (
             <WalletButton
+              installed={wallet.installed}
               key={wallet.id}
               name={wallet.name}
               logo={wallet.icon}
               label={wallet.label}
+              fallbackLink={wallet.docs}
               onClick={() => onSelectWallet?.(chain, wallet)}
             />
           ))}

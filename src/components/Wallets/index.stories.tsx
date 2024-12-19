@@ -46,6 +46,26 @@ const wallets: IWallet[] = [
     account: null,
     label: "Hardware wallet",
   },
+  {
+    id: "keystone",
+    name: "Keysone",
+    installed: true,
+    icon: "/images/wallets/keystone.svg",
+    docs: "",
+    provider: null,
+    account: null,
+    label: "Hardware wallet",
+  },
+  {
+    id: "tomo",
+    name: "Tomo wallet",
+    installed: false,
+    icon: "/images/wallets/tomo.png",
+    docs: "https://docs.tomo.inc/",
+    provider: null,
+    account: null,
+    label: "",
+  },
 ];
 
 export const Default: Story = {
