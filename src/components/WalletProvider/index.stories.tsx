@@ -90,55 +90,33 @@ export const WithBTCSigningFeatures: Story = {
     ),
   ],
   render: () => {
-    const { open } = useWidgetState();
+    const { open, selectedWallets } = useWidgetState();
     const [messageToSign, setMessageToSign] = useState("");
     const [psbtToSign, setPsbtToSign] = useState("");
-    const connectors = useChainProviders();
-    const [walletData, setWalletData] = useState<{
-      btcWallet?: IBTCProvider;
-      signedMessage?: string;
-      signedPsbt?: string;
-    }>({});
+    const [signedMessage, setSignedMessage] = useState("");
+    const [signedPsbt, setSignedPsbt] = useState("");
     const [transaction, setTransaction] = useState("");
 
-    useEffect(() => {
-      const btcUnsub = connectors.BTC?.on("connect", async (wallet) => {
-        if (wallet.provider) {
-          setWalletData((prev) => ({
-            ...prev,
-            btcWallet: wallet.provider as IBTCProvider,
-          }));
-        }
-      });
-
-      return () => {
-        btcUnsub?.();
-      };
-    }, [connectors]);
+    const btcProvider = selectedWallets.BTC?.provider as IBTCProvider | undefined;
 
     const handleSignMessage = async () => {
-      if (!walletData.btcWallet || !messageToSign) return;
+      if (!btcProvider || !messageToSign) return;
+
       try {
-        const signature = await walletData.btcWallet.signMessage(messageToSign, "ecdsa");
+        const signature = await btcProvider.signMessage(messageToSign, "ecdsa");
         console.log("handleSignMessage:", signature);
-        setWalletData((prev) => ({
-          ...prev,
-          signedMessage: signature,
-        }));
+        setSignedMessage(signature);
       } catch (error) {
         console.error("Failed to sign message:", error);
       }
     };
 
     const handleSignPsbt = async () => {
-      if (!walletData.btcWallet || !psbtToSign) return;
+      if (!btcProvider || !psbtToSign) return;
       try {
-        const signedPsbt = await walletData.btcWallet.signPsbt(psbtToSign);
+        const signedPsbt = await btcProvider.signPsbt(psbtToSign);
         console.log("handleSignPsbt:", signedPsbt);
-        setWalletData((prev) => ({
-          ...prev,
-          signedPsbt,
-        }));
+        setSignedPsbt(signedPsbt);
       } catch (error) {
         console.error("Failed to sign PSBT:", error);
       }
@@ -146,71 +124,74 @@ export const WithBTCSigningFeatures: Story = {
 
     return (
       <div>
-        <Button onClick={open}>Connect Wallet</Button>
+        <Button className="b-mb-4" onClick={open}>
+          Connect Wallet
+        </Button>
+
         <div className="b-flex b-flex-col b-gap-4">
-          {walletData.btcWallet && (
+          {btcProvider && (
             <div className="b-flex b-flex-col b-gap-4">
               <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-                <Text variant="subtitle1" className="b-mb-2">
-                  Sign Message
-                </Text>
-                <input
-                  type="text"
-                  value={messageToSign}
-                  onChange={(e) => setMessageToSign(e.target.value)}
-                  placeholder="Enter message to sign"
-                  className="b-mb-2 b-w-full b-rounded b-border b-p-2"
-                />
+                <FormControl label="Sign Message" className="b-mb-2 b-py-2">
+                  <Input
+                    type="text"
+                    value={messageToSign}
+                    onChange={(e) => setMessageToSign(e.target.value)}
+                    placeholder="Enter message to sign"
+                  />
+                </FormControl>
+
                 <Button onClick={handleSignMessage}>Sign Message</Button>
-                {walletData.signedMessage && (
+
+                {signedMessage && (
                   <div className="b-mt-2 b-flex b-items-center b-gap-2">
                     <Text variant="body2" className="b-flex-1 b-truncate">
-                      Signed Message: {walletData.signedMessage}
+                      Signed Message: {signedMessage}
                     </Text>
-                    <Button onClick={() => setWalletData((prev) => ({ ...prev, signedMessage: undefined }))}>
-                      Delete
-                    </Button>
+                    <Button onClick={() => setSignedMessage("")}>Delete</Button>
                   </div>
                 )}
               </div>
 
               <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-                <Text variant="subtitle1" className="b-mb-2">
-                  Sign PSBT
-                </Text>
-                <input
-                  type="text"
-                  value={psbtToSign}
-                  onChange={(e) => setPsbtToSign(e.target.value)}
-                  placeholder="Enter PSBT hex"
-                  className="b-mb-2 b-w-full b-rounded b-border b-p-2"
-                />
+                <FormControl label="Sign PSBT" className="b-mb-2 b-py-2">
+                  <Input
+                    type="text"
+                    value={psbtToSign}
+                    onChange={(e) => setPsbtToSign(e.target.value)}
+                    placeholder="Enter PSBT hex"
+                  />
+                </FormControl>
+
                 <Button onClick={handleSignPsbt}>Sign PSBT</Button>
-                {walletData.signedPsbt && (
+
+                {signedPsbt && (
                   <div className="b-mt-2 b-flex b-items-center b-gap-2">
                     <Text variant="body2" className="b-flex-1 b-truncate">
-                      Signed PSBT: {walletData.signedPsbt}
+                      Signed PSBT: {signedPsbt}
                     </Text>
                     <Button
                       onClick={() => {
                         setTransaction("");
-                        setWalletData((prev) => ({ ...prev, signedPsbt: undefined }));
+                        setSignedPsbt("");
                       }}
                     >
                       Delete
                     </Button>
                   </div>
                 )}
-                {walletData.signedPsbt && (
+
+                {signedPsbt && (
                   <div className="b-mt-2 b-flex b-items-center b-gap-2">
                     <Text variant="body2" className="b-flex-1 b-truncate">
                       Transaction: {transaction}
                     </Text>
                     <Button
                       onClick={() => {
-                        if (!walletData.signedPsbt) return;
+                        if (!signedPsbt) return;
+
                         try {
-                          const tx = Psbt.fromHex(walletData.signedPsbt).extractTransaction().toHex();
+                          const tx = Psbt.fromHex(signedPsbt).extractTransaction().toHex();
                           console.log("Extracted transaction:", tx);
                           setTransaction(tx);
                         } catch (error) {
