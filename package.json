@@ -44,7 +44,7 @@
   ],
   "peerDependencies": {
     "@babylonlabs-io/bbn-core-ui": "^0.6.1",
-    "@babylonlabs-io/btc-staking-ts": "^0.4.0-canary.5",
+    "@babylonlabs-io/btc-staking-ts": "0.4.0-canary.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4"
