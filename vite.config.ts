@@ -32,7 +32,8 @@ export default defineConfig({
         "@cosmjs/stargate",
         "@babylonlabs-io/bbn-core-ui",
         "@keystonehq/animated-qr",
-        "@keystonehq/keystone-sdk",
+        // Issues linking with Next.js
+        // "@keystonehq/keystone-sdk",
         "@keystonehq/sdk",
         "@bitcoin-js/tiny-secp256k1-asmjs",
       ],
