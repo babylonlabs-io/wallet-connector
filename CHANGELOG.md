@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.27
+
+### Patch Changes
+
+- 9e55344: override esbuild version
+
 ## 0.1.26
 
 ### Patch Changes
