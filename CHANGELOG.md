@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.26
+
+### Patch Changes
+
+- 3873656: include keystone sdk in bundle
+
 ## 0.1.25
 
 ### Patch Changes
