@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.25
+
+### Patch Changes
+
+- c8c983d: keystone: ecc curve from btc-staking, update deps
+
 ## 0.1.24
 
 ### Patch Changes
