@@ -96,5 +96,8 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "overrides": {
+    "esbuild": "0.24.0"
   }
 }
