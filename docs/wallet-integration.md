@@ -14,37 +14,38 @@ We strongly encourage wallet developers to integrate via Tomo Connect first. Ple
 
 ### 2. Direct Native Integration
 
-Direct native integration should only be considered if Tomo Connect integration is not feasible for your use case. This repository maintains a limited set of natively integrated wallets that are directly maintained by the Babylon team.
+Direct native integration should only be considered if Tomo Connect integration is not feasible for your use case. This repository contains a set of natively integrated wallets that are maintained by the Babylon team.
 
 ### Supported Wallet Types
 
 #### Bitcoin (BTC) Wallets
 
-Both native and injectable wallets require implementing `IBTCProvider` interface
+Both native and injectable wallets must implement the `IBTCProvider` interface.
 
 1. Native Wallets
 
-- Must submit a PR to add the implementation
-- Examples: `OKX` and `OneKey` Chrome Extensions, `Keystone` Hardware Wallet
+- Browser extension wallets like `OKX` and `OneKey`
+- Hardware wallets like `Keystone`
+- Note: Native wallet integrations are managed by the Babylon team
 
 2. Injectable Wallets
 
-- No PR required
+- No repository changes required
 - Must inject implementation into `window.btcwallet`
 - Common in mobile wallet browsers
 
 #### Babylon (BBN) Wallets
 
-Both native and injectable wallets require implementing `IBBNProvider` interface
+Both native and injectable wallets must implement the `IBBNProvider` interface.
 
 1. Native Wallets
 
-- Must submit a PR to add the implementation
-- Example: `Keplr`
+- Browser extension wallets like Keplr
+- Note: Native wallet integrations are managed by the Babylon team
 
 2. Injectable Wallets
 
-- No PR required
+- No repository changes required
 - Must inject implementation into `window.bbnwallet`
 - Common in mobile wallet browsers
 
@@ -88,7 +89,6 @@ For Native Wallets:
 
 1. Create wallet provider implementation
 2. Create wallet metadata file
-3. Submit PR to add your wallet
 
 Example metadata for BTC wallet:
 
