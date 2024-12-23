@@ -31,7 +31,21 @@ npm run storybook
 
 ## Wallet Integration
 
-This guide explains how to integrate wallets with the Babylon staking dApp. The dApp supports both Bitcoin (BTC) and Babylon (BBN) wallets through a unified interface.
+This guide explains how to integrate wallets with the Babylon staking dApp. The dApp supports both Bitcoin (BTC) and Babylon (BBN) wallets through two integration paths:
+
+### 1. Integration Through Tomo Connect SDK Lite (Recommended)
+
+The recommended way to integrate your wallet with Babylon staking dApp is through [Tomo Connect SDK Lite](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite). This provides:
+
+- Simplified integration process
+- Broader wallet ecosystem access
+- Maintained by Tomo team
+
+We strongly encourage wallet developers to integrate via Tomo Connect first. Please refer to Tomo's documentation for integration details.
+
+### 2. Direct Native Integration
+
+Direct native integration should only be considered if Tomo Connect integration is not feasible for your use case. This repository maintains a limited set of natively integrated wallets that are directly maintained by the Babylon team.
 
 ### Supported Wallet Types
 
@@ -133,7 +147,3 @@ window.btcwallet = new BTCWalletImplementation();
 // For BBN wallets
 window.bbnwallet = new BBNWalletImplementation();
 ```
-
-### Integration Through Tomo Connect SDK Lite
-
-In addition to direct integration, wallets can also be integrated through [Tomo Connect SDK Lite](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite).
