@@ -36,7 +36,29 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
 
       <DialogBody>
         <FieldControl
-          label="I certify that I have read and accept the updated Terms of Use and Privacy Policy."
+          label={
+            <>
+              I certify that I have read and accept the updated{" "}
+              <a
+                href="https://babylonlabs.io/terms-of-use"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="b-underline"
+              >
+                Terms of Use
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://babylonlabs.io/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="b-underline"
+              >
+                Privacy Policy
+              </a>
+              .
+            </>
+          }
           className="b-mb-8"
         >
           <Checkbox checked={state["termsOfUse"]} onChange={handleChange("termsOfUse")} />
