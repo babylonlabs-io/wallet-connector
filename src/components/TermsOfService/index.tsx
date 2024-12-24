@@ -3,9 +3,11 @@ import { useCallback, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { FieldControl } from "@/components/FieldControl";
+import { BTCConfig } from "@/core/types";
 
 export interface Props {
   className?: string;
+  config?: BTCConfig;
   onClose?: () => void;
   onSubmit?: () => void;
 }

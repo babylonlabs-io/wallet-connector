@@ -13,7 +13,7 @@ interface WalletContainerProps {
   onSelectWallet?: (chain: IChain, wallet: IWallet) => void;
 }
 
-export default function WalletsContainer({ widgets = {}, ...props }: WalletContainerProps) {
+export function WalletsContainer({ widgets = {}, ...props }: WalletContainerProps) {
   const { chains, screen, displayChains } = useWidgetState();
   const chainId = screen.params?.chain ?? "";
   const currentChain = chains?.[chainId];

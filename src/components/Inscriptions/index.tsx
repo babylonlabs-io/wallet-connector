@@ -3,10 +3,12 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { FieldControl } from "@/components/FieldControl";
+import { BTCConfig } from "@/core/types";
 
 export interface Props {
   className?: string;
   onSubmit?: (value: boolean, showAgain: boolean) => void;
+  config?: BTCConfig;
 }
 
 export function Inscriptions({ className, onSubmit }: Props) {
