@@ -37,7 +37,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
       <DialogBody>
         <FieldControl
           label={
-            <>
+            <div className="b-block">
               I certify that I have read and accept the updated{" "}
               <a
                 href="https://babylonlabs.io/terms-of-use"
@@ -57,7 +57,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
                 Privacy Policy
               </a>
               .
-            </>
+            </div>
           }
           className="b-mb-8"
         >
