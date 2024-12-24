@@ -71,7 +71,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
           <Checkbox checked={state["inscriptions"]} onChange={handleChange("inscriptions")} />
         </FieldControl>
 
-        <FieldControl label="I acknowledge that Keystone via QR code is the only hardware wallet supporting Bitcoin Staking. Using any other hardware wallets through any means (such as connection to software / extension / mobile wallet) can lead to permanent inability to withdraw the stake.">
+        <FieldControl label="I acknowledge that the following are the only hardware wallets supporting Bitcoin Staking: (1) Keystone -- via QR code and (2) OneKey -- via the OneKey Chrome extension and the hardware devices (a) OneKey Pro and (b) OneKey Classic 1s (experimental, 3.10.1 firmware or higher) using Taproot only. Using any other hardware wallet through any means (such as connection to a software/extension/mobile wallet) can lead to permanent inability to withdraw the stake.">
           <Checkbox checked={state["staking"]} onChange={handleChange("staking")} />
         </FieldControl>
       </DialogBody>
