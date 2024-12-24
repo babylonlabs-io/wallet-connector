@@ -41,11 +41,11 @@ export const config: ChainConfigArr = [
       },
     ],
     config: {
-      chainId: "devnet-7",
+      chainId: "devnet-9",
       rpc: "https://rpc-dapp.devnet.babylonlabs.io",
       chainData: {
-        chainId: "devnet-7",
-        chainName: "Babylon Devnet 7",
+        chainId: "devnet-9",
+        chainName: "Babylon Devnet 9",
         chainSymbolImageUrl:
           "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn-dev/chain.png",
         rpc: "https://rpc-dapp.devnet.babylonlabs.io",
