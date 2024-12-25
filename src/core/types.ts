@@ -76,14 +76,16 @@ export interface IWallet<P extends IProvider = IProvider> {
   label: string;
 }
 
-export interface IChain<K extends string = string, P extends IProvider = IProvider> {
+export interface IChain<K extends string = string, P extends IProvider = IProvider, C = any> {
   id: K;
   name: string;
   icon: string;
   wallets: IWallet<P>[];
+  config: C;
 }
 
-export interface IConnector<K extends string = string, P extends IProvider = IProvider> extends IChain<K, P> {
+export interface IConnector<K extends string = string, P extends IProvider = IProvider, C = any>
+  extends IChain<K, P, C> {
   connect(wallet: string | IWallet<P>): Promise<IWallet<P> | null>;
   disconnect(): Promise<void>;
   on(event: string, cb: (wallet: IWallet<P>) => void): () => void;

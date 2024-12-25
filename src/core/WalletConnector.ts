@@ -10,7 +10,7 @@ export interface ConnectorEvents<P extends IProvider> {
   error: (error: Error) => void;
 }
 
-export class WalletConnector<N extends string, P extends IProvider> implements IConnector {
+export class WalletConnector<N extends string, P extends IProvider, C> implements IConnector<N, P, C> {
   private _connectedWallet: Wallet<P> | null = null;
   private _ee = createNanoEvents<ConnectorEvents<P>>();
 
@@ -19,6 +19,7 @@ export class WalletConnector<N extends string, P extends IProvider> implements I
     public readonly name: string,
     public readonly icon: string,
     public readonly wallets: Wallet<P>[],
+    public readonly config: C,
   ) {}
 
   get connectedWallet() {
@@ -53,7 +54,7 @@ export class WalletConnector<N extends string, P extends IProvider> implements I
   }
 
   clone() {
-    return new WalletConnector(this.id, this.name, this.icon, this.wallets);
+    return new WalletConnector(this.id, this.name, this.icon, this.wallets, this.config);
   }
 
   on<K extends keyof ConnectorEvents<P>>(name: K, handler: ConnectorEvents<P>[K]) {

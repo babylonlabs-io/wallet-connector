@@ -67,12 +67,12 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   metadata: ChainMetadata<N, P, C>,
   context: any,
   config: C,
-): Promise<WalletConnector<N, P>> => {
+): Promise<WalletConnector<N, P, C>> => {
   const wallets: Wallet<P>[] = [];
 
   for (const walletMetadata of metadata.wallets) {
     wallets.push(await createWallet(walletMetadata, context, config));
   }
 
-  return new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets);
+  return new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets, config);
 };

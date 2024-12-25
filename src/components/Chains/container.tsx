@@ -13,7 +13,7 @@ interface ContainerProps {
   onDisconnectWallet?: (chainId: string) => void;
 }
 
-export default function ChainsContainer(props: ContainerProps) {
+export function ChainsContainer(props: ContainerProps) {
   const { chains, selectedWallets, displayWallets } = useWidgetState();
   const { selected } = useWalletConnect();
 

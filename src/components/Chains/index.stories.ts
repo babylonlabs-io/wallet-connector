@@ -30,8 +30,9 @@ export const Default: Story = {
             label: "Installed",
           },
         ],
+        config: {},
       },
-      { id: "BBN", name: "Babylon Chain", icon: "/images/chains/babylon.jpeg", wallets: [] },
+      { id: "BBN", name: "Babylon Chain", icon: "/images/chains/babylon.jpeg", wallets: [], config: {} },
     ],
     selectedWallets: {
       BTC: {

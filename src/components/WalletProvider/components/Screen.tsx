@@ -1,10 +1,10 @@
 import { type JSX } from "react";
 
-import Chains from "@/components/Chains/container";
-import { Inscriptions } from "@/components/Inscriptions";
+import { ChainsContainer as Chains } from "@/components/Chains/container";
+import { InscriptionsContainer as Inscriptions } from "@/components/Inscriptions/container";
 import { LoaderScreen } from "@/components/Loader";
-import { TermsOfService } from "@/components/TermsOfService";
-import Wallets from "@/components/Wallets/container";
+import { TermsOfServiceContainer as TermsOfService } from "@/components/TermsOfService/container";
+import { WalletsContainer as Wallets } from "@/components/Wallets/container";
 import type { Screen } from "@/context/State.context";
 import type { IChain, IWallet } from "@/core/types";
 

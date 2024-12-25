@@ -3,9 +3,11 @@ import { useCallback, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { FieldControl } from "@/components/FieldControl";
+import { BTCConfig } from "@/core/types";
 
 export interface Props {
   className?: string;
+  config?: BTCConfig;
   onClose?: () => void;
   onSubmit?: () => void;
 }
@@ -37,7 +39,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
       <DialogBody>
         <FieldControl
           label={
-            <>
+            <div className="b-block">
               I certify that I have read and accept the updated{" "}
               <a
                 href="https://babylonlabs.io/terms-of-use"
@@ -57,7 +59,7 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
                 Privacy Policy
               </a>
               .
-            </>
+            </div>
           }
           className="b-mb-8"
         >

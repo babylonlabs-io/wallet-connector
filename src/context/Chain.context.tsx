@@ -28,8 +28,8 @@ interface ProviderProps {
 }
 
 export interface Connectors {
-  BTC: WalletConnector<"BTC", IBTCProvider> | null;
-  BBN: WalletConnector<"BBN", IBBNProvider> | null;
+  BTC: WalletConnector<"BTC", IBTCProvider, BTCConfig> | null;
+  BBN: WalletConnector<"BBN", IBBNProvider, BBNConfig> | null;
 }
 
 const defaultState: Connectors = {
