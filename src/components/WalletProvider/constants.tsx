@@ -41,6 +41,9 @@ export const config: ChainConfigArr = [
       },
     ],
     config: {
+      networkName: "BABY",
+      networkFullName: "Babylon Devnet Chain",
+      coinSymbol: "tBABY",
       chainId: "devnet-9",
       rpc: "https://rpc-dapp.devnet.babylonlabs.io",
       chainData: {
