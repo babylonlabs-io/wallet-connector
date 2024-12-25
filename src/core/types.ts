@@ -57,6 +57,9 @@ export type BBNConfig = {
   chainId: string;
   rpc: string;
   chainData: ChainInfo;
+  networkName: string;
+  networkFullName: string;
+  coinSymbol: string;
 };
 
 export interface IProvider {
