@@ -1,5 +1,12 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.30
+
+### Patch Changes
+
+- a4f1927: add network config to every chain
+- 1e116cc: Add more BBN chain config fields
+
 ## 0.1.29
 
 ### Patch Changes
