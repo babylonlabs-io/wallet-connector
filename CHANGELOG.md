@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.31
+
+### Patch Changes
+
+- 0401e47: update inscription text
+
 ## 0.1.30
 
 ### Patch Changes
