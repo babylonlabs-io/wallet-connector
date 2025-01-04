@@ -1,15 +1,12 @@
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-  - [Wallet Integration](#wallet-integration)
-    - [1. Integration Through Tomo Connect SDK Lite (Recommended)](#1-integration-through-tomo-connect-sdk-lite-recommended)
-    - [2. Direct Native Integration](#2-direct-native-integration)
-    - [Supported Wallet Types](#supported-wallet-types)
-      - [Bitcoin Wallets](#bitcoin-wallets)
-      - [Babylon Wallets](#babylon-wallets)
-    - [Integration Process](#integration-process)
-      - [1. Implement Provider Interface](#1-implement-provider-interface)
-      - [2. Integration Method](#2-integration-method)
+- [Wallet Integration](#wallet-integration)
+  - [1. Integration Through Tomo Connect SDK Lite (Recommended)](#1-integration-through-tomo-connect-sdk-lite-recommended)
+  - [2. Direct Native Integration](#2-direct-native-integration)
+  - [Supported Wallet Types](#supported-wallet-types)
+    - [Bitcoin Wallets](#bitcoin-wallets)
+    - [Babylon Wallets](#babylon-wallets)
+  - [Integration Process](#integration-process)
+    - [1. Implement Provider Interface](#1-implement-provider-interface)
+    - [2. Integration Method](#2-integration-method)
 
 > ⚠️ **IMPORTANT WARNING**
 >
