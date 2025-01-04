@@ -59,10 +59,12 @@ For detailed integration specifications and alternatives, please refer to our
 
 ## FAQ
 
-Q: What's the difference between native and injectable wallets? A: Native
-wallets are built into the library, while injectable wallets (common in mobile
-apps) can dynamically inject their implementation into the webpage.
+Q: What's the difference between native and injectable wallets?
 
-Q: Should I integrate through Tomo Connect or directly? A: We recommend
-integrating through Tomo Connect. Direct integration should only be considered
-**only** if Tomo Connect integration isn't feasible for your use case.
+A: Native wallets are built into the library, while injectable wallets (common
+in mobile apps) can dynamically inject their implementation into the webpage.
+
+Q: Should I integrate through Tomo Connect or directly?
+
+A: We recommend integrating through Tomo Connect. Direct integration should be
+considered only if Tomo Connect integration isn't feasible for your use case.
