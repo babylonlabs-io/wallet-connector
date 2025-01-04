@@ -15,7 +15,7 @@ both Bitcoin and Babylon chain wallets.
 
 ## Key Features
 
-- Unified interfaces for BTC and BBN wallet connections
+- Unified interfaces for Bitcoin and Babylon wallet connections
 - Support for browser extension wallets
 - Support for hardware wallets
 - Mobile wallet compatibility through injectable interfaces
@@ -24,8 +24,8 @@ both Bitcoin and Babylon chain wallets.
 ## Overview
 
 The Babylon Wallet Connector provides a unified interface for integrating both
-Bitcoin (BTC) and Babylon (BBN) wallets into Babylon dApp. It supports both
-native wallet extensions and injectable mobile wallets.
+Bitcoin and Babylon wallets into Babylon dApp. It supports both native wallet
+extensions and injectable mobile wallets.
 
 The main architectural difference is that native wallets are built into the
 library, while injectable wallets can be dynamically added by injecting their

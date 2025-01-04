@@ -5,8 +5,8 @@
     - [1. Integration Through Tomo Connect SDK Lite (Recommended)](#1-integration-through-tomo-connect-sdk-lite-recommended)
     - [2. Direct Native Integration](#2-direct-native-integration)
     - [Supported Wallet Types](#supported-wallet-types)
-      - [Bitcoin (BTC) Wallets](#bitcoin-btc-wallets)
-      - [Babylon (BBN) Wallets](#babylon-bbn-wallets)
+      - [Bitcoin Wallets](#bitcoin-wallets)
+      - [Babylon Wallets](#babylon-wallets)
     - [Integration Process](#integration-process)
       - [1. Implement Provider Interface](#1-implement-provider-interface)
       - [2. Integration Method](#2-integration-method)
@@ -24,8 +24,7 @@
 ## Wallet Integration
 
 This guide explains how to integrate wallets with the Babylon staking dApp. The
-dApp supports both Bitcoin (BTC) and Babylon (BBN) wallets through two
-integration paths:
+dApp supports both Bitcoin and Babylon wallets through two integration paths:
 
 ### 1. Integration Through Tomo Connect SDK Lite (Recommended)
 
@@ -49,7 +48,7 @@ integrated wallets that are maintained by the Babylon team.
 
 ### Supported Wallet Types
 
-#### Bitcoin (BTC) Wallets
+#### Bitcoin Wallets
 
 Both native and injectable wallets must implement the `IBTCProvider` interface.
 
@@ -65,7 +64,7 @@ Both native and injectable wallets must implement the `IBTCProvider` interface.
 - Must inject implementation into `window.btcwallet`
 - Common in mobile wallet browsers
 
-#### Babylon (BBN) Wallets
+#### Babylon Wallets
 
 Both native and injectable wallets must implement the `IBBNProvider` interface.
 
@@ -117,9 +116,9 @@ For Injectable Wallets:
 2. Inject into `window` before loading dApp:
 
 ```ts
-// For BTC wallets
+// For Bitcoin wallets
 window.btcwallet = new BTCWalletImplementation();
 
-// For BBN wallets
+// For Babylon wallets
 window.bbnwallet = new BBNWalletImplementation();
 ```
