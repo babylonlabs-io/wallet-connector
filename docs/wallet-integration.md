@@ -11,6 +11,16 @@
       - [1. Implement Provider Interface](#1-implement-provider-interface)
       - [2. Integration Method](#2-integration-method)
 
+> ⚠️ **IMPORTANT WARNING**
+>
+> Making breaking changes to wallet implementations **will cause severe issues**
+> and unexpected behavior.
+>
+> - Always maintain backwards compatibility
+> - Test thoroughly before deploying changes
+>
+> If you're unsure about a change, please reach out to the Babylon team.
+
 ## Wallet Integration
 
 This guide explains how to integrate wallets with the Babylon staking dApp. The
