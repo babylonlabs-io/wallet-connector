@@ -23,13 +23,12 @@
 
 ## Wallet Integration
 
-This guide explains how to integrate wallets with the Babylon staking dApp. The
+This guide explains how to integrate wallets with the Babylon staking app. The
 dApp supports both Bitcoin and Babylon wallets through two integration paths:
 
 ### 1. Integration Through Tomo Connect SDK Lite (Recommended)
 
-The recommended way to integrate your wallet with Babylon staking dApp is
-through
+The recommended way to integrate your wallet with Babylon staking app is through
 [Tomo Connect SDK Lite](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite).
 This provides:
 
