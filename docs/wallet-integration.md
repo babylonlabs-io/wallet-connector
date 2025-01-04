@@ -74,35 +74,11 @@ Both native and injectable wallets must implement the `IBBNProvider` interface.
 
 #### 1. Implement Provider Interface
 
-Choose the appropriate interface based on your wallet type:
+Choose the appropriate interface based on your wallet type. Full interface
+definitions can be found here:
 
-```ts
-// For BTC wallets
-interface IBTCProvider {
-  connectWallet(): Promise<void>;
-  getAddress(): Promise<string>;
-  getPublicKeyHex(): Promise<string>;
-  signPsbt(psbtHex: string): Promise<string>;
-  signPsbts(psbtsHexes: string[]): Promise<string[]>;
-  getNetwork(): Promise<Network>;
-  signMessage(message: string, type: "ecdsa"): Promise<string>;
-  getInscriptions(): Promise<InscriptionIdentifier[]>;
-  on(eventName: string, callBack: () => void): void;
-  off(eventName: string, callBack: () => void): void;
-  getWalletProviderName(): Promise<string>;
-  getWalletProviderIcon(): Promise<string>;
-}
-
-// For BBN wallets
-interface IBBNProvider {
-  connectWallet(): Promise<void>;
-  getAddress(): Promise<string>;
-  getPublicKeyHex(): Promise<string>;
-  getOfflineSigner(): Promise<OfflineAminoSigner & OfflineDirectSigner>;
-  getWalletProviderName(): Promise<string>;
-  getWalletProviderIcon(): Promise<string>;
-}
-```
+- [IBTCProvider Interface](../src/core/types.ts#L135)
+- [IBBNProvider Interface](../src/core/types.ts#L218)
 
 #### 2. Integration Method
 
