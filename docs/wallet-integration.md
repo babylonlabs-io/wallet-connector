@@ -2,14 +2,14 @@
   - [1. Browser extension wallets](#1-browser-extension-wallets)
   - [2. Mobile wallets](#2-mobile-wallets)
 
-> ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by
-> the Babylon web application are likely to cause incompatibility with it
-> or lead to unexpected behavior with severe consequences.
-> 
-> Please make sure to always maintain backwards compatibility and
-> test thoroughly all changes affecting the methods required by
-> the Babylon web application. If you are unsure about a change,
-> please reach out to the Babylon Labs team.
+> ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by the Babylon
+> web application are likely to cause incompatibility with it or lead to
+> unexpected behavior with severe consequences.
+>
+> Please make sure to always maintain backwards compatibility and test
+> thoroughly all changes affecting the methods required by the Babylon web
+> application. If you are unsure about a change, please reach out to the Babylon
+> Labs team.
 
 ## Wallet Integration
 
