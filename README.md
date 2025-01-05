@@ -9,6 +9,25 @@
 </p>
 <br/>
 
+> ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by the Babylon
+> web application are likely to cause incompatibility with it or lead to
+> unexpected behavior with severe consequences.
+>
+> Please make sure to always maintain backwards compatibility and test
+> thoroughly all changes affecting the methods required by the Babylon web
+> application. If you are unsure about a change, please reach out to the Babylon
+> Labs team.
+
+- [Key Features](#key-features)
+- [Overview](#overview)
+- [Installation](#installation)
+- [Version Release](#version-release)
+  - [Stable version](#stable-version)
+- [Storybook](#storybook)
+- [Wallet Integration](#wallet-integration)
+  - [1. Browser extension wallets](#1-browser-extension-wallets)
+  - [2. Mobile wallets](#2-mobile-wallets)
+
 The Babylon Wallet Connector repository provides the wallet connection component
 used in the Babylon Staking Dashboard. This component enables the connection of
 both Bitcoin and Babylon chain wallets.
@@ -49,18 +68,31 @@ Stable release versions are manually released from the main branch.
 npm run dev
 ```
 
-## Wallet Developers
+## Wallet Integration
 
-Wallet developers that want to integrate their wallet into the Babylon Wallet
-Connect interface for listing in the Babylon staking dashboard have the
-following options:
+This guide explains how to integrate wallets with the Babylon staking app. The
+dApp supports both Bitcoin and Babylon wallets through two integration paths:
 
-- **Browser Extension Wallets** can integrate through the
-  [Tomo Connet SDK](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite), which
-  is the external Wallet Connection interface that ensures compatibility with
-  our application. Native integrations into the Babylon Wallet Connector require
-  significant maintenance and will happen only for critical wallets for the
-  staking application.
-- **Mobile Wallets** can integrate through the mobile injectable interface. For
-  a detailed integration specification, please refer to our
-  [Wallet Integration Guide](docs/wallet-integration.md).
+### 1. Browser extension wallets
+
+The recommended way to integrate your wallet with Babylon staking app is through
+[Tomo Connect SDK Lite](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite).
+Please refer to Tomo's documentation for integration details.
+
+### 2. Mobile wallets
+
+Full interface definitions can be found here:
+
+- [IBTCProvider Interface](../src/core/types.ts#L135)
+- [IBBNProvider Interface](../src/core/types.ts#L218)
+
+1. Implement provider interface
+2. Inject into `window` before loading dApp:
+
+```ts
+// For Bitcoin wallets
+window.btcwallet = new BTCWalletImplementation();
+
+// For Babylon wallets
+window.bbnwallet = new BBNWalletImplementation();
+```
