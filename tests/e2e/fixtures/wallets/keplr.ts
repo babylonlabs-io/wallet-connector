@@ -35,8 +35,17 @@ export async function setupKeplrWallet(context: BrowserContext, mnemonic: string
     confirmPassword: password,
   });
 
+  await page.getByRole("button", { name: "Next" }).click();
+
+  // Deselect all networks
+  await page
+    .locator("div")
+    .filter({ hasText: /^Select All$/ })
+    .nth(2)
+    .click();
+
   // Complete setup
-  for (const buttonName of ["Next", "Save", "Finish"]) {
+  for (const buttonName of ["Save", "Finish"]) {
     await page.getByRole("button", { name: buttonName }).click();
   }
 }
