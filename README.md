@@ -59,7 +59,7 @@ following options:
   [Tomo Connet SDK](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite), which
   is the external Wallet Connection interface that ensures compatibility with
   our application. Native integrations into the Babylon Wallet Connector require
-  significant maintenance from our team and will happen only for critical
+  significant maintenance and will happen only for critical
   wallets for the staking application.
 - **Mobile Wallets** can integrate through the mobile injectable interface. For
   detailed integration specifications and alternatives, please refer to our
