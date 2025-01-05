@@ -62,5 +62,5 @@ following options:
   significant maintenance and will happen only for critical
   wallets for the staking application.
 - **Mobile Wallets** can integrate through the mobile injectable interface. For
-  detailed integration specifications and alternatives, please refer to our
+  a detailed integration specification, please refer to our
   [Wallet Integration Guide](docs/wallet-integration.md).
