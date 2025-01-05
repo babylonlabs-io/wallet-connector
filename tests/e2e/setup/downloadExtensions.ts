@@ -72,10 +72,10 @@ export const EXTENSION_CHROME_STORE_IDS = {
 
 // Inner chrome extension ID
 export const EXTENSION_CHROME_INNER_IDS = {
-  OKX: "andiikjaeeefhgfmbacmcahaglkmhnen",
-  KEPLR: "nmkdenkiohopkjiodajfcnldlgbjceaa",
-  BITGET: "X",
-  ONEKEY: "X",
+  OKX: "aoidgejanlhnakicljcclfajchjdfceo", // 3.36.5
+  KEPLR: "ffcjkjnakmchilamdbbpmfngggmacghh", // 0.12.169
+  BITGET: "laobimbmcflenhndjllcdfpbimfppmaj", // 2.15.9
+  ONEKEY: "eepobljkehdbbllgbngmmpednjjcefbl", // 5.5.0
 };
 
 /**
