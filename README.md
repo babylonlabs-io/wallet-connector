@@ -57,7 +57,7 @@ following options:
 
 - **Browser Extension Wallets** can integrate through the
   [Tomo Connet SDK](https://docs.tomo.inc/tomo-sdk/tomo-connect-sdk-lite), which
-  is our external Wallet Connection interface that ensures compatibility with
+  is the external Wallet Connection interface that ensures compatibility with
   our application. Native integrations into the Babylon Wallet Connector require
   significant maintenance from our team and will happen only for critical
   wallets for the staking application.
