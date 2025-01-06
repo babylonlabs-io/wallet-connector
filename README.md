@@ -83,8 +83,8 @@ Please refer to Tomo's documentation for integration details.
 
 Full interface definitions can be found here:
 
-- [IBTCProvider Interface](https://github.com/babylonlabs-io/bbn-wallet-connect/blob/main/src/core/types.ts#L140)
-- [IBBNProvider Interface](https://github.com/babylonlabs-io/bbn-wallet-connect/blob/main/src/core/types.ts#L223)
+- [IBTCProvider Interface](src/core/types.ts)
+- [IBBNProvider Interface](src/core/types.ts#L223)
 
 1. Implement provider interface
 2. Inject into `window` before loading dApp:
