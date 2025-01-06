@@ -84,7 +84,10 @@ Please refer to Tomo's documentation for integration details.
 ### 2. Mobile wallets
 
 Full interface definitions can be found in
-[src/core/types.ts](src/core/types.ts):
+[src/core/types.ts](src/core/types.ts).
+
+Below we outline the interfaces for Bitcoin and Babylon wallets that need to be
+implemented for integration with the Babylon staking app.
 
 #### IBTCProvider
 
