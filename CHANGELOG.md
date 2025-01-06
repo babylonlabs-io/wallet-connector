@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.33
+
+### Patch Changes
+
+- ae29adb: readme inline interfaces
+
 ## 0.1.32
 
 ### Patch Changes
