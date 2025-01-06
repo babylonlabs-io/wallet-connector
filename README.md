@@ -9,15 +9,6 @@
 </p>
 <br/>
 
-> ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by the Babylon
-> web application are likely to cause incompatibility with it or lead to
-> unexpected behavior with severe consequences.
->
-> Please make sure to always maintain backwards compatibility and test
-> thoroughly all changes affecting the methods required by the Babylon web
-> application. If you are unsure about a change, please reach out to the Babylon
-> Labs team.
-
 - [Key Features](#key-features)
 - [Overview](#overview)
 - [Installation](#installation)
@@ -71,6 +62,15 @@ npm run dev
 ```
 
 ## Wallet Integration
+
+> ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by the Babylon
+> web application are likely to cause incompatibility with it or lead to
+> unexpected behavior with severe consequences.
+>
+> Please make sure to always maintain backwards compatibility and test
+> thoroughly all changes affecting the methods required by the Babylon web
+> application. If you are unsure about a change, please reach out to the Babylon
+> Labs team.
 
 This guide explains how to integrate wallets with the Babylon staking app. The
 dApp supports both Bitcoin and Babylon wallets through two integration paths:
