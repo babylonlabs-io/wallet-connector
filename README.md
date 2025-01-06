@@ -27,6 +27,8 @@
 - [Wallet Integration](#wallet-integration)
   - [1. Browser extension wallets](#1-browser-extension-wallets)
   - [2. Mobile wallets](#2-mobile-wallets)
+    - [IBTCProvider](#ibtcprovider)
+    - [IBBNProvider](#ibbnprovider)
 
 The Babylon Wallet Connector repository provides the wallet connection component
 used in the Babylon Staking Dashboard. This component enables the connection of
@@ -81,10 +83,141 @@ Please refer to Tomo's documentation for integration details.
 
 ### 2. Mobile wallets
 
-Full interface definitions can be found here:
+Full interface definitions can be found in
+[src/core/types.ts](src/core/types.ts):
 
-- [IBTCProvider Interface](src/core/types.ts#L140)
-- [IBBNProvider Interface](src/core/types.ts#L223)
+#### IBTCProvider
+
+```ts
+interface IBTCProvider extends IProvider {
+  /**
+   * Connects to the wallet and returns the instance of the wallet provider.
+   * Currently only supports "native segwit" and "taproot" address types.
+   * @returns A promise that resolves to an instance of the wrapper wallet provider in babylon friendly format.
+   * @throws An error if the wallet is not installed or if connection fails.
+   */
+  connectWallet(): Promise<void>;
+
+  /**
+   * Gets the address of the connected wallet.
+   * @returns A promise that resolves to the address of the connected wallet.
+   */
+  getAddress(): Promise<string>;
+
+  /**
+   * Gets the public key of the connected wallet.
+   * @returns A promise that resolves to the public key of the connected wallet.
+   */
+  getPublicKeyHex(): Promise<string>;
+
+  /**
+   * Signs the given PSBT in hex format.
+   * @param psbtHex - The hex string of the unsigned PSBT to sign.
+   * @returns A promise that resolves to the hex string of the signed PSBT.
+   */
+  signPsbt(psbtHex: string): Promise<string>;
+
+  /**
+   * Signs multiple PSBTs in hex format.
+   * @param psbtsHexes - The hex strings of the unsigned PSBTs to sign.
+   * @returns A promise that resolves to an array of hex strings, each representing a signed PSBT.
+   */
+  signPsbts(psbtsHexes: string[]): Promise<string[]>;
+
+  /**
+   * Gets the network of the current account.
+   * @returns A promise that resolves to the network of the current account.
+   */
+  getNetwork(): Promise<Network>;
+
+  /**
+   * Signs a message using the specified signing method.
+   * @param message - The message to sign.
+   * @param type - The signing method to use.
+   * @returns A promise that resolves to the signed message.
+   */
+  signMessage(message: string, type: "ecdsa"): Promise<string>;
+
+  /**
+   * Retrieves the inscriptions for the connected wallet.
+   * @returns A promise that resolves to an array of inscriptions.
+   */
+  getInscriptions(): Promise<InscriptionIdentifier[]>;
+
+  /**
+   * Registers an event listener for the specified event.
+   * At the moment, only the "accountChanged" event is supported.
+   * @param eventName - The name of the event to listen for.
+   * @param callBack - The callback function to be executed when the event occurs.
+   */
+  on(eventName: string, callBack: () => void): void;
+
+  /**
+   * Unregisters an event listener for the specified event.
+   * @param eventName - The name of the event to listen for.
+   * @param callBack - The callback function to be executed when the event occurs.
+   */
+  off(eventName: string, callBack: () => void): void;
+
+  /**
+   * Gets the name of the wallet provider.
+   * @returns A promise that resolves to the name of the wallet provider.
+   */
+  getWalletProviderName(): Promise<string>;
+
+  /**
+   * Gets the icon of the wallet provider.
+   * @returns A promise that resolves to the icon of the wallet provider.
+   */
+  getWalletProviderIcon(): Promise<string>;
+}
+```
+
+#### IBBNProvider
+
+```ts
+export interface IBBNProvider extends IProvider {
+  /**
+   * Connects to the wallet and returns the instance of the wallet provider.
+   * @returns A promise that resolves to an instance of the wrapper wallet provider.
+   * @throws An error if the wallet is not installed or if connection fails.
+   */
+  connectWallet(): Promise<void>;
+
+  /**
+   * Gets the address of the connected wallet.
+   * @returns A promise that resolves to the address of the connected wallet.
+   */
+  getAddress(): Promise<string>;
+
+  /**
+   * Gets the public key of the connected wallet.
+   * @returns A promise that resolves to the public key of the connected wallet.
+   */
+  getPublicKeyHex(): Promise<string>;
+
+  /**
+   * Gets the name of the wallet provider.
+   * @returns A promise that resolves to the name of the wallet provider.
+   */
+  getWalletProviderName(): Promise<string>;
+
+  /**
+   * Gets the icon of the wallet provider.
+   * @returns A promise that resolves to the icon of the wallet provider.
+   */
+  getWalletProviderIcon(): Promise<string>;
+
+  /**
+   * Retrieves an offline signer that supports both Amino and Direct signing methods.
+   * This signer is used for signing transactions offline before broadcasting them to the network.
+   *
+   * @returns {Promise<OfflineAminoSigner & OfflineDirectSigner>} A promise that resolves to a signer supporting both Amino and Direct signing
+   * @throws {Error} If wallet connection is not established or signer cannot be retrieved
+   */
+  getOfflineSigner(): Promise<OfflineAminoSigner & OfflineDirectSigner>;
+}
+```
 
 1. Implement provider interface
 2. Inject into `window` before loading dApp:
