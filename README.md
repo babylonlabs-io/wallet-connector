@@ -83,7 +83,7 @@ Please refer to Tomo's documentation for integration details.
 
 Full interface definitions can be found here:
 
-- [IBTCProvider Interface](src/core/types.ts)
+- [IBTCProvider Interface](src/core/types.ts#L140)
 - [IBBNProvider Interface](src/core/types.ts#L223)
 
 1. Implement provider interface
