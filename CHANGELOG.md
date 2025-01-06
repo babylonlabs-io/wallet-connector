@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.32
+
+### Patch Changes
+
+- bcca6e3: docs: add wallet integration guide
+
 ## 0.1.31
 
 ### Patch Changes
@@ -18,7 +24,8 @@
 ### Patch Changes
 
 - 66260df: chore: bump bbn network version to devnet-9
-- 419eb84: chore: update terms and condition to include links and text for hardware wallets
+- 419eb84: chore: update terms and condition to include links and text for
+  hardware wallets
 
 ## 0.1.27
 
