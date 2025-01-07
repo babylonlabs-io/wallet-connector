@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.35
+
+### Patch Changes
+
+- 89dcd82: bump btc-staking-ts to canary-7
+
 ## 0.1.34
 
 ### Patch Changes
