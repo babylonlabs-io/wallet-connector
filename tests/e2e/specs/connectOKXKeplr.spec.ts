@@ -34,7 +34,7 @@ async function setupStorybookEnvironment(page: Page, storybook: FrameLocator) {
   await storybook.getByRole("button", { name: "Connect Wallet" }).click();
 
   // Accept terms
-  const terms = ["I certify that I have read", "I certify that I wish to", "I acknowledge that Keystone"];
+  const terms = ["I certify that I have read", "I certify that I wish to", "I acknowledge that the following are"];
   for (const term of terms) {
     await storybook.getByText(term).click();
   }
@@ -47,7 +47,7 @@ async function connectBitcoinWallet(storybook: FrameLocator, context: BrowserCon
 
   await connectWalletViaPopup(context, "Connect");
 
-  await storybook.getByText("Unlock bitcoin UTXOs with").click();
+  await storybook.getByText("Use", { exact: true }).click();
   await storybook.getByRole("button", { name: "Save" }).click();
 }
 
@@ -60,7 +60,7 @@ async function connectBabylonWallet(storybook: FrameLocator, context: BrowserCon
   await storybook.getByRole("button", { name: "Done" }).click();
 }
 
-async function connectWalletViaPopup(context: BrowserContext, buttonName) {
+async function connectWalletViaPopup(context: BrowserContext, buttonName: string) {
   const [popup] = await Promise.all([context.waitForEvent("page")]);
   await popup.waitForLoadState("domcontentloaded");
   await popup.bringToFront();

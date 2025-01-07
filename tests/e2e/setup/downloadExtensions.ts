@@ -75,7 +75,7 @@ export const EXTENSION_CHROME_INNER_IDS = {
   OKX: "aoidgejanlhnakicljcclfajchjdfceo", // 3.36.5
   KEPLR: "ffcjkjnakmchilamdbbpmfngggmacghh", // 0.12.169
   BITGET: "laobimbmcflenhndjllcdfpbimfppmaj", // 2.15.9
-  ONEKEY: "eepobljkehdbbllgbngmmpednjjcefbl", // 5.5.0
+  ONEKEY: "nkipngmnokmlggfbiemjdonfcheaplfa", // 5.5.1
 };
 
 /**
