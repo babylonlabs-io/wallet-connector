@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.36
+
+### Patch Changes
+
+- 7f07dc7: remove tiny secp dependency
+
 ## 0.1.35
 
 ### Patch Changes
