@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.37
+
+### Patch Changes
+
+- c33b160: update readme logo
+
 ## 0.1.36
 
 ### Patch Changes
