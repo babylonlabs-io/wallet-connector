@@ -1,7 +1,7 @@
 <p align="center">
     <img
         alt="Babylon Logo"
-        src="https://github.com/user-attachments/assets/b21652b5-847d-48b2-89a7-0f0969a50900"
+        src="https://github.com/user-attachments/assets/dc74271e-90f1-44bd-9122-2b7438ab375c"
         width="100"
     />
     <h3 align="center">@babylonlabs-io/bbn-wallet-connect</h3>
