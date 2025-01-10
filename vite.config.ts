@@ -35,7 +35,6 @@ export default defineConfig({
         // Issues linking with Next.js
         // "@keystonehq/keystone-sdk",
         "@keystonehq/sdk",
-        "@bitcoin-js/tiny-secp256k1-asmjs",
       ],
       output: {
         sourcemapExcludeSources: true,
