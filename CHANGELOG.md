@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.38
+
+### Patch Changes
+
+- d3b034f: add bitcoin wallet - unisat
+
 ## 0.1.37
 
 ### Patch Changes
