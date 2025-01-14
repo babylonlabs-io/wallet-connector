@@ -41,7 +41,6 @@ export class UnisatProvider implements IBTCProvider {
   }
 
   connectWallet = async (): Promise<void> => {
-    console.log("new version 18");
     let accounts;
     try {
       accounts = await this.provider.requestAccounts();
