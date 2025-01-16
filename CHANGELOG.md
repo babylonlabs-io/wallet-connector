@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.40
+
+### Patch Changes
+
+- 1b99e13: add babylon wallet - okx
+
 ## 0.1.39
 
 ### Patch Changes
