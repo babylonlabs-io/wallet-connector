@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.1.39
+
+### Patch Changes
+
+- ea7dd46: add babylon wallet - leap
+
 ## 0.1.38
 
 ### Patch Changes
