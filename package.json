@@ -1,6 +1,6 @@
 {
   "name": "@babylonlabs-io/bbn-wallet-connect",
-  "version": "0.1.40",
+  "version": "0.1.41",
   "type": "module",
   "types": "dist/index.d.ts",
   "publishConfig": {
