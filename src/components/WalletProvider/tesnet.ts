@@ -5,7 +5,7 @@ export const BBN_TESTNET_LCD_URL = "https://lcd-dapp.testnet.babylonlabs.io/";
 
 export const bbnTestnet: ChainInfo = {
   chainId: "bbn-test-5",
-  chainName: "Babylon Phase-2 Testnet",
+  chainName: "Babylon Testnet",
   chainSymbolImageUrl:
     "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/bbn-test/chain.png",
   rpc: BBN_TESTNET_RPC_URL,
