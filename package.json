@@ -50,7 +50,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@babylonlabs-io/bbn-core-ui": "^0.7.1",
+    "@babylonlabs-io/bbn-core-ui": "^0.7.2",
     "@babylonlabs-io/btc-staking-ts": "0.4.0-canary.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
