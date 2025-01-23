@@ -44,7 +44,8 @@
     "@keystonehq/keystone-sdk": "0.9.0",
     "@keystonehq/sdk": "0.22.1",
     "buffer": "^6.0.3",
-    "nanoevents": "^9.1.0"
+    "nanoevents": "^9.1.0",
+    "usehooks-ts": "^3.0.2"
   },
   "files": [
     "dist"

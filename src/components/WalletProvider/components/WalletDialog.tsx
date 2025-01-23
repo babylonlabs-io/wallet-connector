@@ -1,8 +1,10 @@
-import { Dialog } from "@babylonlabs-io/bbn-core-ui";
 import { useCallback } from "react";
+import { twMerge } from "tailwind-merge";
 
+import { ResponsiveDialog } from "@/components/ResponsiveDialog/ResponsiveDialog";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
+import { useIsMobileView } from "@/hooks/useIsMobileView";
 import { useWalletConnect } from "@/hooks/useWalletConnect";
 import { useWalletConnectors } from "@/hooks/useWalletConnectors";
 import { useWalletWidgets } from "@/hooks/useWalletWidgets";
@@ -24,6 +26,7 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
   const walletWidgets = useWalletWidgets(connectors, config);
   const { connect, disconnect } = useWalletConnectors(onError);
   const { disconnect: disconnectAll } = useWalletConnect();
+  const isMobileView = useIsMobileView();
 
   const handleToggleInscriptions = useCallback(
     (lockInscriptions: boolean, showAgain: boolean) => {
@@ -45,11 +48,11 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
   }, [confirm]);
 
   return (
-    <Dialog open={visible} onClose={handleClose}>
+    <ResponsiveDialog open={visible} onClose={handleClose}>
       <Screen
         current={screen}
         widgets={walletWidgets}
-        className="b-size-[600px]"
+        className={twMerge(isMobileView ? "b-max-h-screen b-overflow-auto b-pt-4" : "b-size-[600px]")}
         onClose={handleClose}
         onConfirm={handleConfirm}
         onSelectWallet={connect}
@@ -57,6 +60,6 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
         onToggleInscriptions={handleToggleInscriptions}
         onDisconnectWallet={disconnect}
       />
-    </Dialog>
+    </ResponsiveDialog>
   );
 }
