@@ -31,7 +31,9 @@ const SCREENS = {
   WALLETS: ({ className, widgets, onClose, onSelectWallet }: ScreenProps) => (
     <Wallets widgets={widgets} className={className} onClose={onClose} onSelectWallet={onSelectWallet} />
   ),
-  INSCRIPTIONS: ({ onToggleInscriptions }: ScreenProps) => <Inscriptions onSubmit={onToggleInscriptions} />,
+  INSCRIPTIONS: ({ className, onToggleInscriptions }: ScreenProps) => (
+    <Inscriptions className={className} onSubmit={onToggleInscriptions} />
+  ),
   LOADER: ({ className, current }: ScreenProps) => (
     <LoaderScreen className={className} title={current?.params?.message as string} />
   ),
