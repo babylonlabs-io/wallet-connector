@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.2.0
+
+### Minor Changes
+
+- afcd3a0: feat: dark mode
+
 ## 0.1.42
 
 ### Patch Changes
