@@ -37,6 +37,7 @@ export const Default: Story = {
     return <Button onClick={open}>Connect Wallet</Button>;
   },
 };
+
 export const WithConnectedData: Story = {
   args: {
     onError: console.log,
@@ -56,16 +57,16 @@ export const WithConnectedData: Story = {
     return (
       <div>
         <Button onClick={open}>Connect Wallet</Button>
-        <div className="b-flex b-flex-col b-gap-4">
+        <div className="flex flex-col gap-4">
           {Object.entries(selectedWallets).map(
             ([chainName, wallet]) =>
               wallet?.account && (
                 <div
-                  className="b-rounded b-border b-border-secondary-main/30 b-p-4"
+                  className="rounded border border-secondary-main/30 p-4"
                   key={chainName}
                   data-testid={`${chainName.toLowerCase()}-wallet-section`}
                 >
-                  <Text variant="subtitle1" className="b-mb-2">
+                  <Text variant="subtitle1" className="mb-2">
                     {chainName} Wallet
                   </Text>
                   <Text variant="body2" data-testid={`${chainName.toLowerCase()}-wallet-address`}>
@@ -131,15 +132,15 @@ export const WithBTCSigningFeatures: Story = {
 
     return (
       <div>
-        <Button className="b-mb-4" onClick={open}>
+        <Button className="mb-4" onClick={open}>
           Connect Wallet
         </Button>
 
-        <div className="b-flex b-flex-col b-gap-4">
+        <div className="flex flex-col gap-4">
           {btcProvider && (
-            <div className="b-flex b-flex-col b-gap-4">
-              <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-                <FormControl label="Sign Message" className="b-mb-2 b-py-2">
+            <div className="flex flex-col gap-4">
+              <div className="rounded border border-secondary-main/30 p-4">
+                <FormControl label="Sign Message" className="mb-2 py-2">
                   <Input
                     type="text"
                     value={messageToSign}
@@ -151,8 +152,8 @@ export const WithBTCSigningFeatures: Story = {
                 <Button onClick={handleSignMessage}>Sign Message</Button>
 
                 {signedMessage && (
-                  <div className="b-mt-2 b-flex b-items-center b-gap-2">
-                    <Text variant="body2" className="b-flex-1 b-truncate">
+                  <div className="mt-2 flex items-center gap-2">
+                    <Text variant="body2" className="flex-1 truncate">
                       Signed Message: {signedMessage}
                     </Text>
                     <Button onClick={() => setSignedMessage("")}>Delete</Button>
@@ -160,8 +161,8 @@ export const WithBTCSigningFeatures: Story = {
                 )}
               </div>
 
-              <div className="b-rounded b-border b-border-secondary-main/30 b-p-4">
-                <FormControl label="Sign PSBT" className="b-mb-2 b-py-2">
+              <div className="rounded border border-secondary-main/30 p-4">
+                <FormControl label="Sign PSBT" className="mb-2 py-2">
                   <Input
                     type="text"
                     value={psbtToSign}
@@ -173,8 +174,8 @@ export const WithBTCSigningFeatures: Story = {
                 <Button onClick={handleSignPsbt}>Sign PSBT</Button>
 
                 {signedPsbt && (
-                  <div className="b-mt-2 b-flex b-items-center b-gap-2">
-                    <Text variant="body2" className="b-flex-1 b-truncate">
+                  <div className="mt-2 flex items-center gap-2">
+                    <Text variant="body2" className="flex-1 truncate">
                       Signed PSBT: {signedPsbt}
                     </Text>
                     <Button
@@ -189,8 +190,8 @@ export const WithBTCSigningFeatures: Story = {
                 )}
 
                 {signedPsbt && (
-                  <div className="b-mt-2 b-flex b-items-center b-gap-2">
-                    <Text variant="body2" className="b-flex-1 b-truncate">
+                  <div className="mt-2 flex items-center gap-2">
+                    <Text variant="body2" className="flex-1 truncate">
                       Transaction: {transaction}
                     </Text>
                     <Button

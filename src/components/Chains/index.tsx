@@ -28,12 +28,12 @@ export const Chains = memo(
     onSelectChain,
     onDisconnectWallet,
   }: ChainsProps) => (
-    <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
-      <DialogHeader className="b-mb-10" title="Connect Wallets" onClose={onClose}>
-        <Text>Connect to both Bitcoin and Babylon Chain Wallets</Text>
+    <div className={twMerge("flex flex-1 flex-col text-accent-primary", className)}>
+      <DialogHeader className="mb-10" title="Connect Wallets" onClose={onClose}>
+        <Text className="text-accent-secondary">Connect to both Bitcoin and Babylon Chain Wallets</Text>
       </DialogHeader>
 
-      <DialogBody className="b-flex b-flex-col b-gap-6">
+      <DialogBody className="flex flex-col gap-6">
         {chains.map((chain) => {
           const selectedWallet = selectedWallets[chain.id];
 
@@ -60,7 +60,7 @@ export const Chains = memo(
         })}
       </DialogBody>
 
-      <DialogFooter className="b-mt-auto b-flex b-gap-4 b-pt-10">
+      <DialogFooter className="mt-auto flex gap-4 pt-10">
         <Button variant="outlined" fluid onClick={onClose}>
           Cancel
         </Button>

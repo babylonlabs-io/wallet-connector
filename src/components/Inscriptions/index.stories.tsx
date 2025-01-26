@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { Network } from "@/core/types";
+
 import { Inscriptions } from "./index";
 
 const meta: Meta<typeof Inscriptions> = {
@@ -13,6 +15,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    className: "b-h-[600px]",
+    className: "h-[600px]",
+    config: {
+      coinName: "BTC",
+      coinSymbol: "BTC",
+      networkName: "mainnet",
+      mempoolApiUrl: "/",
+      network: Network.MAINNET,
+    },
   },
 };

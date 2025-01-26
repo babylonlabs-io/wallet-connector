@@ -10,7 +10,7 @@ export function FieldControl({ label, className, children }: PropsWithChildren<F
   return (
     <label
       className={twMerge(
-        "b-flex b-cursor-pointer b-gap-4 b-rounded b-border b-border-primary-main/30 b-p-4",
+        "flex cursor-pointer gap-4 rounded border border-secondary-strokeLight text-accent-primary p-4",
         className,
       )}
     >

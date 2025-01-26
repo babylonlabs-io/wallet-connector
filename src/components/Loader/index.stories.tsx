@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    className: "b-h-[600px]",
+    className: "h-[600px]",
     title: "Connect Wallet",
   },
 };

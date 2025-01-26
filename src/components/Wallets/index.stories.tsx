@@ -70,11 +70,11 @@ const wallets: IWallet[] = [
 
 export const Default: Story = {
   args: {
-    className: "b-h-[600px]",
+    className: "h-[600px]",
     chain: { id: "BTC", name: "Bitcoin", icon: "/images/chains/bitcoin.png", config: {}, wallets },
     append: (
-      <div className="b-sticky b-inset-x-0 b-bottom-0 b-bg-[#ffffff] b-pt-10">
-        <Text className="b-mb-4">More wallets with Tomo Connect</Text>
+      <div className="pt-10">
+        <Text className="mb-4 text-accent-primary">More wallets with Tomo Connect</Text>
         <WalletButton logo="/images/wallets/tomo.png" name="Tomo Connect" />
       </div>
     ),

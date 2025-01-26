@@ -11,7 +11,7 @@ export interface Props {
   config?: BTCConfig;
 }
 
-export function Inscriptions({ className, onSubmit, config }: Props) {
+export function Inscriptions({ className, config, onSubmit }: Props) {
   const [lockInscriptions = true, toggleInscriptions] = useState<boolean | undefined>();
   const [showAgain = true, toggleShowAgain] = useState<boolean | undefined>();
 
@@ -20,21 +20,21 @@ export function Inscriptions({ className, onSubmit, config }: Props) {
   const { coinName } = config;
 
   return (
-    <div className={twMerge("b-mb-8 b-flex b-flex-1 b-flex-col", className)}>
-      <DialogHeader title={`Manage ${coinName} Inscriptions`} className="b-mb-8">
-        <br />
-        <div className="b-mb-6">
-          <Text>
-            By default, we will not use {coinName} that contains Inscriptions - such as Ordinals, NFTs, or Runes - in
-            your stakeable balance. This helps prevent any accidental loss of your Inscriptions due to staking,
-            unbonding, or withdrawal fees.
-          </Text>
-          <br />
-          <Text>
-            If you would like to include {coinName} with Inscriptions in your stakeable balance, please select the
-            option below.
-          </Text>
-        </div>
+    <div className={twMerge("mb-8 flex flex-1 flex-col", className)}>
+      <DialogHeader
+        title={`Manage ${coinName} Inscriptions`}
+        className="mb-10 text-accent-primary"
+        onClose={() => void onSubmit?.(lockInscriptions, showAgain)}
+      >
+        <Text className="pt-2 mb-8 text-accent-secondary">
+          By default, we will not use {coinName} that contains Inscriptions - such as Ordinals, NFTs, or Runes - in your
+          stakeable balance. This helps prevent any accidental loss of your Inscriptions due to staking, unbonding, or
+          withdrawal fees.
+        </Text>
+        <Text className="text-accent-secondary">
+          If you would like to include {coinName} with Inscriptions in your stakeable balance, please select the option
+          below.
+        </Text>
       </DialogHeader>
       <DialogBody>
         <form action="">
@@ -44,7 +44,7 @@ export function Inscriptions({ className, onSubmit, config }: Props) {
                 <strong>Do not use</strong> {coinName} with Inscriptions for staking. (Recommended)
               </>
             }
-            className="b-mb-8"
+            className="mb-8"
           >
             <Radio name="inscriptions" checked={lockInscriptions} onChange={() => toggleInscriptions(true)} />
           </FieldControl>
@@ -55,20 +55,21 @@ export function Inscriptions({ className, onSubmit, config }: Props) {
                 <strong>Use</strong> {coinName} with Inscriptions in my stakable balance.
               </>
             }
-            className="b-mb-8"
+            className="mb-8"
           >
             <Radio name="inscriptions" checked={!lockInscriptions} onChange={() => toggleInscriptions(false)} />
           </FieldControl>
         </form>
       </DialogBody>
 
-      <DialogFooter className="b-mt-auto b-pt-10">
+      <DialogFooter className="mt-auto pt-10">
         <Checkbox
           checked={!showAgain}
           label="Do not show again"
-          labelClassName="b-mb-6"
+          labelClassName="mb-6"
           onChange={(value) => toggleShowAgain(!value)}
         />
+
         <Button fluid onClick={() => void onSubmit?.(lockInscriptions, showAgain)}>
           Save
         </Button>
