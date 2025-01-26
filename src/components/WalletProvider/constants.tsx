@@ -13,8 +13,8 @@ export const config: ChainConfigArr = [
       {
         id: "tomo-connect",
         widget: () => (
-          <div className="b-sticky b-inset-x-0 b-bottom-0 b-bg-[#ffffff] b-pt-10">
-            <Text className="b-mb-4">More wallets with Tomo Connect</Text>
+          <div className="pt-10">
+            <Text className="mb-4 text-accent-secondary">More wallets with Tomo Connect</Text>
             <WalletButton logo="/images/wallets/tomo.png" name="Tomo Connect" onClick={() => alert("Hello Tomo!")} />
           </div>
         ),
@@ -34,8 +34,8 @@ export const config: ChainConfigArr = [
       {
         id: "tomo-connect",
         widget: () => (
-          <div className="b-sticky b-inset-x-0 b-bottom-0 b-bg-[#ffffff] b-pt-10">
-            <Text className="b-mb-4">More wallets with Tomo Connect</Text>
+          <div className="pt-10">
+            <Text className="mb-4 text-accent-secondary">More wallets with Tomo Connect</Text>
             <WalletButton logo="/images/wallets/tomo.png" name="Tomo Connect" onClick={() => alert("Hello Tomo!")} />
           </div>
         ),

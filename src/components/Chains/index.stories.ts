@@ -46,7 +46,7 @@ export const Default: Story = {
         label: "Installed",
       },
     },
-    className: "b-h-[600px]",
+    className: "h-[600px]",
     onSelectChain: console.log,
   },
 };

@@ -26,13 +26,13 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
   );
 
   return (
-    <div className={twMerge("b-flex b-flex-1 b-flex-col", className)}>
-      <DialogHeader className="b-mb-10" title="Select Wallet" onClose={onClose}>
-        <Text>Connect a {chain.name} Wallet</Text>
+    <div className={twMerge("flex flex-1 flex-col", className)}>
+      <DialogHeader className="text-accent-primary mb-10" title="Select Wallet" onClose={onClose}>
+        <Text className="text-accent-secondary">Connect a {chain.name} Wallet</Text>
       </DialogHeader>
 
       <DialogBody>
-        <div className={twMerge("b-grid b-gap-6", countOfVisibleWallets > 1 ? "b-grid-cols-2" : "b-grid-cols-1")}>
+        <div className={twMerge("grid gap-6", countOfVisibleWallets > 1 ? "grid-cols-2" : "grid-cols-1")}>
           {injectableWallet && (
             <WalletButton
               installed
@@ -59,7 +59,7 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
         {append}
       </DialogBody>
 
-      <DialogFooter className="b-mt-auto b-pt-10">
+      <DialogFooter className="mt-auto pt-10">
         <Button variant="outlined" fluid onClick={onBack}>
           Back
         </Button>

@@ -19,14 +19,14 @@ export function ChainButton({ className, disabled, alt, logo, title, children, o
       disabled={disabled}
       as={disabled ? "div" : "button"}
       className={twMerge(
-        "b-flex b-w-full b-flex-col b-gap-2.5 b-rounded b-border b-border-primary-main/30 b-p-4",
-        disabled ? "b-pointer-events-none" : "b-pointer-events-auto",
-        disabled ? "b-cursor-default" : "b-cursor-pointer",
+        "flex w-full flex-col gap-2.5 rounded border border-secondary-strokeLight bg-surface p-4 text-accent-primary",
+        disabled ? "pointer-events-none" : "pointer-events-auto",
+        disabled ? "cursor-default" : "cursor-pointer",
         className,
       )}
       onClick={onClick}
     >
-      <div className="b-flex b-w-full b-items-center b-gap-2.5">
+      <div className="flex w-full items-center gap-2.5">
         {avatar}
         {title}
 
@@ -37,7 +37,7 @@ export function ChainButton({ className, disabled, alt, logo, title, children, o
             height="24"
             viewBox="0 0 24 24"
             fill="none"
-            className="b-ml-auto b-block"
+            className="ml-auto block"
           >
             <path
               d="M8.58984 16.59L13.1698 12L8.58984 7.41L9.99984 6L15.9998 12L9.99984 18L8.58984 16.59Z"
@@ -48,7 +48,7 @@ export function ChainButton({ className, disabled, alt, logo, title, children, o
       </div>
 
       {children && (
-        <div className="b-pointer-events-auto b-w-full" onClick={(e) => e.stopPropagation()}>
+        <div className="pointer-events-auto w-full" onClick={(e) => e.stopPropagation()}>
           {children}
         </div>
       )}

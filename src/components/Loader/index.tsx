@@ -8,12 +8,12 @@ interface LoaderProps {
 
 export function LoaderScreen({ className, title }: LoaderProps) {
   return (
-    <div className={twMerge("b-flex b-flex-col b-items-center b-justify-center b-gap-6", className)}>
-      <div className="b-flex b-items-center b-justify-center b-bg-primary-contrast b-p-6">
-        <Loader />
+    <div className={twMerge("flex flex-col items-center justify-center gap-6", className)}>
+      <div className="flex items-center justify-center bg-primary-contrast p-6">
+        <Loader className="text-primary-light" />
       </div>
       {title && (
-        <Heading variant="h4" className="b-capitalize">
+        <Heading variant="h4" className="capitalize text-accent-primary">
           {title}
         </Heading>
       )}
