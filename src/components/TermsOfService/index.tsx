@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { FieldControl } from "@/components/FieldControl";
 import { BTCConfig } from "@/core/types";
+import { useIsMobileView } from "@/hooks/useIsMobileView";
 
 export interface Props {
   className?: string;
@@ -30,9 +31,15 @@ export function TermsOfService({ className, onClose, onSubmit }: Props) {
     [],
   );
 
+  const isMobileView = useIsMobileView();
+
   return (
     <div className={twMerge("flex flex-1 flex-col", className)}>
-      <DialogHeader className="mb-10 text-accent-primary" title="Connect Wallets" onClose={onClose}>
+      <DialogHeader
+        className="mb-10 text-accent-primary"
+        title="Connect Wallets"
+        onClose={isMobileView ? undefined : onClose}
+      >
         <Text className="text-accent-secondary">Please read and accept the following terms</Text>
       </DialogHeader>
 

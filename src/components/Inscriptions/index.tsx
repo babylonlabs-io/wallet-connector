@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { FieldControl } from "@/components/FieldControl";
 import { BTCConfig } from "@/core/types";
+import { useIsMobileView } from "@/hooks/useIsMobileView";
 
 export interface Props {
   className?: string;
@@ -14,35 +15,35 @@ export interface Props {
 export function Inscriptions({ className, config, onSubmit }: Props) {
   const [lockInscriptions = true, toggleInscriptions] = useState<boolean | undefined>();
   const [showAgain = true, toggleShowAgain] = useState<boolean | undefined>();
+  const isMobileView = useIsMobileView();
 
   if (!config) return null;
 
   const { coinName } = config;
 
   return (
-    <div className={twMerge("mb-8 flex flex-1 flex-col", className)}>
+    <div className={twMerge("flex flex-1 flex-col", className)}>
       <DialogHeader
         title={`Manage ${coinName} Inscriptions`}
-        className="mb-10 text-accent-primary"
-        onClose={() => void onSubmit?.(lockInscriptions, showAgain)}
-      >
-        <Text className="pt-2 mb-8 text-accent-secondary">
+        className="mb-4 text-accent-primary"
+        onClose={isMobileView ? undefined : () => void onSubmit?.(lockInscriptions, showAgain)}
+      ></DialogHeader>
+      <DialogBody>
+        <Text className="mb-8 text-accent-secondary">
           By default, we will not use {coinName} that contains Inscriptions - such as Ordinals, NFTs, or Runes - in your
           stakeable balance. This helps prevent any accidental loss of your Inscriptions due to staking, unbonding, or
           withdrawal fees.
-        </Text>
-        <Text className="text-accent-secondary">
+          <br />
+          <br />
           If you would like to include {coinName} with Inscriptions in your stakeable balance, please select the option
           below.
         </Text>
-      </DialogHeader>
-      <DialogBody>
-        <form action="">
+        <form action="" className="mt-6">
           <FieldControl
             label={
-              <>
+              <div>
                 <strong>Do not use</strong> {coinName} with Inscriptions for staking. (Recommended)
-              </>
+              </div>
             }
             className="mb-8"
           >
@@ -51,9 +52,9 @@ export function Inscriptions({ className, config, onSubmit }: Props) {
 
           <FieldControl
             label={
-              <>
+              <div>
                 <strong>Use</strong> {coinName} with Inscriptions in my stakable balance.
-              </>
+              </div>
             }
             className="mb-8"
           >

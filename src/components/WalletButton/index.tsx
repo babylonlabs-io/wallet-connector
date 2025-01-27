@@ -27,13 +27,13 @@ export function WalletButton({
   return (
     <Text
       className={twMerge(
-        "flex h-14 w-full cursor-pointer items-center gap-2.5 rounded border border-secondary-strokeLight text-accent-primary px-2",
+        "flex h-14 p-2 w-full text-sm cursor-pointer items-center gap-2.5 rounded border border-secondary-strokeLight text-accent-primary",
         disabled ? "cursor-default" : "cursor-pointer",
         className,
       )}
       {...btnProps}
     >
-      <Avatar variant="rounded" className="shrink-0" alt={name} url={logo} />
+      <Avatar variant="rounded" className="shrink-0" alt={name} url={logo} size="large" />
       {name}
 
       {label && <Chip className="ml-auto shrink-0">{label}</Chip>}

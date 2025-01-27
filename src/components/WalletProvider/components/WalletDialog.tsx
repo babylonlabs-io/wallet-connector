@@ -52,7 +52,7 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
       <Screen
         current={screen}
         widgets={walletWidgets}
-        className={twMerge(isMobileView ? "max-h-screen overflow-auto pt-4" : "size-[600px]")}
+        className={twMerge(isMobileView ? "overflow-auto pt-4" : "size-[600px]")}
         onClose={handleClose}
         onConfirm={handleConfirm}
         onSelectWallet={connect}
