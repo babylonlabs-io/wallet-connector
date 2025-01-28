@@ -1,10 +1,8 @@
 import { useCallback } from "react";
-import { twMerge } from "tailwind-merge";
 
 import { ResponsiveDialog } from "@/components/ResponsiveDialog/ResponsiveDialog";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
-import { useIsMobileView } from "@/hooks/useIsMobileView";
 import { useWalletConnect } from "@/hooks/useWalletConnect";
 import { useWalletConnectors } from "@/hooks/useWalletConnectors";
 import { useWalletWidgets } from "@/hooks/useWalletWidgets";
@@ -26,7 +24,6 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
   const walletWidgets = useWalletWidgets(connectors, config);
   const { connect, disconnect } = useWalletConnectors(onError);
   const { disconnect: disconnectAll } = useWalletConnect();
-  const isMobileView = useIsMobileView();
 
   const handleToggleInscriptions = useCallback(
     (lockInscriptions: boolean, showAgain: boolean) => {
@@ -48,11 +45,11 @@ export function WalletDialog({ config, onError }: WalletDialogProps) {
   }, [confirm]);
 
   return (
-    <ResponsiveDialog open={visible} onClose={handleClose}>
+    <ResponsiveDialog className="min-h-[80%]" open={visible} onClose={handleClose}>
       <Screen
         current={screen}
         widgets={walletWidgets}
-        className={twMerge(isMobileView ? "max-h-screen overflow-auto pt-4" : "size-[600px]")}
+        className="min-h-0 md:size-[600px]"
         onClose={handleClose}
         onConfirm={handleConfirm}
         onSelectWallet={connect}

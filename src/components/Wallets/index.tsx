@@ -32,7 +32,9 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
       </DialogHeader>
 
       <DialogBody>
-        <div className={twMerge("grid gap-6", countOfVisibleWallets > 1 ? "grid-cols-2" : "grid-cols-1")}>
+        <div
+          className={twMerge("grid gap-6", countOfVisibleWallets > 1 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}
+        >
           {injectableWallet && (
             <WalletButton
               installed
