@@ -2,6 +2,8 @@ import { Avatar, Text } from "@babylonlabs-io/bbn-core-ui";
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { formatAddress } from "@/utils/wallet";
+
 interface ConnectedWalletProps {
   className?: string;
   chainId: string;
@@ -24,7 +26,7 @@ export const ConnectedWallet = memo(
         </Text>
         {Boolean(address) && (
           <Text as="div" variant="caption" className="leading-4 text-accent-secondary">
-            {address}
+            {formatAddress(address)}
           </Text>
         )}
       </div>
