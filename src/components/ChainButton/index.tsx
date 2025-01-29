@@ -27,7 +27,7 @@ export function ChainButton({ className, disabled, alt, logo, title, children, o
       onClick={onClick}
     >
       <div className="flex w-full items-center gap-2.5">
-        {avatar}
+        <div className="flex items-center">{avatar}</div>
         {title}
 
         {!disabled && (
