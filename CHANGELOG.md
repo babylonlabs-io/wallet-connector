@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.0
+
+### Minor Changes
+
+- 4997773: feat: mobile ui
+
 ## 0.2.2
 
 ### Patch Changes
