@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.2.2
+
+### Patch Changes
+
+- 1837d2d: extra btc staking validation on tx to psbt conversion
+
 ## 0.2.1
 
 ### Patch Changes
