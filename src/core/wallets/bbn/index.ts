@@ -1,6 +1,6 @@
 import { BBNConfig, ChainMetadata, IBBNProvider } from "@/core/types";
 
-import icon from "./babylon.jpeg";
+import icon from "./icon.svg";
 import injectable from "./injectable";
 import keplr from "./keplr";
 import leap from "./leap";
