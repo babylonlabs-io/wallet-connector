@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.1
+
+### Patch Changes
+
+- 5d88686: update bitcoin, babylon icons
+
 ## 0.3.0
 
 ### Minor Changes
