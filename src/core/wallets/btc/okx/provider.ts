@@ -6,6 +6,7 @@ import logo from "./logo.svg";
 
 const PROVIDER_NAMES = {
   [Network.MAINNET]: "bitcoin",
+  [Network.CANARY]: "bitcoin",
   [Network.TESTNET]: "bitcoinTestnet",
   [Network.SIGNET]: "bitcoinSignet",
 };

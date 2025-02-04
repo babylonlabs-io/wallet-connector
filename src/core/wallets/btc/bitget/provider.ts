@@ -8,6 +8,7 @@ import logo from "./logo.svg";
 
 const INTERNAL_NETWORK_NAMES = {
   [Network.MAINNET]: "livenet",
+  [Network.CANARY]: "livenet",
   [Network.TESTNET]: "testnet",
   [Network.SIGNET]: "signet",
 };
