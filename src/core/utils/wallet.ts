@@ -3,11 +3,17 @@ import { networks } from "bitcoinjs-lib";
 import { Network } from "@/core/types";
 
 export function validateAddress(network: Network, address: string): void {
-  if ([Network.MAINNET, Network.CANARY].includes(network) && !address.startsWith("bc1")) {
-    throw new Error("Incorrect address prefix for Mainnet/Canary. Expected address to start with 'bc1'.");
-  } else if ([Network.SIGNET, Network.TESTNET].includes(network) && !address.startsWith("tb1")) {
+  if (network === Network.MAINNET && !address.startsWith("bc1")) {
+    throw new Error("Incorrect address prefix for Mainnet. Expected address to start with 'bc1'.");
+  }
+  if (network === Network.CANARY && !address.startsWith("bc1")) {
+    throw new Error("Incorrect address prefix for Canary. Expected address to start with 'bc1'.");
+  }
+  if ((network === Network.TESTNET || network === Network.SIGNET) && !address.startsWith("tb1")) {
     throw new Error("Incorrect address prefix for Testnet/Signet. Expected address to start with 'tb1'.");
-  } else if (![Network.MAINNET, Network.SIGNET, Network.TESTNET, Network.CANARY].includes(network)) {
+  }
+
+  if (![Network.MAINNET, Network.SIGNET, Network.TESTNET, Network.CANARY].includes(network)) {
     throw new Error(`Unsupported network: ${network}. Please provide a valid network.`);
   }
 }
