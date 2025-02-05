@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.4
+
+### Patch Changes
+
+- 6000936: add canary network
+
 ## 0.3.3
 
 ### Patch Changes
