@@ -3,12 +3,14 @@ import { useCallback, useEffect } from "react";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
 import { IChain, IWallet } from "@/core/types";
+import { validateAddressWithPK } from "@/core/utils/wallet";
 
 import { useWidgetState } from "./useWidgetState";
 
 export function useWalletConnectors(onError?: (e: Error) => void) {
   const connectors = useChainProviders();
-  const { selectWallet, removeWallet, displayLoader, displayChains, displayInscriptions } = useWidgetState();
+  const { selectWallet, removeWallet, displayLoader, displayChains, displayInscriptions, displayError } =
+    useWidgetState();
   const { showAgain } = useInscriptionProvider();
 
   // Connecting event
@@ -28,22 +30,51 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
   useEffect(() => {
     const connectorArr = Object.values(connectors);
 
-    const unsubscribeArr = connectorArr.filter(Boolean).map((connector) =>
-      connector.on("connect", (connectedWallet: IWallet) => {
+    const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
+      BTC: (connector) => (connectedWallet) => {
+        if (connectedWallet) {
+          selectWallet?.("BTC", connectedWallet);
+        }
+
+        const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
+
+        if (
+          validateAddressWithPK(
+            connectedWallet.account?.address ?? "",
+            connectedWallet.account?.publicKeyHex ?? "",
+            connector.config.network,
+          )
+        ) {
+          goToNextScreen();
+        } else {
+          displayError?.({
+            title: "Public Key Mismatch",
+            description:
+              "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
+            submitButton: "Continue Anyway",
+            onSubmit: goToNextScreen,
+            onCancel: () => {
+              removeWallet?.(connector.id);
+              displayChains?.();
+            },
+          });
+        }
+      },
+      BBN: (connector) => (connectedWallet) => {
         if (connectedWallet) {
           selectWallet?.(connector.id, connectedWallet);
         }
 
-        if (showAgain && connector.id === "BTC") {
-          displayInscriptions?.();
-        } else {
-          displayChains?.();
-        }
-      }),
-    );
+        displayChains?.();
+      },
+    };
+
+    const unsubscribeArr = connectorArr
+      .filter(Boolean)
+      .map((connector) => connector.on("connect", handlers[connector.id]?.(connector)));
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
-  }, [selectWallet, displayInscriptions, displayChains, connectors, showAgain]);
+  }, [selectWallet, removeWallet, displayInscriptions, displayChains, connectors, showAgain]);
 
   // Disconnect Event
   useEffect(() => {
