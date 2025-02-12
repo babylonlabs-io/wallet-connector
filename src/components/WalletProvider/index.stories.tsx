@@ -1,7 +1,10 @@
 import { Button, FormControl, Input, ScrollLocker, Text } from "@babylonlabs-io/bbn-core-ui";
+import * as ecc from "@bitcoin-js/tiny-secp256k1-asmjs";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Psbt } from "bitcoinjs-lib";
+import { initEccLib, Psbt } from "bitcoinjs-lib";
 import { useState } from "react";
+
+initEccLib(ecc);
 
 import { IBTCProvider } from "@/core/types";
 import { useWidgetState } from "@/hooks/useWidgetState";

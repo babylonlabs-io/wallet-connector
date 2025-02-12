@@ -1,17 +1,14 @@
-import * as ecc from "@bitcoin-js/tiny-secp256k1-asmjs";
-import { initEccLib, networks, payments } from "bitcoinjs-lib";
+import { networks, payments } from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
 import { Network } from "@/core/types";
 export const COMPRESSED_PUBLIC_KEY_HEX_LENGTH = 66;
 
-initEccLib(ecc);
-
 const NETWORKS = {
   [Network.MAINNET]: {
     name: "Mainnet",
     config: networks.bitcoin,
-    prefix: {
+    addressPrefix: {
       common: "bc1",
       nativeSegWit: "bc1q",
       taproot: "bc1p",
@@ -20,7 +17,7 @@ const NETWORKS = {
   [Network.CANARY]: {
     name: "Canary",
     config: networks.bitcoin,
-    prefix: {
+    addressPrefix: {
       common: "bc1",
       nativeSegWit: "bc1q",
       taproot: "bc1p",
@@ -29,7 +26,7 @@ const NETWORKS = {
   [Network.TESTNET]: {
     name: "Testnet",
     config: networks.testnet,
-    prefix: {
+    addressPrefix: {
       common: "tb1",
       nativeSegWit: "tb1q",
       taproot: "tb1p",
@@ -38,7 +35,7 @@ const NETWORKS = {
   [Network.SIGNET]: {
     name: "Signet",
     config: networks.testnet,
-    prefix: {
+    addressPrefix: {
       common: "tb1",
       nativeSegWit: "tb1q",
       taproot: "tb1p",
@@ -83,11 +80,11 @@ export const getNativeSegwitAddress = (publicKey: string, network: Network) => {
 };
 
 export function validateAddressWithPK(address: string, publicKey: string, network: Network) {
-  if (address.startsWith(NETWORKS[network].prefix.taproot)) {
+  if (address.startsWith(NETWORKS[network].addressPrefix.taproot)) {
     return address === getTaprootAddress(publicKey, network);
   }
 
-  if (address.startsWith(NETWORKS[network].prefix.nativeSegWit)) {
+  if (address.startsWith(NETWORKS[network].addressPrefix.nativeSegWit)) {
     return address === getNativeSegwitAddress(publicKey, network);
   }
 
@@ -95,14 +92,14 @@ export function validateAddressWithPK(address: string, publicKey: string, networ
 }
 
 export function validateAddress(network: Network, address: string): void {
-  const { prefix, name } = NETWORKS[network];
+  const { addressPrefix, name } = NETWORKS[network];
 
   if (!(network in NETWORKS)) {
     throw new Error(`Unsupported network: ${network}. Please provide a valid network.`);
   }
 
-  if (!address.startsWith(prefix.common)) {
-    throw new Error(`Incorrect address prefix for ${name}. Expected address to start with '${prefix}'.`);
+  if (!address.startsWith(addressPrefix.common)) {
+    throw new Error(`Incorrect address prefix for ${name}. Expected address to start with '${addressPrefix}'.`);
   }
 }
 
