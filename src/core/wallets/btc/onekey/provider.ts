@@ -146,21 +146,19 @@ export class OneKeyProvider implements IBTCProvider {
   on = (eventName: string, callBack: () => void) => {
     if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
 
-    // subscribe to account change event: `accountChanged` -> `accountsChanged`
+    // subscribe to account change event
     if (eventName === "accountChanged") {
-      return this.provider.on("accountsChanged", callBack);
+      return this.provider.on(eventName, callBack);
     }
-    return this.provider.on(eventName, callBack);
   };
 
   off = (eventName: string, callBack: () => void) => {
     if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
 
-    // unsubscribe to account change event
+    // unsubscribe from account change event
     if (eventName === "accountChanged") {
-      return this.provider.off("accountsChanged", callBack);
+      return this.provider.off(eventName, callBack);
     }
-    return this.provider.off(eventName, callBack);
   };
 
   getWalletProviderName = async (): Promise<string> => {
