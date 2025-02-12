@@ -66,7 +66,6 @@ interface ExtensionConfig {
 export const EXTENSION_CHROME_STORE_IDS = {
   OKX: "mcohilncbfahbmgdjkbpemcciiolgcge",
   KEPLR: "dmkamcknogkgcdfhhbddcghachkejeap",
-  BITGET: "jiidiaalihmmhddjgbnbgdfflelocpak",
   ONEKEY: "jnmbobjmhlngoefaiojfljckilhhlhcj",
 };
 
@@ -74,7 +73,6 @@ export const EXTENSION_CHROME_STORE_IDS = {
 export const EXTENSION_CHROME_INNER_IDS = {
   OKX: "aoidgejanlhnakicljcclfajchjdfceo", // 3.36.5
   KEPLR: "ffcjkjnakmchilamdbbpmfngggmacghh", // 0.12.169
-  BITGET: "laobimbmcflenhndjllcdfpbimfppmaj", // 2.15.9
   ONEKEY: "nkipngmnokmlggfbiemjdonfcheaplfa", // 5.5.1
 };
 
@@ -84,7 +82,6 @@ export const EXTENSION_CHROME_INNER_IDS = {
 export const EXTENSIONS: ExtensionConfig[] = [
   { name: "OKX", id: EXTENSION_CHROME_STORE_IDS.OKX, innerId: EXTENSION_CHROME_INNER_IDS.OKX },
   { name: "Keplr", id: EXTENSION_CHROME_STORE_IDS.KEPLR, innerId: EXTENSION_CHROME_INNER_IDS.OKX },
-  { name: "Bitget", id: EXTENSION_CHROME_STORE_IDS.BITGET, innerId: EXTENSION_CHROME_INNER_IDS.OKX },
   { name: "OneKey", id: EXTENSION_CHROME_STORE_IDS.ONEKEY, innerId: EXTENSION_CHROME_INNER_IDS.OKX },
 ];
 
