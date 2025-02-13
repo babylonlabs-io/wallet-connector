@@ -161,7 +161,7 @@ export class OKXProvider implements IBTCProvider {
   off = (eventName: string, callBack: () => void) => {
     if (!this.walletInfo) throw new Error("OKX Wallet not connected");
 
-    // subscribe to account change event
+    // unsubscribe from account change event
     if (eventName === "accountChanged") {
       return this.provider.off(eventName, callBack);
     }
