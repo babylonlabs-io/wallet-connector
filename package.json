@@ -1,6 +1,6 @@
 {
   "name": "@babylonlabs-io/bbn-wallet-connect",
-  "version": "0.3.7",
+  "version": "0.3.9",
   "type": "module",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -51,7 +51,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@babylonlabs-io/bbn-core-ui": "^0.9.3",
+    "@babylonlabs-io/bbn-core-ui": "^0.10.0",
     "@babylonlabs-io/btc-staking-ts": "0.4.0-canary.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

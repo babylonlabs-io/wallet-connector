@@ -1,6 +1,7 @@
 import { type JSX } from "react";
 
 import { ChainsContainer as Chains } from "@/components/Chains/container";
+import { ErrorContainer as Error } from "@/components/Error/container";
 import { InscriptionsContainer as Inscriptions } from "@/components/Inscriptions/container";
 import { LoaderScreen } from "@/components/Loader";
 import { TermsOfServiceContainer as TermsOfService } from "@/components/TermsOfService/container";
@@ -37,6 +38,7 @@ const SCREENS = {
   LOADER: ({ className, current }: ScreenProps) => (
     <LoaderScreen className={className} title={current?.params?.message as string} />
   ),
+  ERROR: () => <Error />,
   EMPTY: ({ className }: ScreenProps) => <div className={className} />,
 } as const;
 

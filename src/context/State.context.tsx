@@ -4,7 +4,7 @@ import type { IChain, IWallet } from "@/core/types";
 
 export type Screen<T extends string = string> = {
   type: T;
-  params?: Record<string, string | number>;
+  params?: Record<string, any>;
 };
 
 export type Screens =
@@ -12,7 +12,8 @@ export type Screens =
   | Screen<"TERMS_OF_SERVICE">
   | Screen<"CHAINS">
   | Screen<"WALLETS">
-  | Screen<"INSCRIPTIONS">;
+  | Screen<"INSCRIPTIONS">
+  | Screen<"ERROR">;
 
 export interface State {
   confirmed: boolean;
@@ -30,6 +31,15 @@ export interface Actions {
   displayWallets?: (chain: string) => void;
   displayInscriptions?: () => void;
   displayTermsOfService?: () => void;
+  displayError?: (params: {
+    icon?: JSX.Element;
+    title: string;
+    description: string;
+    cancelButton?: string;
+    submitButton?: string;
+    onCancel?: () => void;
+    onSubmit?: () => void;
+  }) => void;
   selectWallet?: (chain: string, wallet: IWallet) => void;
   removeWallet?: (chain: string) => void;
   confirm?: () => void;
@@ -89,6 +99,10 @@ export function StateProvider({ children, chains }: PropsWithChildren<StateProvi
 
       displayInscriptions: () => {
         setState((state) => ({ ...state, screen: { type: "INSCRIPTIONS" } }));
+      },
+
+      displayError: (params) => {
+        setState((state) => ({ ...state, screen: { type: "ERROR", params } }));
       },
 
       selectWallet: (chain: string, wallet: IWallet) => {

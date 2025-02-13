@@ -228,17 +228,15 @@ export class UnisatProvider implements IBTCProvider {
     if (eventName === "accountChanged") {
       return this.provider.on("accountsChanged", callBack);
     }
-    return this.provider.on(eventName, callBack);
   };
 
   off = (eventName: string, callBack: () => void) => {
     if (!this.walletInfo) throw new Error("Unisat Wallet not connected");
 
-    // unsubscribe to account change event
+    // unsubscribe from account change event: `accountChanged` -> `accountsChanged`
     if (eventName === "accountChanged") {
-      return this.provider.off("accountsChanged", callBack);
+      return this.provider.removeListener("accountsChanged", callBack);
     }
-    return this.provider.off(eventName, callBack);
   };
 
   getWalletProviderName = async (): Promise<string> => {

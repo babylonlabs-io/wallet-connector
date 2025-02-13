@@ -1,6 +1,5 @@
 import type { BTCConfig, ChainMetadata, IBTCProvider } from "@/core/types";
 
-import cactus from "./cactus";
 import icon from "./icon.svg";
 import injectable from "./injectable";
 import keystone from "./keystone";
@@ -12,7 +11,7 @@ const metadata: ChainMetadata<"BTC", IBTCProvider, BTCConfig> = {
   chain: "BTC",
   name: "Bitcoin",
   icon,
-  wallets: [injectable, okx, onekey, cactus, unisat, keystone],
+  wallets: [injectable, okx, onekey, unisat, keystone],
 };
 
 export default metadata;
