@@ -1,5 +1,14 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.10
+
+### Patch Changes
+
+- ba41f0d: bump core-ui
+- a9a9008: Unisat removeListener
+- 845ad65: Remove BitGet
+- 5a2e7a6: Remove Cactus
+
 ## 0.3.9
 
 ### Patch Changes
