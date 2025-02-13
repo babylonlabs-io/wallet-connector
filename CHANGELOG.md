@@ -1,5 +1,12 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.11
+
+### Patch Changes
+
+- aefc3a3: Remove OneKey accountsChanged event
+- aefc3a3: chore: bump btc-staking-ts to canary 13
+
 ## 0.3.10
 
 ### Patch Changes
