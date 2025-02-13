@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.9
+
+### Patch Changes
+
+- a64ccda: Validate PR + address
+
 ## 0.3.8
 
 ### Patch Changes
