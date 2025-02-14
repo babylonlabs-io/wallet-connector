@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.12
+
+### Patch Changes
+
+- a0831c6: remove css dependency on core-ui
+
 ## 0.3.11
 
 ### Patch Changes
