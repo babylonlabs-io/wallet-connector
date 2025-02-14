@@ -1,5 +1,3 @@
-@import "../node_modules/@babylonlabs-io/bbn-core-ui/dist/style.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

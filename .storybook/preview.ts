@@ -3,6 +3,7 @@ import { themes } from "@storybook/theming";
 
 import ThemeableDocContainer from "./components/ThemeableDocContainer";
 
+import "../node_modules/@babylonlabs-io/bbn-core-ui/dist/style.css";
 import "../src/index.css";
 
 const preview: Preview = {
