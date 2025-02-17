@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.13
+
+### Patch Changes
+
+- ffcce6a: fix: initECClib issue
+
 ## 0.3.12
 
 ### Patch Changes
