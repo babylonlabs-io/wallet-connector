@@ -9,7 +9,7 @@ import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 import { Buffer } from "buffer";
 
-import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
+import type { BTCConfig } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
 import { toNetwork } from "@/core/utils/wallet";
 
@@ -174,10 +174,6 @@ export class KeystoneProvider implements IBTCProvider {
 
     const result = this.dataSdk.btc.parseSignature(signedMessageUR);
     return Buffer.from(result.signature, "hex").toString("base64");
-  };
-
-  getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    throw new Error("Method not implemented.");
   };
 
   // Not implemented because of the Airgapped HW nature

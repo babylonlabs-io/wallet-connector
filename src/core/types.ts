@@ -191,7 +191,7 @@ export interface IBTCProvider extends IProvider {
    * Retrieves the inscriptions for the connected wallet.
    * @returns A promise that resolves to an array of inscriptions.
    */
-  getInscriptions(): Promise<InscriptionIdentifier[]>;
+  getInscriptions?(): Promise<InscriptionIdentifier[]>;
 
   /**
    * Registers an event listener for the specified event.
