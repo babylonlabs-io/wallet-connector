@@ -25,8 +25,6 @@ export const Default: Story = {
     title: "Public Key Mismatch",
     description:
       "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
-    cancelButton: "Cancel",
-    submitButton: "Continue Anyway",
     onCancel: () => console.log("cancel"),
     onSubmit: () => console.log("submit"),
   },

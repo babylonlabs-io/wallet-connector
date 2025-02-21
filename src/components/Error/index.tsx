@@ -27,7 +27,11 @@ export function Error({
   title,
   description,
   cancelButton = "Cancel",
-  submitButton = "Submit",
+  submitButton = (
+    <>
+      Continue <span className="hidden md:inline">Anyway</span>
+    </>
+  ),
   onCancel,
   onSubmit,
 }: ErrorProps) {
