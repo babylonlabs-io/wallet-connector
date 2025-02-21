@@ -1,5 +1,11 @@
 # @babylonlabs-io/bbn-wallet-connect
 
+## 0.3.14
+
+### Patch Changes
+
+- 5c5858c: fix sumbit button for error modal
+
 ## 0.3.13
 
 ### Patch Changes
