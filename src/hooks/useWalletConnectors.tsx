@@ -51,7 +51,6 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
             title: "Public Key Mismatch",
             description:
               "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
-            submitButton: "Continue Anyway",
             onSubmit: goToNextScreen,
             onCancel: () => {
               removeWallet?.(connector.id);
