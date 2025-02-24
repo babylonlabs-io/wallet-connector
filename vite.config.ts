@@ -30,7 +30,7 @@ export default defineConfig({
         "react/jsx-runtime",
         "tailwind-merge",
         "@cosmjs/stargate",
-        "@babylonlabs-io/bbn-core-ui",
+        "@babylonlabs-io/core-ui",
         "@babylonlabs-io/btc-staking-ts",
         "bitcoinjs-lib",
         "@keystonehq/animated-qr",

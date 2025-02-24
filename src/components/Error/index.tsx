@@ -1,4 +1,4 @@
-import { Button, DialogBody, DialogFooter, Heading, Text } from "@babylonlabs-io/bbn-core-ui";
+import { Button, DialogBody, DialogFooter, Heading, Text } from "@babylonlabs-io/core-ui";
 import {} from "react";
 
 interface ErrorProps {

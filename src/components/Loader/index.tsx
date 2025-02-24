@@ -1,4 +1,4 @@
-import { Heading, Loader } from "@babylonlabs-io/bbn-core-ui";
+import { Heading, Loader } from "@babylonlabs-io/core-ui";
 import { twMerge } from "tailwind-merge";
 
 interface LoaderProps {

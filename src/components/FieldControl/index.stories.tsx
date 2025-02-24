@@ -1,4 +1,4 @@
-import { Checkbox, Radio } from "@babylonlabs-io/bbn-core-ui";
+import { Checkbox, Radio } from "@babylonlabs-io/core-ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { FieldControl } from "./index";

@@ -1,4 +1,4 @@
-import { Avatar, Chip, Text } from "@babylonlabs-io/bbn-core-ui";
+import { Avatar, Chip, Text } from "@babylonlabs-io/core-ui";
 import { twMerge } from "tailwind-merge";
 
 interface WalletButtonProps {

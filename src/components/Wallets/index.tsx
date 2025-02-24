@@ -1,4 +1,4 @@
-import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/bbn-core-ui";
+import { Button, DialogBody, DialogFooter, DialogHeader, Text } from "@babylonlabs-io/core-ui";
 import { memo, useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 
