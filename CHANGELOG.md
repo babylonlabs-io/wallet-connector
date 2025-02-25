@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.4.0
+
+### Minor Changes
+
+- 7ce8532: renaming
+
 ## 0.3.14
 
 ### Patch Changes
