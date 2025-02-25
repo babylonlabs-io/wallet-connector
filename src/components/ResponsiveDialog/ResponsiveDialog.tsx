@@ -1,4 +1,4 @@
-import { Dialog, DialogProps, MobileDialog } from "@babylonlabs-io/bbn-core-ui";
+import { Dialog, DialogProps, MobileDialog } from "@babylonlabs-io/core-ui";
 
 import { useIsMobileView } from "@/hooks/useIsMobileView";
 

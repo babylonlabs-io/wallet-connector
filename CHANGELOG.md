@@ -1,4 +1,4 @@
-# @babylonlabs-io/bbn-wallet-connect
+# @babylonlabs-io/wallet-connect
 
 ## 0.3.14
 
@@ -499,4 +499,4 @@
 
 ### Patch Changes
 
-- Install `bbn-core-ui`
+- Install `core-ui`
