@@ -90,7 +90,6 @@ export class LeapProvider implements IBBNProvider {
     if (!this.chainId) throw new Error("Chain ID is not initialized");
 
     try {
-      console.log("leap provider getOfflineSignerAuto");
       return this.wallet.getOfflineSignerAuto(this.chainId);
     } catch {
       throw new Error("Failed to get offline signer");
