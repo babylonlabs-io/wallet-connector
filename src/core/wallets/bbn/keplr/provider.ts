@@ -101,4 +101,15 @@ export class KeplrProvider implements IBBNProvider {
       throw new Error("Failed to get offline signer");
     }
   }
+
+  async getOfflineSignerAuto(): Promise<OfflineAminoSigner | OfflineDirectSigner> {
+    if (!this.keplr) throw new Error("Keplr extension not found");
+    if (!this.chainId) throw new Error("Chain ID is not initialized");
+
+    try {
+      return this.keplr.getOfflineSignerAuto(this.chainId);
+    } catch {
+      throw new Error("Failed to get offline signer auto");
+    }
+  }
 }
