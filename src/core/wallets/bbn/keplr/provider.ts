@@ -112,4 +112,18 @@ export class KeplrProvider implements IBBNProvider {
       throw new Error("Failed to get offline signer auto");
     }
   }
+
+  on = (eventName: string, callBack: () => void) => {
+    if (!this.walletInfo) throw new Error("Wallet not connected");
+    if (eventName === "accountChanged") {
+      window.addEventListener("keplr_keystorechange", callBack);
+    }
+  };
+
+  off = (eventName: string, callBack: () => void) => {
+    if (!this.walletInfo) throw new Error("Wallet not connected");
+    if (eventName === "accountChanged") {
+      window.removeEventListener("keplr_keystorechange", callBack);
+    }
+  };
 }
