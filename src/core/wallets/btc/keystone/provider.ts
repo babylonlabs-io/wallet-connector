@@ -8,6 +8,7 @@ import { tapleafHash } from "bitcoinjs-lib/src/payments/bip341";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 import { pubkeyInScript } from "bitcoinjs-lib/src/psbt/psbtutils";
 import { Buffer } from "buffer";
+import { v4 as uuidv4 } from "uuid";
 
 import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
@@ -154,7 +155,7 @@ export class KeystoneProvider implements IBTCProvider {
     if (!this.keystoneWaleltInfo) throw new Error("Keystone Wallet not connected");
 
     const ur = this.dataSdk.btc.generateSignRequest({
-      requestId: "7afd5e09-9267-43fb-a02e-08c4a09417ec",
+      requestId: uuidv4(),
       signData: Buffer.from(message, "utf-8").toString("hex"),
       dataType: KeystoneBitcoinSDK.DataType.message,
       accounts: [
