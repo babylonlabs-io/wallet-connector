@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.4.1
+
+### Patch Changes
+
+- 9a2ba54: keystone request id to use uuid and remove the unused mempool methods
+
 ## 0.4.0
 
 ### Minor Changes
