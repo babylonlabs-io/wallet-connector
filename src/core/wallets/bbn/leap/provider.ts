@@ -95,4 +95,15 @@ export class LeapProvider implements IBBNProvider {
       throw new Error("Failed to get offline signer");
     }
   }
+
+  async getOfflineSignerAuto(): Promise<OfflineAminoSigner | OfflineDirectSigner> {
+    if (!this.wallet) throw new Error("Leap extension not found");
+    if (!this.chainId) throw new Error("Chain ID is not initialized");
+
+    try {
+      return this.wallet.getOfflineSignerAuto(this.chainId);
+    } catch {
+      throw new Error("Failed to get offline signer auto");
+    }
+  }
 }
