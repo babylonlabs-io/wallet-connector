@@ -10,7 +10,7 @@ const metadata: ChainMetadata<"BBN", IBBNProvider, BBNConfig> = {
   chain: "BBN",
   name: "Babylon Chain",
   icon,
-  wallets: [injectable, keplr, leap, okx],
+  wallets: [injectable, okx, keplr, leap],
 };
 
 export default metadata;
