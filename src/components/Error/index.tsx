@@ -52,13 +52,17 @@ export function Error({
       </DialogBody>
 
       <DialogFooter className="flex gap-4">
-        <Button variant="outlined" fluid onClick={onCancel}>
-          {cancelButton}
-        </Button>
+        {cancelButton && (
+          <Button variant="outlined" fluid onClick={onCancel}>
+            {cancelButton}
+          </Button>
+        )}
 
-        <Button fluid onClick={onSubmit}>
-          {submitButton}
-        </Button>
+        {submitButton && (
+          <Button fluid onClick={onSubmit}>
+            {submitButton}
+          </Button>
+        )}
       </DialogFooter>
     </div>
   );

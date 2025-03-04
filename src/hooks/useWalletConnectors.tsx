@@ -2,16 +2,20 @@ import { useCallback, useEffect } from "react";
 
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
+import { useLifeCycleHooks } from "@/context/LifecycleHooks.context";
 import { IChain, IWallet } from "@/core/types";
 import { validateAddressWithPK } from "@/core/utils/wallet";
 
 import { useWidgetState } from "./useWidgetState";
 
+const ANIMATION_DELAY = 1000;
+
 export function useWalletConnectors(onError?: (e: Error) => void) {
   const connectors = useChainProviders();
-  const { selectWallet, removeWallet, displayLoader, displayChains, displayInscriptions, displayError } =
+  const { selectWallet, removeWallet, displayLoader, displayChains, displayInscriptions, displayError, close, reset } =
     useWidgetState();
   const { showAgain } = useInscriptionProvider();
+  const { verifyBTCAddress } = useLifeCycleHooks();
 
   // Connecting event
   useEffect(() => {
@@ -31,7 +35,7 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
     const connectorArr = Object.values(connectors);
 
     const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
-      BTC: (connector) => (connectedWallet) => {
+      BTC: (connector) => async (connectedWallet) => {
         if (connectedWallet) {
           selectWallet?.("BTC", connectedWallet);
         }
@@ -39,14 +43,12 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
         const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
 
         if (
-          validateAddressWithPK(
+          !validateAddressWithPK(
             connectedWallet.account?.address ?? "",
             connectedWallet.account?.publicKeyHex ?? "",
             connector.config.network,
           )
         ) {
-          goToNextScreen();
-        } else {
           displayError?.({
             title: "Public Key Mismatch",
             description:
@@ -57,7 +59,30 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
               displayChains?.();
             },
           });
+
+          return;
         }
+
+        if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
+          for (const connector of connectorArr) {
+            await connector.disconnect();
+          }
+
+          displayError?.({
+            title: "Connection Failed",
+            description: "The wallet cannot be connected.",
+            submitButton: "",
+            cancelButton: "Done",
+            onCancel: async () => {
+              close?.();
+              setTimeout(() => void reset?.(), ANIMATION_DELAY);
+            },
+          });
+
+          return;
+        }
+
+        goToNextScreen();
       },
       BBN: (connector) => (connectedWallet) => {
         if (connectedWallet) {
@@ -73,7 +98,17 @@ export function useWalletConnectors(onError?: (e: Error) => void) {
       .map((connector) => connector.on("connect", handlers[connector.id]?.(connector)));
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
-  }, [selectWallet, removeWallet, displayInscriptions, displayChains, connectors, showAgain]);
+  }, [
+    selectWallet,
+    removeWallet,
+    displayInscriptions,
+    displayChains,
+    verifyBTCAddress,
+    reset,
+    close,
+    connectors,
+    showAgain,
+  ]);
 
   // Disconnect Event
   useEffect(() => {

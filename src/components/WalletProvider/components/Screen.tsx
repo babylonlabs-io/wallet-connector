@@ -38,7 +38,7 @@ const SCREENS = {
   LOADER: ({ className, current }: ScreenProps) => (
     <LoaderScreen className={className} title={current?.params?.message as string} />
   ),
-  ERROR: () => <Error />,
+  ERROR: () => <Error className="min-h-0 md:w-[600px]" />,
   EMPTY: ({ className }: ScreenProps) => <div className={className} />,
 } as const;
 
