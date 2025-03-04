@@ -1,5 +1,15 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.4.2
+
+### Patch Changes
+
+- 610b48d: Bump btc-staking-ts to canary-15
+- bf51e69: on off for babylon wallets
+- 5c68e21: add lifecycle hooks
+- 7639df5: Offline Signer Auto
+- 37a1460: chore: move OKX in babylon wallet
+
 ## 0.4.1
 
 ### Patch Changes
