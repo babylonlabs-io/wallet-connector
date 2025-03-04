@@ -52,7 +52,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@babylonlabs-io/btc-staking-ts": "0.4.0-canary.13",
+    "@babylonlabs-io/btc-staking-ts": "0.4.0-canary.15",
     "@babylonlabs-io/core-ui": "^0.11.0",
     "bitcoinjs-lib": "6.1.5",
     "react": "^18.3.1",
