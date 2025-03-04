@@ -3,19 +3,19 @@ import { useCallback, useEffect } from "react";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
 import { useLifeCycleHooks } from "@/context/LifecycleHooks.context";
-import { accountStorage } from "@/core/storage";
-import { IChain, IWallet } from "@/core/types";
+import { HashMap, IChain, IWallet } from "@/core/types";
 import { validateAddressWithPK } from "@/core/utils/wallet";
 
 import { useWidgetState } from "./useWidgetState";
 
 interface Props {
+  accountStorage: HashMap;
   onError?: (e: Error) => void;
 }
 
 const ANIMATION_DELAY = 1000;
 
-export function useWalletConnectors({ onError }: Props) {
+export function useWalletConnectors({ accountStorage, onError }: Props) {
   const connectors = useChainProviders();
   const {
     selectWallet,

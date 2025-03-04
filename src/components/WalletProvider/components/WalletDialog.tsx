@@ -4,6 +4,7 @@ import { ResponsiveDialog } from "@/components/ResponsiveDialog/ResponsiveDialog
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
 import { useLifeCycleHooks } from "@/context/LifecycleHooks.context";
+import { HashMap } from "@/core/types";
 import { useWalletConnect } from "@/hooks/useWalletConnect";
 import { useWalletConnectors } from "@/hooks/useWalletConnectors";
 import { useWalletWidgets } from "@/hooks/useWalletWidgets";
@@ -13,17 +14,18 @@ import { Screen } from "./Screen";
 
 interface WalletDialogProps {
   onError?: (e: Error) => void;
+  storage: HashMap;
   config: any;
 }
 
 const ANIMATION_DELAY = 1000;
 
-export function WalletDialog({ config, onError }: WalletDialogProps) {
+export function WalletDialog({ storage, config, onError }: WalletDialogProps) {
   const { visible, screen, confirmed, close, confirm, displayChains } = useWidgetState();
   const { toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
   const walletWidgets = useWalletWidgets(connectors, config);
-  const { connect, disconnect } = useWalletConnectors({ onError });
+  const { connect, disconnect } = useWalletConnectors({ accountStorage: storage, onError });
   const { disconnect: disconnectAll } = useWalletConnect();
   const { acceptTermsOfService } = useLifeCycleHooks();
 

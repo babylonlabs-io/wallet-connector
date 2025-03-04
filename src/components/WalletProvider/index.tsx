@@ -2,8 +2,12 @@ import { type PropsWithChildren } from "react";
 
 import { ChainConfigArr, ChainProvider } from "@/context/Chain.context";
 import { type LifeCycleHooksProps, LifeCycleHooksProvider } from "@/context/LifecycleHooks.context";
+import { createAccountStorage } from "@/core/storage";
 
 import { WalletDialog } from "./components/WalletDialog";
+import { ONE_HOUR } from "./constants";
+
+const storage = createAccountStorage(ONE_HOUR);
 
 interface WalletProviderProps {
   lifecycleHooks?: LifeCycleHooksProps;
@@ -21,9 +25,9 @@ export function WalletProvider({
 }: PropsWithChildren<WalletProviderProps>) {
   return (
     <LifeCycleHooksProvider value={lifecycleHooks}>
-      <ChainProvider context={context} config={config} onError={onError}>
+      <ChainProvider storage={storage} context={context} config={config} onError={onError}>
         {children}
-        <WalletDialog config={config} onError={onError} />
+        <WalletDialog storage={storage} config={config} onError={onError} />
       </ChainProvider>
     </LifeCycleHooksProvider>
   );
