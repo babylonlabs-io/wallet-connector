@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.0
+
+### Minor Changes
+
+- 44a51ca: persistent wallet connection
+
 ## 0.4.2
 
 ### Patch Changes
