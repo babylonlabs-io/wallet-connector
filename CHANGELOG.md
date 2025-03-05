@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.1
+
+### Patch Changes
+
+- 336a89e: bip322 signMessage as default for software wallets
+
 ## 0.5.0
 
 ### Minor Changes
