@@ -27,12 +27,11 @@ export function WalletDialog({ storage, config, onError }: WalletDialogProps) {
   const walletWidgets = useWalletWidgets(connectors, config);
   const { connect, disconnect } = useWalletConnectors({ accountStorage: storage, onError });
   const { disconnect: disconnectAll } = useWalletConnect();
-  const { acceptTermsOfService } = useLifeCycleHooks();
-
+  const { acceptTerms } = useLifeCycleHooks();
   const handleAccepTermsOfService = useCallback(() => {
     displayChains?.();
-    acceptTermsOfService?.();
-  }, [displayChains, acceptTermsOfService]);
+    acceptTerms?.();
+  }, [displayChains, acceptTerms]);
 
   const handleToggleInscriptions = useCallback(
     (lockInscriptions: boolean, showAgain: boolean) => {

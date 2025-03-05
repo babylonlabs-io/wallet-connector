@@ -13,3 +13,5 @@ export * from "@/context/State.context";
 
 export { createExternalWallet } from "@/core";
 export * from "@/core/types";
+
+export { type LifeCycleHooksProps } from "@/context/LifecycleHooks.context";

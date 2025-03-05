@@ -29,7 +29,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
     reset,
   } = useWidgetState();
   const { showAgain } = useInscriptionProvider();
-  const { verifyBTCAddress } = useLifeCycleHooks();
+  const { verifyBTCAddress, acceptTermsOfService, clearTerms } = useLifeCycleHooks();
 
   // Connecting event
   useEffect(() => {
@@ -57,13 +57,10 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
 
         const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
 
-        if (
-          !validateAddressWithPK(
-            connectedWallet.account?.address ?? "",
-            connectedWallet.account?.publicKeyHex ?? "",
-            connector.config.network,
-          )
-        ) {
+        const address = connectedWallet.account?.address ?? "";
+        const publicKeyHex = connectedWallet.account?.publicKeyHex ?? "";
+
+        if (!validateAddressWithPK(address, publicKeyHex, connector.config.network)) {
           displayError?.({
             title: "Public Key Mismatch",
             description:
@@ -78,7 +75,8 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
           return;
         }
 
-        if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
+        // Verify BTC address
+        if (verifyBTCAddress && !(await verifyBTCAddress(address))) {
           for (const connector of connectorArr) {
             await connector.disconnect();
           }
@@ -95,6 +93,14 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
           });
 
           return;
+        }
+
+        // Call acceptTermsOfService if provided
+        if (acceptTermsOfService) {
+          await acceptTermsOfService(address, publicKeyHex).catch((error: Error) => {
+            onError?.(error);
+            displayChains?.();
+          });
         }
 
         goToNextScreen();
@@ -124,6 +130,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
     displayInscriptions,
     displayChains,
     verifyBTCAddress,
+    acceptTermsOfService,
     reset,
     close,
     connectors,
@@ -140,12 +147,13 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
           removeWallet?.(connector.id);
           displayChains?.();
           accountStorage.delete(connector.id);
+          clearTerms?.();
         }
       }),
     );
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
-  }, [removeWallet, displayChains, connectors]);
+  }, [removeWallet, displayChains, connectors, clearTerms]);
 
   // Error Event
   useEffect(() => {

@@ -1,16 +1,41 @@
-import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
 
 export interface LifeCycleHooksProps {
   verifyBTCAddress?: (address: string) => Promise<boolean>;
-  acceptTermsOfService?: () => Promise<void>;
+  acceptTermsOfService?: (address: string, publicKeyHex: string) => Promise<void>;
 }
 
-const Context = createContext<LifeCycleHooksProps>({});
+interface LifeCycleHooksContextProps extends LifeCycleHooksProps {
+  hasAcceptedTerms: boolean;
+  acceptTerms: () => void;
+  clearTerms: () => void;
+}
+
+const Context = createContext<LifeCycleHooksContextProps>({
+  hasAcceptedTerms: false,
+  acceptTerms: () => {},
+  clearTerms: () => {},
+});
 
 export function LifeCycleHooksProvider({ children, value }: PropsWithChildren<{ value?: LifeCycleHooksProps }>) {
+  const [hasAcceptedTerms, setHasAcceptedTerms] = useState<boolean>(false);
+
   const context = useMemo(() => {
-    return value ?? {};
-  }, [value]);
+    const acceptTerms = (): void => {
+      setHasAcceptedTerms(true);
+    };
+
+    const clearTerms = (): void => {
+      setHasAcceptedTerms(false);
+    };
+
+    return {
+      ...value,
+      hasAcceptedTerms,
+      acceptTerms,
+      clearTerms,
+    };
+  }, [value, hasAcceptedTerms]);
 
   return <Context.Provider value={context}>{children}</Context.Provider>;
 }
