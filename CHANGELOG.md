@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.2
+
+### Patch Changes
+
+- 02d3523: update lifycycle hooks
+
 ## 0.5.1
 
 ### Patch Changes
