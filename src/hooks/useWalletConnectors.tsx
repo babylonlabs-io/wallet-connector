@@ -29,7 +29,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
     reset,
   } = useWidgetState();
   const { showAgain } = useInscriptionProvider();
-  const { verifyBTCAddress } = useLifeCycleHooks();
+  const { verifyBTCAddress, acceptTermsOfService } = useLifeCycleHooks();
 
   // Connecting event
   useEffect(() => {
@@ -50,9 +50,13 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
 
     const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
       BTC: (connector) => async (connectedWallet) => {
-        if (connectedWallet) {
+        if (connectedWallet && connectedWallet.account) {
           selectWallet?.("BTC", connectedWallet);
           accountStorage.set(connector.id, connectedWallet.id);
+          acceptTermsOfService?.({
+            address: connectedWallet.account.address,
+            public_key: connectedWallet.account.publicKeyHex,
+          });
         }
 
         const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
