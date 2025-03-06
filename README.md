@@ -18,6 +18,7 @@
 - [Wallet Integration](#wallet-integration)
   - [1. Browser extension wallets](#1-browser-extension-wallets)
   - [2. Mobile wallets](#2-mobile-wallets)
+  - [IProvider](#iprovider)
     - [IBTCProvider](#ibtcprovider)
     - [IBBNProvider](#ibbnprovider)
 
@@ -95,6 +96,7 @@ implemented for integration with the Babylon staking app.
 export interface IProvider {
   /**
    * Connects to the wallet and returns the instance of the wallet provider.
+   * Currently Bitcoin only supports Native SegWit and Taproot address types.
    * @returns A promise that resolves to an instance of the wrapper wallet provider.
    * @throws An error if the wallet is not installed or if connection fails.
    */
