@@ -22,13 +22,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    onError: console.log,
-  },
   decorators: [
     (Story) => (
       <ScrollLocker>
-        <WalletProvider context={window.parent} config={config} onError={console.log}>
+        <WalletProvider persistent context={window.parent} config={config} onError={console.log}>
           <Story />
         </WalletProvider>
       </ScrollLocker>
@@ -42,9 +39,6 @@ export const Default: Story = {
 };
 
 export const WithConnectedData: Story = {
-  args: {
-    onError: console.log,
-  },
   decorators: [
     (Story) => (
       <ScrollLocker>
@@ -88,9 +82,6 @@ export const WithConnectedData: Story = {
 };
 
 export const WithBTCSigningFeatures: Story = {
-  args: {
-    onError: console.log,
-  },
   decorators: [
     (Story) => (
       <ScrollLocker>

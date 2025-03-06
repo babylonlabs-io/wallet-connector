@@ -15,16 +15,17 @@ interface WalletDialogProps {
   onError?: (e: Error) => void;
   storage: HashMap;
   config: any;
+  persistent: boolean;
 }
 
 const ANIMATION_DELAY = 1000;
 
-export function WalletDialog({ storage, config, onError }: WalletDialogProps) {
+export function WalletDialog({ persistent, storage, config, onError }: WalletDialogProps) {
   const { visible, screen, confirmed, close, confirm, displayChains } = useWidgetState();
   const { toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
   const walletWidgets = useWalletWidgets(connectors, config);
-  const { connect, disconnect } = useWalletConnectors({ accountStorage: storage, onError });
+  const { connect, disconnect } = useWalletConnectors({ persistent, accountStorage: storage, onError });
   const { disconnect: disconnectAll } = useWalletConnect();
 
   const handleAccepTermsOfService = useCallback(() => {
