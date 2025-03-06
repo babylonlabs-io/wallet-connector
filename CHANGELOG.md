@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.3
+
+### Patch Changes
+
+- b5e6452: add persistent option
+
 ## 0.5.2
 
 ### Patch Changes
