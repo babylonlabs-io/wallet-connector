@@ -64,13 +64,14 @@ export const createExternalWallet = <P extends IProvider>({ id, name, icon, prov
   });
 
 export const createWalletConnector = async <N extends string, P extends IProvider, C>({
+  persistent,
   metadata,
   context,
   config,
   accountStorage,
 }: WalletConnectorProps<N, P, C>): Promise<WalletConnector<N, P, C>> => {
   const wallets: Wallet<P>[] = [];
-  const connectedWalletId = accountStorage.get(metadata.chain);
+  const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
 
   for (const walletMetadata of metadata.wallets) {
     wallets.push(

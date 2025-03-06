@@ -30,6 +30,7 @@ export type ChainConfigArr = (
 )[];
 
 interface ProviderProps {
+  persistent: boolean;
   storage: HashMap;
   context: any;
   config: Readonly<ChainConfigArr>;
@@ -48,7 +49,14 @@ const defaultState: Connectors = {
 
 export const Context = createContext<Connectors>(defaultState);
 
-export function ChainProvider({ storage, children, context, config, onError }: PropsWithChildren<ProviderProps>) {
+export function ChainProvider({
+  persistent,
+  storage,
+  children,
+  context,
+  config,
+  onError,
+}: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
 
   const init = useCallback(async () => {
@@ -56,6 +64,7 @@ export function ChainProvider({ storage, children, context, config, onError }: P
       .filter((c) => metadata[c.chain])
       .map(({ chain, config }) =>
         createWalletConnector<string, IProvider, any>({
+          persistent,
           metadata: metadata[chain],
           context,
           config,
@@ -65,7 +74,7 @@ export function ChainProvider({ storage, children, context, config, onError }: P
     const connectorArr = await Promise.all(connectorPromises);
 
     return connectorArr.reduce((acc, connector) => ({ ...acc, [connector.id]: connector }), {} as Connectors);
-  }, []);
+  }, [persistent]);
 
   useEffect(() => {
     init()
