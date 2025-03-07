@@ -7,7 +7,9 @@ export const isMobileDevice = (): boolean => {
   const hasAppSpecificIdentifiers = /OKX|Binance|Trust\/|TokenPocket|imToken/i.test(userAgent);
   const isMobileSize = window.innerWidth <= 768;
 
-  return isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
+  const result = isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
+
+  return result;
 };
 
 export const hasInjectableWallets = (): boolean => {
@@ -16,7 +18,9 @@ export const hasInjectableWallets = (): boolean => {
   const hasBtcWallet = typeof (window as any).btcwallet !== "undefined";
   const hasBbnWallet = typeof (window as any).bbnwallet !== "undefined";
 
-  return hasBtcWallet || hasBbnWallet;
+  const result = hasBtcWallet || hasBbnWallet;
+
+  return result;
 };
 
 export const isDesktopWalletApp = (): boolean => {
@@ -41,5 +45,9 @@ export const isDesktopWalletApp = (): boolean => {
 };
 
 export const shouldShowInjectableWallets = (): boolean => {
-  return !isDesktopWalletApp();
+  if (isMobileDevice()) {
+    return true;
+  }
+
+  return isDesktopWalletApp();
 };
