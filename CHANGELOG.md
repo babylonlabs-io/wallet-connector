@@ -1,5 +1,12 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.4
+
+### Patch Changes
+
+- 41226f4: readme native segwit taproot
+- 6e2f9e7: keystone bip322
+
 ## 0.5.3
 
 ### Patch Changes
