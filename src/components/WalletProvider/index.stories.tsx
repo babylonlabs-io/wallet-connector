@@ -93,21 +93,35 @@ export const WithBTCSigningFeatures: Story = {
   ],
   render: () => {
     const { open, selectedWallets } = useWidgetState();
-    const [messageToSign, setMessageToSign] = useState("");
+    const [messageToSignECDSA, setMessageToSignECDSA] = useState("");
+    const [messageToSignBIP322, setMessageToSignBIP322] = useState("");
     const [psbtToSign, setPsbtToSign] = useState("");
-    const [signedMessage, setSignedMessage] = useState("");
+    const [signedMessageECDSA, setSignedMessageECDSA] = useState("");
+    const [signedMessageBIP322, setSignedMessageBIP322] = useState("");
     const [signedPsbt, setSignedPsbt] = useState("");
     const [transaction, setTransaction] = useState("");
 
     const btcProvider = selectedWallets.BTC?.provider as IBTCProvider | undefined;
 
-    const handleSignMessage = async () => {
-      if (!btcProvider || !messageToSign) return;
+    const handleSignMessageECDSA = async () => {
+      if (!btcProvider || !messageToSignECDSA) return;
 
       try {
-        const signature = await btcProvider.signMessage(messageToSign, "ecdsa");
-        console.log("handleSignMessage:", signature);
-        setSignedMessage(signature);
+        const signature = await btcProvider.signMessage(messageToSignECDSA, "ecdsa");
+        console.log("handleSignMessage ECDSA:", signature);
+        setSignedMessageECDSA(signature);
+      } catch (error) {
+        console.error("Failed to sign message:", error);
+      }
+    };
+
+    const handleSignMessageBIP322 = async () => {
+      if (!btcProvider || !messageToSignBIP322) return;
+
+      try {
+        const signature = await btcProvider.signMessage(messageToSignBIP322, "bip322-simple");
+        console.log("handleSignMessage BIP322:", signature);
+        setSignedMessageBIP322(signature);
       } catch (error) {
         console.error("Failed to sign message:", error);
       }
@@ -134,25 +148,49 @@ export const WithBTCSigningFeatures: Story = {
           {btcProvider && (
             <div className="flex flex-col gap-4">
               <div className="rounded border border-secondary-main/30 p-4">
-                <FormControl label="Sign Message" className="mb-2 py-2">
+                <FormControl label="Sign Message - ECDSA" className="mb-2 py-2">
                   <Input
                     type="text"
-                    value={messageToSign}
-                    onChange={(e) => setMessageToSign(e.target.value)}
+                    value={messageToSignECDSA}
+                    onChange={(e) => setMessageToSignECDSA(e.target.value)}
                     placeholder="Enter message to sign"
                   />
                 </FormControl>
 
-                <Button onClick={handleSignMessage}>Sign Message</Button>
+                <Button onClick={handleSignMessageECDSA}>Sign Message ECDSA</Button>
 
-                {signedMessage && (
+                {signedMessageECDSA && (
                   <div className="mt-2 flex items-center gap-2">
                     <Text variant="body2" className="flex-1 truncate">
-                      Signed Message: {signedMessage}
+                      Signed Message: {signedMessageECDSA}
                     </Text>
-                    <Button onClick={() => setSignedMessage("")}>Delete</Button>
+                    <Button onClick={() => setSignedMessageECDSA("")}>Delete</Button>
                   </div>
                 )}
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div className="rounded border border-secondary-main/30 p-4">
+                  <FormControl label="Sign Message - BIP322" className="mb-2 py-2">
+                    <Input
+                      type="text"
+                      value={messageToSignBIP322}
+                      onChange={(e) => setMessageToSignBIP322(e.target.value)}
+                      placeholder="Enter message to sign"
+                    />
+                  </FormControl>
+
+                  <Button onClick={handleSignMessageBIP322}>Sign Message BIP322</Button>
+
+                  {signedMessageBIP322 && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <Text variant="body2" className="flex-1 truncate">
+                        Signed Message: {signedMessageBIP322}
+                      </Text>
+                      <Button onClick={() => setSignedMessageBIP322("")}>Delete</Button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="rounded border border-secondary-main/30 p-4">
