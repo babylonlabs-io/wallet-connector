@@ -7,9 +7,7 @@ export const isMobileDevice = (): boolean => {
   const hasAppSpecificIdentifiers = /OKX|Binance|Trust\/|TokenPocket|imToken/i.test(userAgent);
   const isMobileSize = window.innerWidth <= 768;
 
-  const result = isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
-
-  return result;
+  return isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
 };
 
 export const hasInjectableWallets = (): boolean => {
@@ -18,36 +16,42 @@ export const hasInjectableWallets = (): boolean => {
   const hasBtcWallet = typeof (window as any).btcwallet !== "undefined";
   const hasBbnWallet = typeof (window as any).bbnwallet !== "undefined";
 
-  const result = hasBtcWallet || hasBbnWallet;
+  return hasBtcWallet || hasBbnWallet;
+};
 
-  return result;
+export const isBrowserExtension = (): boolean => {
+  if (typeof window === "undefined") return false;
+
+  const isStandardBrowser = /Chrome|Firefox|Safari|Edge/i.test(window.navigator.userAgent);
+
+  const isNotWebView =
+    !/Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent) || !/wv|WebView/i.test(window.navigator.userAgent);
+
+  return isStandardBrowser && isNotWebView;
 };
 
 export const isDesktopWalletApp = (): boolean => {
   if (typeof window === "undefined") return false;
 
-  if (isMobileDevice()) {
+  if (isMobileDevice() || isBrowserExtension()) {
     return false;
   }
 
-  const hasInjectables = hasInjectableWallets();
-
-  if (hasInjectables) {
+  if (hasInjectableWallets()) {
     return true;
   }
 
   const userAgent = window.navigator.userAgent;
-  if (userAgent.includes("Wallet") || userAgent.includes("wallet")) {
-    return true;
-  }
-
-  return false;
+  return userAgent.includes("Wallet") || userAgent.includes("wallet");
 };
 
 export const shouldShowInjectableWallets = (): boolean => {
-  if (isMobileDevice()) {
+  // Always show injectable wallets on mobile
+  const isMobile = isMobileDevice();
+  if (isMobile) {
     return true;
   }
 
+  // On desktop, only show injectable wallets if inside a desktop wallet app
   return isDesktopWalletApp();
 };
