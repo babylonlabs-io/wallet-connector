@@ -1,57 +1,105 @@
-export const isMobileDevice = (): boolean => {
-  if (typeof window === "undefined") return false;
+export interface BrowserContext {
+  navigator: {
+    userAgent: string;
+  };
+  innerWidth: number;
+  innerHeight: number;
+  btcwallet?: any;
+  bbnwallet?: any;
+  chrome?: {
+    runtime?: any;
+    extension?: any;
+  };
+  browser?: {
+    runtime?: any;
+  };
+  [key: string]: any;
+}
 
-  const userAgent = window.navigator.userAgent;
+export const isMobileDevice = (context: BrowserContext = window as BrowserContext): boolean => {
+  if (typeof context === "undefined") return false;
+
+  const userAgent = context.navigator.userAgent;
   const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
   const isMobileBrowser = mobileRegex.test(userAgent);
   const hasAppSpecificIdentifiers = /OKX|Binance|Trust\/|TokenPocket|imToken/i.test(userAgent);
-  const isMobileSize = window.innerWidth <= 768;
+  const isMobileSize = context.innerWidth <= 768;
 
   return isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
 };
 
-export const hasInjectableWallets = (): boolean => {
-  if (typeof window === "undefined") return false;
+export const hasInjectableWallets = (context: BrowserContext = window as BrowserContext): boolean => {
+  if (typeof context === "undefined") return false;
 
-  const hasBtcWallet = typeof (window as any).btcwallet !== "undefined";
-  const hasBbnWallet = typeof (window as any).bbnwallet !== "undefined";
+  const hasBtcWallet = typeof context.btcwallet !== "undefined";
+  const hasBbnWallet = typeof context.bbnwallet !== "undefined";
 
   return hasBtcWallet || hasBbnWallet;
 };
 
-export const isBrowserExtension = (): boolean => {
-  if (typeof window === "undefined") return false;
+export const isBrowserExtension = (context: BrowserContext = window as BrowserContext): boolean => {
+  if (typeof context === "undefined") return false;
 
-  const isStandardBrowser = /Chrome|Firefox|Safari|Edge/i.test(window.navigator.userAgent);
+  // Check if we're in a standard browser
+  const isStandardBrowser = /Chrome|Firefox|Safari|Edge/i.test(context.navigator.userAgent);
 
+  // Check if we're NOT in an app webview
   const isNotWebView =
-    !/Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent) || !/wv|WebView/i.test(window.navigator.userAgent);
+    !/Android|iPhone|iPad|iPod/i.test(context.navigator.userAgent) || !/wv|WebView/i.test(context.navigator.userAgent);
 
-  return isStandardBrowser && isNotWebView;
+  // Check if we have extension-specific objects
+  const hasExtensionAPIs =
+    typeof context.chrome !== "undefined" &&
+    (context.chrome.runtime !== undefined || context.chrome.extension !== undefined);
+
+  // If we're in a standard browser and not in a webview, or we have extension APIs,
+  // it's likely a browser extension environment
+  return (isStandardBrowser && isNotWebView) || hasExtensionAPIs;
 };
 
-export const isDesktopWalletApp = (): boolean => {
-  if (typeof window === "undefined") return false;
+export const isDesktopWalletApp = (context: BrowserContext = window as BrowserContext): boolean => {
+  if (typeof context === "undefined") return false;
 
-  if (isMobileDevice() || isBrowserExtension()) {
+  const isMobile = isMobileDevice(context);
+
+  if (isMobile) {
     return false;
   }
 
-  if (hasInjectableWallets()) {
+  const isBrowserExt = isBrowserExtension(context);
+
+  if (isBrowserExt) {
+    return false;
+  }
+
+  const hasInjectables = hasInjectableWallets(context);
+
+  if (hasInjectables) {
     return true;
   }
 
-  const userAgent = window.navigator.userAgent;
-  return userAgent.includes("Wallet") || userAgent.includes("wallet");
+  const userAgent = context.navigator.userAgent;
+  const hasWalletInUserAgent = userAgent.includes("Wallet") || userAgent.includes("wallet");
+
+  if (hasWalletInUserAgent) {
+    return true;
+  }
+
+  return false;
 };
 
-export const shouldShowInjectableWallets = (): boolean => {
+/**
+ * Determines if injectable wallets should be displayed based on the environment
+ * @param context The window object or similar context
+ * @returns True if injectable wallets should be displayed, false otherwise
+ */
+export const shouldDisplayInjectable = (context: BrowserContext = window as BrowserContext): boolean => {
   // Always show injectable wallets on mobile
-  const isMobile = isMobileDevice();
+  const isMobile = isMobileDevice(context);
   if (isMobile) {
     return true;
   }
 
   // On desktop, only show injectable wallets if inside a desktop wallet app
-  return isDesktopWalletApp();
+  return isDesktopWalletApp(context);
 };

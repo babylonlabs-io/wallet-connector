@@ -129,6 +129,7 @@ export interface WalletConnectorProps<N extends string, P extends IProvider, C> 
   context: any;
   config: C;
   accountStorage: HashMap;
+  persistent?: boolean;
 }
 
 export interface WalletProps<P extends IProvider, C> {

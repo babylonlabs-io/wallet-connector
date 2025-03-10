@@ -1,7 +1,7 @@
 import { type WalletOptions, Wallet } from "./Wallet";
 import { WalletConnector } from "./WalletConnector";
 import { ExternalWalletProps, IProvider, Network, WalletConnectorProps, WalletProps } from "./types";
-import { shouldShowInjectableWallets } from "./utils/device";
+import { shouldDisplayInjectable } from "./utils/device";
 
 const defaultWalletGetter = (key: string) => (context: any) => context[key];
 
@@ -69,14 +69,13 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   context,
   config,
   accountStorage,
+  persistent = true,
 }: WalletConnectorProps<N, P, C>): Promise<WalletConnector<N, P, C>> => {
   const wallets: Wallet<P>[] = [];
-  const connectedWalletId = accountStorage.get(metadata.chain);
-
-  const showInjectable = shouldShowInjectableWallets();
+  const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
 
   for (const walletMetadata of metadata.wallets) {
-    if (!showInjectable && walletMetadata.id === "injectable") {
+    if (walletMetadata.id === "injectable" && !shouldDisplayInjectable(context)) {
       continue;
     }
 
