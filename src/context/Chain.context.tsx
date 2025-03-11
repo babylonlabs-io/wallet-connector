@@ -60,6 +60,7 @@ export function ChainProvider({ storage, children, context, config, onError }: P
           context,
           config,
           accountStorage: storage,
+          persistent: true,
         }),
       );
     const connectorArr = await Promise.all(connectorPromises);
