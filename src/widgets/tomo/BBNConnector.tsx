@@ -1,11 +1,6 @@
 import {
-  createExternalWallet,
-  IBBNProvider,
-  useChainConnector,
-  useWidgetState,
-} from "@babylonlabs-io/wallet-connector";
-import {
   CosmosProvider,
+  useClickWallet,
   useTomoProviders,
   useTomoWalletConnect,
   useTomoWalletState,
@@ -13,28 +8,30 @@ import {
 } from "@tomo-inc/wallet-connect-sdk";
 import { memo, useCallback, useEffect, useMemo } from "react";
 
+import { createExternalWallet } from "@/core";
+import { HashMap, IBBNProvider } from "@/core/types";
+import { useChainConnector } from "@/hooks/useChainConnector";
+
 const createProvider = (provider: CosmosProvider): IBBNProvider => {
   return {
-    connectWallet: async () => void provider.connectWallet(),
+    connectWallet: async () => void (await provider.connectWallet()),
     getAddress: () => provider.getAddress(),
     getPublicKeyHex: () => provider.getPublicKeyHex(),
     getWalletProviderName: () => provider.getWalletProviderName(),
     getWalletProviderIcon: () => provider.getWalletProviderIcon(),
     getOfflineSigner: () => provider.getOfflineSigner(),
-    // not yet implemented
-    // provider.on(eventName, callBack)
     on: () => {},
     off: () => {},
   };
 };
 
-export const TomoBBNConnector = memo(() => {
+export const TomoBBNConnector = memo(({ storage }: { storage: HashMap }) => {
   const tomoWalletState = useTomoWalletState();
-  const walletList = useWalletList();
+  const walletList = useWalletList("cosmos");
   const { cosmosProvider: connectedProvider } = useTomoProviders();
   const tomoWalletConnect = useTomoWalletConnect();
+  const connectWallet = useClickWallet();
 
-  const { visible } = useWidgetState();
   const connector = useChainConnector("BBN");
 
   const connectedWallet = useMemo(() => {
@@ -48,7 +45,7 @@ export const TomoBBNConnector = memo(() => {
       if (!connector) return;
 
       const wallet = createExternalWallet({
-        id: "tomo-bbn-connector",
+        id: `tomo.${bbnWallet.id}`,
         name: bbnWallet.name,
         icon: bbnWallet.img,
         provider: createProvider(bbnProvider),
@@ -60,10 +57,22 @@ export const TomoBBNConnector = memo(() => {
   );
 
   useEffect(() => {
-    if (visible && connectedWallet && connectedProvider) {
+    const walletId = storage.get("BBN");
+    if (!walletId || !walletId.startsWith("tomo.")) return;
+
+    const tomoWalletId = walletId.replace("tomo.", "");
+    const wallet = walletList.find((wallet: any) => wallet.id === tomoWalletId);
+
+    if (wallet) {
+      connectWallet(wallet);
+    }
+  }, [storage]);
+
+  useEffect(() => {
+    if (connectedWallet && connectedProvider) {
       connect(connectedWallet, connectedProvider);
     }
-  }, [visible, connectedWallet, connectedProvider, connect]);
+  }, [connectedWallet, connectedProvider, connect]);
 
   useEffect(() => {
     if (!connector) return;

@@ -11,7 +11,6 @@ import { WalletDialog } from "./components/WalletDialog";
 import { ONE_HOUR } from "./constants";
 
 const storage = createAccountStorage(ONE_HOUR);
-
 interface WalletProviderProps {
   persistent?: boolean;
   lifecycleHooks?: LifeCycleHooksProps;
@@ -33,8 +32,8 @@ export function WalletProvider({
       <LifeCycleHooksProvider value={lifecycleHooks}>
         <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
           {children}
-          <TomoBTCConnector />
-          <TomoBBNConnector />
+          <TomoBTCConnector storage={storage} />
+          <TomoBBNConnector storage={storage} />
           <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
         </ChainProvider>
       </LifeCycleHooksProvider>

@@ -1,11 +1,6 @@
 import {
-  createExternalWallet,
-  IBTCProvider,
-  useChainConnector,
-  useWidgetState,
-} from "@babylonlabs-io/wallet-connector";
-import {
   BTCProvider,
+  useClickWallet,
   useTomoProviders,
   useTomoWalletConnect,
   useTomoWalletState,
@@ -13,9 +8,13 @@ import {
 } from "@tomo-inc/wallet-connect-sdk";
 import { memo, useCallback, useEffect, useMemo } from "react";
 
+import { createExternalWallet } from "@/core";
+import { HashMap, IBTCProvider } from "@/core/types";
+import { useChainConnector } from "@/hooks/useChainConnector";
+
 const createProvider = (provider: BTCProvider): IBTCProvider => {
   return {
-    connectWallet: async () => void provider.connectWallet(),
+    connectWallet: async () => void (await provider.connectWallet()),
     getAddress: () => provider.getAddress(),
     getPublicKeyHex: () => provider.getPublicKeyHex(),
     signPsbt: (psbtHex: string) => provider.signPsbt(psbtHex),
@@ -36,13 +35,13 @@ const createProvider = (provider: BTCProvider): IBTCProvider => {
   };
 };
 
-export const TomoBTCConnector = memo(() => {
+export const TomoBTCConnector = memo(({ storage }: { storage: HashMap }) => {
   const tomoWalletState = useTomoWalletState();
-  const walletList = useWalletList();
+  const walletList = useWalletList("bitcoin");
   const { bitcoinProvider: connectedProvider } = useTomoProviders();
   const tomoWalletConnect = useTomoWalletConnect();
+  const connectWallet = useClickWallet();
 
-  const { visible } = useWidgetState();
   const connector = useChainConnector("BTC");
 
   const connectedWallet = useMemo(() => {
@@ -56,7 +55,7 @@ export const TomoBTCConnector = memo(() => {
       if (!connector) return;
 
       const wallet = createExternalWallet({
-        id: "tomo-btc-connector",
+        id: `tomo.${btcWallet.id}`,
         name: btcWallet.name,
         icon: btcWallet.img,
         provider: createProvider(btcProvider),
@@ -68,10 +67,22 @@ export const TomoBTCConnector = memo(() => {
   );
 
   useEffect(() => {
-    if (visible && connectedWallet && connectedProvider) {
+    const walletId = storage.get("BTC");
+    if (!walletId || !walletId.startsWith("tomo.")) return;
+
+    const tomoWalletId = walletId.replace("tomo.", "");
+    const wallet = walletList.find((wallet: any) => wallet.id === tomoWalletId);
+
+    if (wallet) {
+      connectWallet(wallet);
+    }
+  }, [storage]);
+
+  useEffect(() => {
+    if (connectedWallet && connectedProvider) {
       connect(connectedWallet, connectedProvider);
     }
-  }, [visible, connectedWallet, connectedProvider, connect]);
+  }, [connectedWallet, connectedProvider, connect]);
 
   useEffect(() => {
     if (!connector) return;
