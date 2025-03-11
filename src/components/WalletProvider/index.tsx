@@ -2,7 +2,10 @@ import { type PropsWithChildren } from "react";
 
 import { ChainConfigArr, ChainProvider } from "@/context/Chain.context";
 import { type LifeCycleHooksProps, LifeCycleHooksProvider } from "@/context/LifecycleHooks.context";
+import { TomoConnectionProvider } from "@/context/TomoProvider";
 import { createAccountStorage } from "@/core/storage";
+import { TomoBBNConnector } from "@/widgets/tomo/BBNConnector";
+import { TomoBTCConnector } from "@/widgets/tomo/BTCConnector";
 
 import { WalletDialog } from "./components/WalletDialog";
 import { ONE_HOUR } from "./constants";
@@ -26,11 +29,15 @@ export function WalletProvider({
   onError,
 }: PropsWithChildren<WalletProviderProps>) {
   return (
-    <LifeCycleHooksProvider value={lifecycleHooks}>
-      <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
-        {children}
-        <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
-      </ChainProvider>
-    </LifeCycleHooksProvider>
+    <TomoConnectionProvider config={config}>
+      <LifeCycleHooksProvider value={lifecycleHooks}>
+        <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
+          {children}
+          <TomoBTCConnector />
+          <TomoBBNConnector />
+          <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
+        </ChainProvider>
+      </LifeCycleHooksProvider>
+    </TomoConnectionProvider>
   );
 }
