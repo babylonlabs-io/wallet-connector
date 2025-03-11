@@ -10,6 +10,7 @@ import { ONE_HOUR } from "./constants";
 const storage = createAccountStorage(ONE_HOUR);
 
 interface WalletProviderProps {
+  persistent?: boolean;
   lifecycleHooks?: LifeCycleHooksProps;
   context?: any;
   config: Readonly<ChainConfigArr>;
@@ -17,6 +18,7 @@ interface WalletProviderProps {
 }
 
 export function WalletProvider({
+  persistent = false,
   lifecycleHooks,
   children,
   config,
@@ -25,9 +27,9 @@ export function WalletProvider({
 }: PropsWithChildren<WalletProviderProps>) {
   return (
     <LifeCycleHooksProvider value={lifecycleHooks}>
-      <ChainProvider storage={storage} context={context} config={config} onError={onError}>
+      <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
         {children}
-        <WalletDialog storage={storage} config={config} onError={onError} />
+        <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
       </ChainProvider>
     </LifeCycleHooksProvider>
   );

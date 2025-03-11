@@ -1,5 +1,30 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.5.4
+
+### Patch Changes
+
+- 41226f4: readme native segwit taproot
+- 6e2f9e7: keystone bip322
+
+## 0.5.3
+
+### Patch Changes
+
+- b5e6452: add persistent option
+
+## 0.5.2
+
+### Patch Changes
+
+- 02d3523: update lifycycle hooks
+
+## 0.5.1
+
+### Patch Changes
+
+- 336a89e: bip322 signMessage as default for software wallets
+
 ## 0.5.0
 
 ### Minor Changes

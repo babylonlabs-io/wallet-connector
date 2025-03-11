@@ -18,6 +18,7 @@
 - [Wallet Integration](#wallet-integration)
   - [1. Browser extension wallets](#1-browser-extension-wallets)
   - [2. Mobile wallets](#2-mobile-wallets)
+  - [IProvider](#iprovider)
     - [IBTCProvider](#ibtcprovider)
     - [IBBNProvider](#ibbnprovider)
 
@@ -95,6 +96,7 @@ implemented for integration with the Babylon staking app.
 export interface IProvider {
   /**
    * Connects to the wallet and returns the instance of the wallet provider.
+   * Currently Bitcoin only supports Native SegWit and Taproot address types.
    * @returns A promise that resolves to an instance of the wrapper wallet provider.
    * @throws An error if the wallet is not installed or if connection fails.
    */
@@ -139,12 +141,15 @@ interface IBTCProvider extends IProvider {
   getNetwork(): Promise<Network>;
 
   /**
-   * Signs a message using the specified signing method.
+   * Signs a message using either BIP322-Simple or ECDSA signing method.
    * @param message - The message to sign.
    * @param type - The signing method to use.
    * @returns A promise that resolves to the signed message.
    */
-  signMessage(message: string, type: "ecdsa"): Promise<string>;
+  signMessage(
+    message: string,
+    type: "bip322-simple" | "ecdsa",
+  ): Promise<string>;
 
   /**
    * Retrieves the inscriptions for the connected wallet.

@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { ResponsiveDialog } from "@/components/ResponsiveDialog/ResponsiveDialog";
 import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
-import { useLifeCycleHooks } from "@/context/LifecycleHooks.context";
 import { HashMap } from "@/core/types";
 import { useWalletConnect } from "@/hooks/useWalletConnect";
 import { useWalletConnectors } from "@/hooks/useWalletConnectors";
@@ -16,23 +15,22 @@ interface WalletDialogProps {
   onError?: (e: Error) => void;
   storage: HashMap;
   config: any;
+  persistent: boolean;
 }
 
 const ANIMATION_DELAY = 1000;
 
-export function WalletDialog({ storage, config, onError }: WalletDialogProps) {
+export function WalletDialog({ persistent, storage, config, onError }: WalletDialogProps) {
   const { visible, screen, confirmed, close, confirm, displayChains } = useWidgetState();
   const { toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
   const walletWidgets = useWalletWidgets(connectors, config);
-  const { connect, disconnect } = useWalletConnectors({ accountStorage: storage, onError });
+  const { connect, disconnect } = useWalletConnectors({ persistent, accountStorage: storage, onError });
   const { disconnect: disconnectAll } = useWalletConnect();
-  const { acceptTermsOfService } = useLifeCycleHooks();
 
   const handleAccepTermsOfService = useCallback(() => {
     displayChains?.();
-    acceptTermsOfService?.();
-  }, [displayChains, acceptTermsOfService]);
+  }, [displayChains]);
 
   const handleToggleInscriptions = useCallback(
     (lockInscriptions: boolean, showAgain: boolean) => {

@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useMemo } from "react";
 
 export interface LifeCycleHooksProps {
   verifyBTCAddress?: (address: string) => Promise<boolean>;
-  acceptTermsOfService?: () => Promise<void>;
+  acceptTermsOfService?: ({ address, public_key }: { address: string; public_key: string }) => Promise<void>;
 }
 
 const Context = createContext<LifeCycleHooksProps>({});

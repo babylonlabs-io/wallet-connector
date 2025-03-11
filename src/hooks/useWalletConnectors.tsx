@@ -9,13 +9,14 @@ import { validateAddressWithPK } from "@/core/utils/wallet";
 import { useWidgetState } from "./useWidgetState";
 
 interface Props {
+  persistent: boolean;
   accountStorage: HashMap;
   onError?: (e: Error) => void;
 }
 
 const ANIMATION_DELAY = 1000;
 
-export function useWalletConnectors({ accountStorage, onError }: Props) {
+export function useWalletConnectors({ persistent, accountStorage, onError }: Props) {
   const connectors = useChainProviders();
   const {
     selectWallet,
@@ -29,7 +30,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
     reset,
   } = useWidgetState();
   const { showAgain } = useInscriptionProvider();
-  const { verifyBTCAddress } = useLifeCycleHooks();
+  const { verifyBTCAddress, acceptTermsOfService } = useLifeCycleHooks();
 
   // Connecting event
   useEffect(() => {
@@ -50,59 +51,72 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
 
     const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
       BTC: (connector) => async (connectedWallet) => {
-        if (connectedWallet) {
-          selectWallet?.("BTC", connectedWallet);
-          accountStorage.set(connector.id, connectedWallet.id);
-        }
-
-        const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
-
-        if (
-          !validateAddressWithPK(
-            connectedWallet.account?.address ?? "",
-            connectedWallet.account?.publicKeyHex ?? "",
-            connector.config.network,
-          )
-        ) {
-          displayError?.({
-            title: "Public Key Mismatch",
-            description:
-              "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
-            onSubmit: goToNextScreen,
-            onCancel: () => {
-              removeWallet?.(connector.id);
-              displayChains?.();
-            },
-          });
-
-          return;
-        }
-
-        if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
-          for (const connector of connectorArr) {
-            await connector.disconnect();
+        try {
+          if (connectedWallet && connectedWallet.account) {
+            selectWallet?.("BTC", connectedWallet);
+            if (persistent) {
+              accountStorage.set(connector.id, connectedWallet.id);
+            }
+            await acceptTermsOfService?.({
+              address: connectedWallet.account.address,
+              public_key: connectedWallet.account.publicKeyHex,
+            });
           }
 
-          displayError?.({
-            title: "Connection Failed",
-            description: "The wallet cannot be connected.",
-            submitButton: "",
-            cancelButton: "Done",
-            onCancel: async () => {
-              close?.();
-              setTimeout(() => void reset?.(), ANIMATION_DELAY);
-            },
-          });
+          const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
 
-          return;
+          if (
+            !validateAddressWithPK(
+              connectedWallet.account?.address ?? "",
+              connectedWallet.account?.publicKeyHex ?? "",
+              connector.config.network,
+            )
+          ) {
+            displayError?.({
+              title: "Public Key Mismatch",
+              description:
+                "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
+              onSubmit: goToNextScreen,
+              onCancel: () => {
+                removeWallet?.(connector.id);
+                displayChains?.();
+              },
+            });
+
+            return;
+          }
+
+          if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
+            for (const connector of connectorArr) {
+              await connector.disconnect();
+            }
+
+            displayError?.({
+              title: "Connection Failed",
+              description: "The wallet cannot be connected.",
+              submitButton: "",
+              cancelButton: "Done",
+              onCancel: async () => {
+                close?.();
+                setTimeout(() => void reset?.(), ANIMATION_DELAY);
+              },
+            });
+
+            return;
+          }
+
+          goToNextScreen();
+        } catch (e: any) {
+          onError?.(e);
         }
-
-        goToNextScreen();
       },
       BBN: (connector) => (connectedWallet) => {
         if (connectedWallet) {
           selectWallet?.(connector.id, connectedWallet);
-          accountStorage.set(connector.id, connectedWallet.id);
+
+          if (persistent) {
+            accountStorage.set(connector.id, connectedWallet.id);
+          }
         }
 
         displayChains?.();
@@ -119,6 +133,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
   }, [
+    onError,
     selectWallet,
     removeWallet,
     displayInscriptions,
@@ -128,6 +143,7 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
     close,
     connectors,
     showAgain,
+    persistent,
   ]);
 
   // Disconnect Event
@@ -139,13 +155,15 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
         if (connectedWallet) {
           removeWallet?.(connector.id);
           displayChains?.();
-          accountStorage.delete(connector.id);
+          if (persistent) {
+            accountStorage.delete(connector.id);
+          }
         }
       }),
     );
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
-  }, [removeWallet, displayChains, connectors]);
+  }, [removeWallet, displayChains, connectors, persistent]);
 
   // Error Event
   useEffect(() => {
@@ -164,11 +182,11 @@ export function useWalletConnectors({ accountStorage, onError }: Props) {
   useEffect(() => {
     const connectorArr = Object.values(connectors).filter(Boolean);
 
-    if (connectorArr.length && connectorArr.every((connector) => accountStorage.has(connector.id))) {
+    if (persistent && connectorArr.length && connectorArr.every((connector) => accountStorage.has(connector.id))) {
       confirm?.();
       displayChains?.();
     }
-  }, [connectors, confirm, displayChains]);
+  }, [persistent, connectors, confirm, displayChains]);
 
   const connect = useCallback(
     async (chain: IChain, wallet: IWallet) => {
