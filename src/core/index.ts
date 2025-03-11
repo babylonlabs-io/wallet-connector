@@ -65,7 +65,6 @@ export const createExternalWallet = <P extends IProvider>({ id, name, icon, prov
   });
 
 export const createWalletConnector = async <N extends string, P extends IProvider, C>({
-  persistent,
   metadata,
   context,
   config,
