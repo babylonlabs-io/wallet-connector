@@ -35,7 +35,7 @@ const createProvider = (provider: BTCProvider): IBTCProvider => {
   };
 };
 
-export const TomoBTCConnector = memo(({ storage }: { storage: HashMap }) => {
+export const TomoBTCConnector = memo(({ persistent, storage }: { persistent: boolean; storage: HashMap }) => {
   const tomoWalletState = useTomoWalletState();
   const walletList = useWalletList("bitcoin");
   const { bitcoinProvider: connectedProvider } = useTomoProviders();
@@ -67,6 +67,8 @@ export const TomoBTCConnector = memo(({ storage }: { storage: HashMap }) => {
   );
 
   useEffect(() => {
+    if (!persistent) return;
+
     const walletId = storage.get("BTC");
     if (!walletId || !walletId.startsWith("tomo.")) return;
 
@@ -76,7 +78,7 @@ export const TomoBTCConnector = memo(({ storage }: { storage: HashMap }) => {
     if (wallet) {
       connectWallet(wallet);
     }
-  }, [storage]);
+  }, [persistent, storage]);
 
   useEffect(() => {
     if (connectedWallet && connectedProvider) {

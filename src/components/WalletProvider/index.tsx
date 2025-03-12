@@ -34,8 +34,8 @@ export function WalletProvider({
       <LifeCycleHooksProvider value={lifecycleHooks}>
         <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
           {children}
-          <TomoBTCConnector storage={storage} />
-          <TomoBBNConnector storage={storage} />
+          <TomoBTCConnector persistent={persistent} storage={storage} />
+          <TomoBBNConnector persistent={persistent} storage={storage} />
           <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
         </ChainProvider>
       </LifeCycleHooksProvider>

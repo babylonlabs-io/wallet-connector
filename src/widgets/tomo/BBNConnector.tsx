@@ -25,7 +25,7 @@ const createProvider = (provider: CosmosProvider): IBBNProvider => {
   };
 };
 
-export const TomoBBNConnector = memo(({ storage }: { storage: HashMap }) => {
+export const TomoBBNConnector = memo(({ persistent, storage }: { persistent: boolean; storage: HashMap }) => {
   const tomoWalletState = useTomoWalletState();
   const walletList = useWalletList("cosmos");
   const { cosmosProvider: connectedProvider } = useTomoProviders();
@@ -57,6 +57,8 @@ export const TomoBBNConnector = memo(({ storage }: { storage: HashMap }) => {
   );
 
   useEffect(() => {
+    if (!persistent) return;
+
     const walletId = storage.get("BBN");
     if (!walletId || !walletId.startsWith("tomo.")) return;
 
@@ -66,7 +68,7 @@ export const TomoBBNConnector = memo(({ storage }: { storage: HashMap }) => {
     if (wallet) {
       connectWallet(wallet);
     }
-  }, [storage]);
+  }, [persistent, storage]);
 
   useEffect(() => {
     if (connectedWallet && connectedProvider) {
