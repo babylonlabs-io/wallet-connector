@@ -1,6 +1,6 @@
 import "./index.css";
 
-export { WalletButton } from "@/components/WalletButton";
+export { ExternalWallets } from "@/components/ExternalWallets";
 export { WalletProvider } from "@/components/WalletProvider";
 
 export { useChainConnector } from "@/hooks/useChainConnector";

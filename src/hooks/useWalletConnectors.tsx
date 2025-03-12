@@ -19,6 +19,7 @@ const ANIMATION_DELAY = 1000;
 export function useWalletConnectors({ persistent, accountStorage, onError }: Props) {
   const connectors = useChainProviders();
   const {
+    visible,
     selectWallet,
     removeWallet,
     displayLoader,
@@ -34,6 +35,7 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
   // Connecting event
   useEffect(() => {
+    if (!visible) return;
     const connectorArr = Object.values(connectors);
 
     const unsubscribeArr = connectorArr.filter(Boolean).map((connector) =>
@@ -43,10 +45,12 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
     );
 
     return () => unsubscribeArr.forEach((unsubscribe) => unsubscribe());
-  }, [displayLoader, connectors]);
+  }, [visible, displayLoader, connectors]);
 
   // Connect Event
   useEffect(() => {
+    if (!visible) return;
+
     const connectorArr = Object.values(connectors).filter(Boolean);
 
     const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
@@ -144,6 +148,7 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
     connectors,
     showAgain,
     persistent,
+    visible,
   ]);
 
   // Disconnect Event

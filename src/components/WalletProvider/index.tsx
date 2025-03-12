@@ -2,15 +2,18 @@ import { type PropsWithChildren } from "react";
 
 import { ChainConfigArr, ChainProvider } from "@/context/Chain.context";
 import { type LifeCycleHooksProps, LifeCycleHooksProvider } from "@/context/LifecycleHooks.context";
+import { TomoConnectionProvider } from "@/context/TomoProvider";
 import { createAccountStorage } from "@/core/storage";
+import { TomoBBNConnector } from "@/widgets/tomo/BBNConnector";
+import { TomoBTCConnector } from "@/widgets/tomo/BTCConnector";
 
 import { WalletDialog } from "./components/WalletDialog";
 import { ONE_HOUR } from "./constants";
 
 const storage = createAccountStorage(ONE_HOUR);
-
 interface WalletProviderProps {
   persistent?: boolean;
+  theme?: string;
   lifecycleHooks?: LifeCycleHooksProps;
   context?: any;
   config: Readonly<ChainConfigArr>;
@@ -19,6 +22,7 @@ interface WalletProviderProps {
 
 export function WalletProvider({
   persistent = false,
+  theme,
   lifecycleHooks,
   children,
   config,
@@ -26,11 +30,15 @@ export function WalletProvider({
   onError,
 }: PropsWithChildren<WalletProviderProps>) {
   return (
-    <LifeCycleHooksProvider value={lifecycleHooks}>
-      <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
-        {children}
-        <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
-      </ChainProvider>
-    </LifeCycleHooksProvider>
+    <TomoConnectionProvider theme={theme} config={config}>
+      <LifeCycleHooksProvider value={lifecycleHooks}>
+        <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
+          {children}
+          <TomoBTCConnector persistent={persistent} storage={storage} />
+          <TomoBBNConnector persistent={persistent} storage={storage} />
+          <WalletDialog persistent={persistent} storage={storage} config={config} onError={onError} />
+        </ChainProvider>
+      </LifeCycleHooksProvider>
+    </TomoConnectionProvider>
   );
 }
