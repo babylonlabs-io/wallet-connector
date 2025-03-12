@@ -125,11 +125,11 @@ export interface ExternalWalletProps<P extends IProvider> {
   provider: P;
 }
 export interface WalletConnectorProps<N extends string, P extends IProvider, C> {
+  persistent: boolean;
   metadata: ChainMetadata<N, P, C>;
   context: any;
   config: C;
   accountStorage: HashMap;
-  persistent?: boolean;
 }
 
 export interface WalletProps<P extends IProvider, C> {
