@@ -64,11 +64,11 @@ export function ChainProvider({
       .filter((c) => metadata[c.chain])
       .map(({ chain, config }) =>
         createWalletConnector<string, IProvider, any>({
+          persistent,
           metadata: metadata[chain],
           context,
           config,
           accountStorage: storage,
-          persistent: true,
         }),
       );
     const connectorArr = await Promise.all(connectorPromises);
