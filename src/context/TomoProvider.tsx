@@ -8,6 +8,7 @@ import { ChainConfigArr } from "./Chain.context";
 
 interface TomoProviderProps {
   config: Readonly<ChainConfigArr>;
+  theme?: string;
 }
 
 const CONFIG_ADAPTERS = {
@@ -33,7 +34,7 @@ const CONFIG_ADAPTERS = {
   }),
 };
 
-export const TomoConnectionProvider = ({ children, config }: PropsWithChildren<TomoProviderProps>) => {
+export const TomoConnectionProvider = ({ children, theme, config }: PropsWithChildren<TomoProviderProps>) => {
   const tomoConfig = useMemo(
     () =>
       config.reduce(
@@ -51,6 +52,7 @@ export const TomoConnectionProvider = ({ children, config }: PropsWithChildren<T
       cosmosChains={[tomoConfig.BBN]}
       style={{
         rounded: "medium",
+        theme: theme as "dark" | "light",
         primaryColor: "#FF7C2A",
       }}
     >

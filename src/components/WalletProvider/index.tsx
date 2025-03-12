@@ -13,6 +13,7 @@ import { ONE_HOUR } from "./constants";
 const storage = createAccountStorage(ONE_HOUR);
 interface WalletProviderProps {
   persistent?: boolean;
+  theme?: string;
   lifecycleHooks?: LifeCycleHooksProps;
   context?: any;
   config: Readonly<ChainConfigArr>;
@@ -21,6 +22,7 @@ interface WalletProviderProps {
 
 export function WalletProvider({
   persistent = false,
+  theme,
   lifecycleHooks,
   children,
   config,
@@ -28,7 +30,7 @@ export function WalletProvider({
   onError,
 }: PropsWithChildren<WalletProviderProps>) {
   return (
-    <TomoConnectionProvider config={config}>
+    <TomoConnectionProvider theme={theme} config={config}>
       <LifeCycleHooksProvider value={lifecycleHooks}>
         <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
           {children}
