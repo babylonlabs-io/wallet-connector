@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.4
+
+### Patch Changes
+
+- 69658df: remove canary
+
 ## 0.6.3
 
 ### Patch Changes
