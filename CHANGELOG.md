@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.2
+
+### Patch Changes
+
+- e53ff61: configurable ttl
+
 ## 0.6.1
 
 ### Patch Changes
