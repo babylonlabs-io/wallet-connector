@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.3
+
+### Patch Changes
+
+- 734178c: don't disconnect both wallets on btc address verification
+
 ## 0.6.2
 
 ### Patch Changes
