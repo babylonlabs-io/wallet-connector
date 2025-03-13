@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.1
+
+### Patch Changes
+
+- a10d042: fix reconnect logic
+
 ## 0.6.0
 
 ### Minor Changes
