@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.0
+
+### Minor Changes
+
+- e8bdfca: migrate Tomo
+
 ## 0.5.4
 
 ### Patch Changes
