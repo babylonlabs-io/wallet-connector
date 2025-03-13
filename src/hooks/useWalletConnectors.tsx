@@ -14,8 +14,6 @@ interface Props {
   onError?: (e: Error) => void;
 }
 
-const ANIMATION_DELAY = 1000;
-
 export function useWalletConnectors({ persistent, accountStorage, onError }: Props) {
   const connectors = useChainProviders();
   const {
@@ -85,6 +83,7 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
                 "The Bitcoin address and Public Key for this wallet do not match. Please contact your wallet provider for support.",
               onSubmit: goToNextScreen,
               onCancel: () => {
+                connector.disconnect();
                 removeWallet?.(connector.id);
                 displayChains?.();
               },
@@ -94,18 +93,15 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
           }
 
           if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
-            for (const connector of connectorArr) {
-              await connector.disconnect();
-            }
-
             displayError?.({
               title: "Connection Failed",
               description: "The wallet cannot be connected.",
               submitButton: "",
               cancelButton: "Done",
               onCancel: async () => {
-                close?.();
-                setTimeout(() => void reset?.(), ANIMATION_DELAY);
+                connector.disconnect();
+                removeWallet?.(connector.id);
+                displayChains?.();
               },
             });
 
