@@ -14,15 +14,6 @@ const NETWORKS = {
       taproot: "bc1p",
     },
   },
-  [Network.CANARY]: {
-    name: "Canary",
-    config: networks.bitcoin,
-    addressPrefix: {
-      common: "bc1",
-      nativeSegWit: "bc1q",
-      taproot: "bc1p",
-    },
-  },
   [Network.TESTNET]: {
     name: "Testnet",
     config: networks.testnet,
