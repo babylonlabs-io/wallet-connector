@@ -36,6 +36,7 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
   // Connecting event
   useEffect(() => {
     if (!visible) return;
+
     const connectorArr = Object.values(connectors);
 
     const unsubscribeArr = connectorArr.filter(Boolean).map((connector) =>
@@ -49,23 +50,25 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
   // Connect Event
   useEffect(() => {
-    if (!visible) return;
-
     const connectorArr = Object.values(connectors).filter(Boolean);
 
     const handlers: Record<string, (connector: any) => (connectedWallet: IWallet) => void> = {
       BTC: (connector) => async (connectedWallet) => {
         try {
-          if (connectedWallet && connectedWallet.account) {
-            selectWallet?.("BTC", connectedWallet);
-            if (persistent) {
-              accountStorage.set(connector.id, connectedWallet.id);
-            }
-            await acceptTermsOfService?.({
-              address: connectedWallet.account.address,
-              public_key: connectedWallet.account.publicKeyHex,
-            });
+          if (!connectedWallet || !connectedWallet.account) return;
+
+          selectWallet?.("BTC", connectedWallet);
+
+          if (persistent) {
+            accountStorage.set(connector.id, connectedWallet.id);
           }
+
+          if (!visible) return;
+
+          await acceptTermsOfService?.({
+            address: connectedWallet.account.address,
+            public_key: connectedWallet.account.publicKeyHex,
+          });
 
           const goToNextScreen = () => void (showAgain ? displayInscriptions?.() : displayChains?.());
 
