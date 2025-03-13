@@ -78,7 +78,7 @@ export const TomoBTCConnector = memo(({ persistent, storage }: { persistent: boo
     if (wallet) {
       connectWallet(wallet);
     }
-  }, [persistent, storage]);
+  }, [walletList, persistent, storage]);
 
   useEffect(() => {
     if (connectedWallet && connectedProvider) {
@@ -90,7 +90,7 @@ export const TomoBTCConnector = memo(({ persistent, storage }: { persistent: boo
     if (!connector) return;
 
     const unsubscribe = connector.on("disconnect", (wallet) => {
-      if (wallet.id === "tomo-btc-connector") {
+      if (wallet.id.startsWith("tomo.")) {
         tomoWalletConnect.disconnect();
       }
     });

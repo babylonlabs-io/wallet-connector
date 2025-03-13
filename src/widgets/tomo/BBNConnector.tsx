@@ -68,7 +68,7 @@ export const TomoBBNConnector = memo(({ persistent, storage }: { persistent: boo
     if (wallet) {
       connectWallet(wallet);
     }
-  }, [persistent, storage]);
+  }, [walletList, persistent, storage]);
 
   useEffect(() => {
     if (connectedWallet && connectedProvider) {
@@ -80,7 +80,7 @@ export const TomoBBNConnector = memo(({ persistent, storage }: { persistent: boo
     if (!connector) return;
 
     const unsubscribe = connector.on("disconnect", (wallet) => {
-      if (wallet.id === "tomo-bbn-connector") {
+      if (wallet.id.startsWith("tomo.")) {
         tomoWalletConnect.disconnect();
       }
     });
