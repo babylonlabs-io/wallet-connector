@@ -1,3 +1,4 @@
+import { KeplrFallback } from "@keplr-wallet/provider-extension";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
 import { OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types/src/cosmjs";
 import { Buffer } from "buffer";
@@ -18,6 +19,7 @@ export class KeplrProvider implements IBBNProvider {
   private chainId: string | undefined;
   private rpc: string | undefined;
   private chainData: BBNConfig["chainData"];
+  private keplrFallback: KeplrFallback;
 
   constructor(
     private keplr: Window["keplr"],
@@ -26,9 +28,24 @@ export class KeplrProvider implements IBBNProvider {
     if (!keplr) {
       throw new Error("Keplr extension not found");
     }
+
+    // Initialize KeplrFallback to detect mimics
+    this.keplrFallback = new KeplrFallback(() => {
+      throw new Error("Keplr override");
+    });
+
     this.chainId = config.chainId;
     this.rpc = config.rpc;
     this.chainData = config.chainData;
+  }
+
+  // Check if the Keplr extension is *likely* to be real
+  keplrIsLikelyReal() {
+    return (
+      typeof this?.keplr?.signEthereum === "function" ||
+      typeof this?.keplr?.sendEthereumTx === "function" ||
+      (this?.keplr?.defaultOptions && typeof this?.keplr?.defaultOptions === "object")
+    );
   }
 
   async connectWallet(): Promise<void> {
@@ -36,14 +53,21 @@ export class KeplrProvider implements IBBNProvider {
     if (!this.rpc) throw new Error("RPC URL is not initialized");
     if (!this.keplr) throw new Error("Keplr extension not found");
 
+    const notRealKeplrFlags = ["isBitKeep", "isOneKey", "isOkxWallet"];
+    const keplrIsNotReal = notRealKeplrFlags.some((flag) => (this.keplr as any)?.[flag]);
+
+    if (!this.keplrIsLikelyReal() || keplrIsNotReal) {
+      throw new Error("Keplr override");
+    }
+
     try {
-      await this.keplr.enable(this.chainId);
+      await this.keplrFallback.enable(this.chainId);
     } catch (error: Error | any) {
       if (error?.message.includes(this.chainId)) {
         try {
           // User has no BBN chain in their wallet
-          await this.keplr.experimentalSuggestChain(this.chainData);
-          await this.keplr.enable(this.chainId);
+          await this.keplrFallback.experimentalSuggestChain(this.chainData);
+          await this.keplrFallback.enable(this.chainId);
         } catch {
           throw new Error("Failed to add BBN chain");
         }
@@ -57,7 +81,7 @@ export class KeplrProvider implements IBBNProvider {
         }
       }
     }
-    const key = await this.keplr.getKey(this.chainId);
+    const key = await this.keplrFallback.getKey(this.chainId);
 
     if (!key) throw new Error("Failed to get Keplr key");
 
@@ -92,22 +116,22 @@ export class KeplrProvider implements IBBNProvider {
   }
 
   async getOfflineSigner(): Promise<OfflineAminoSigner & OfflineDirectSigner> {
-    if (!this.keplr) throw new Error("Keplr extension not found");
+    if (!this.keplrFallback) throw new Error("Keplr extension not found");
     if (!this.chainId) throw new Error("Chain ID is not initialized");
 
     try {
-      return this.keplr.getOfflineSigner(this.chainId);
+      return this.keplrFallback.getOfflineSigner(this.chainId);
     } catch {
       throw new Error("Failed to get offline signer");
     }
   }
 
   async getOfflineSignerAuto(): Promise<OfflineAminoSigner | OfflineDirectSigner> {
-    if (!this.keplr) throw new Error("Keplr extension not found");
+    if (!this.keplrFallback) throw new Error("Keplr extension not found");
     if (!this.chainId) throw new Error("Chain ID is not initialized");
 
     try {
-      return this.keplr.getOfflineSignerAuto(this.chainId);
+      return this.keplrFallback.getOfflineSignerAuto(this.chainId);
     } catch {
       throw new Error("Failed to get offline signer auto");
     }
