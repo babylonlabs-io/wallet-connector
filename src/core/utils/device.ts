@@ -16,90 +16,89 @@ export interface BrowserContext {
   [key: string]: any;
 }
 
-export const isMobileDevice = (context: BrowserContext = window as BrowserContext): boolean => {
-  if (typeof context === "undefined") return false;
+export const getInjectableWalletName = async (
+  context: BrowserContext = window as BrowserContext,
+  chain: "btc" | "bbn",
+): Promise<string | null> => {
+  if (typeof context === "undefined") return null;
 
-  const userAgent = context.navigator.userAgent;
-  const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-  const isMobileBrowser = mobileRegex.test(userAgent);
-  const hasAppSpecificIdentifiers = /OKX|Binance|Trust\/|TokenPocket|imToken/i.test(userAgent);
-  const isMobileSize = context.innerWidth <= 768;
+  const walletKey = chain === "btc" ? "btcwallet" : "bbnwallet";
+  const wallet = context[walletKey];
 
-  return isMobileBrowser || hasAppSpecificIdentifiers || isMobileSize;
+  if (!wallet) return null;
+
+  try {
+    if (typeof wallet.getWalletProviderName === "function") {
+      const name = await wallet.getWalletProviderName();
+      if (name) return name;
+    }
+  } catch (error) {
+    console.error("Error getting injectable wallet name:", error);
+  }
+
+  return null;
 };
 
-export const hasInjectableWallets = (context: BrowserContext = window as BrowserContext): boolean => {
-  if (typeof context === "undefined") return false;
+export const getInjectableWallets = (
+  context: BrowserContext = window as BrowserContext,
+): {
+  btc: boolean;
+  bbn: boolean;
+} => {
+  if (typeof context === "undefined") return { btc: false, bbn: false };
 
   const hasBtcWallet = typeof context.btcwallet !== "undefined";
   const hasBbnWallet = typeof context.bbnwallet !== "undefined";
 
-  return hasBtcWallet || hasBbnWallet;
+  return {
+    btc: hasBtcWallet,
+    bbn: hasBbnWallet,
+  };
 };
 
-export const isBrowserExtension = (context: BrowserContext = window as BrowserContext): boolean => {
-  if (typeof context === "undefined") return false;
-
-  // Check if we're in a standard browser
-  const isStandardBrowser = /Chrome|Firefox|Safari|Edge/i.test(context.navigator.userAgent);
-
-  // Check if we're NOT in an app webview
-  const isNotWebView =
-    !/Android|iPhone|iPad|iPod/i.test(context.navigator.userAgent) || !/wv|WebView/i.test(context.navigator.userAgent);
-
-  // Check if we have extension-specific objects
-  const hasExtensionAPIs =
-    typeof context.chrome !== "undefined" &&
-    (context.chrome.runtime !== undefined || context.chrome.extension !== undefined);
-
-  // If we're in a standard browser and not in a webview, or we have extension APIs,
-  // it's likely a browser extension environment
-  return (isStandardBrowser && isNotWebView) || hasExtensionAPIs;
+export const hasInjectableWallets = (context: BrowserContext = window as BrowserContext): boolean => {
+  const injectables = getInjectableWallets(context);
+  return injectables.btc || injectables.bbn;
 };
 
-export const isDesktopWalletApp = (context: BrowserContext = window as BrowserContext): boolean => {
+export const shouldDisplayInjectable = async (
+  context: BrowserContext = window as BrowserContext,
+  chainId?: string,
+  nativeWalletNames: string[] = [],
+): Promise<boolean> => {
   if (typeof context === "undefined") return false;
 
-  const isMobile = isMobileDevice(context);
+  const injectables = getInjectableWallets(context);
 
-  if (isMobile) {
-    return false;
-  }
-
-  const isBrowserExt = isBrowserExtension(context);
-
-  if (isBrowserExt) {
-    return false;
-  }
-
-  const hasInjectables = hasInjectableWallets(context);
-
-  if (hasInjectables) {
+  if (!injectables.btc && !injectables.bbn) {
     return true;
   }
 
-  const userAgent = context.navigator.userAgent;
-  const hasWalletInUserAgent = userAgent.includes("Wallet") || userAgent.includes("wallet");
+  if (!chainId) {
+    return false;
+  }
 
-  if (hasWalletInUserAgent) {
+  const hasChainInjectable = chainId.toLowerCase() === "btc" ? injectables.btc : injectables.bbn;
+
+  if (!hasChainInjectable) {
+    return true;
+  }
+
+  if (nativeWalletNames.length > 0) {
+    const injectableWalletName = await getInjectableWalletName(context, chainId.toLowerCase() as "btc" | "bbn");
+
+    if (!injectableWalletName) {
+      return false;
+    }
+
+    const isDuplicate = nativeWalletNames.some((name) => name.toLowerCase() === injectableWalletName.toLowerCase());
+
+    if (isDuplicate) {
+      return false;
+    }
+
     return true;
   }
 
   return false;
-};
-
-/**
- * Determines if injectable wallets should be displayed based on the environment
- * @param context The window object or similar context
- * @returns True if injectable wallets should be displayed, false otherwise
- */
-export const shouldDisplayInjectable = (context: BrowserContext = window as BrowserContext): boolean => {
-  // Always show injectable wallets on mobile
-  const isMobile = isMobileDevice(context);
-  if (isMobile) {
-    return true;
-  }
-
-  // On desktop, only show injectable wallets if inside a desktop wallet app
-  return isDesktopWalletApp(context);
 };

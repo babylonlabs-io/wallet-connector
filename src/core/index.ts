@@ -74,9 +74,30 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   const wallets: Wallet<P>[] = [];
   const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
 
+  const nativeWalletNames: string[] = [];
+
   for (const walletMetadata of metadata.wallets) {
-    if (walletMetadata.id === "injectable" && !shouldDisplayInjectable(context)) {
+    if (walletMetadata.id === "injectable") {
       continue;
+    }
+
+    if (typeof walletMetadata.name === "string") {
+      nativeWalletNames.push(walletMetadata.name);
+    } else if (walletMetadata.name && typeof walletMetadata.name === "function") {
+      const providerModule = await import(`./wallets/${metadata.chain.toLowerCase()}/${walletMetadata.id}/provider`);
+      if (providerModule.WALLET_PROVIDER_NAME) {
+        nativeWalletNames.push(providerModule.WALLET_PROVIDER_NAME);
+      }
+    }
+  }
+
+  for (const walletMetadata of metadata.wallets) {
+    if (walletMetadata.id === "injectable") {
+      const chainId = metadata.chain.toLowerCase();
+
+      if (!(await shouldDisplayInjectable(context, chainId, nativeWalletNames))) {
+        continue;
+      }
     }
 
     wallets.push(
