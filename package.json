@@ -30,12 +30,17 @@
     "release": "npm run build && changeset publish",
     "extensions:download": "tsx tests/e2e/setup/downloadExtensions.ts",
     "test:e2e:setup": "npm run extensions:download",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug",
-    "test:e2e:headed": "playwright test --headed",
+    "test:e2e": "playwright test --project=e2e",
+    "test:e2e:ui": "playwright test --ui --project=e2e",
+    "test:e2e:debug": "playwright test --debug --project=e2e",
+    "test:e2e:headed": "playwright test --headed --project=e2e",
     "test:e2e:report": "playwright show-report",
-    "test:e2e:codegen": "playwright codegen"
+    "test:e2e:codegen": "playwright codegen",
+    "test:unit": "playwright test --project=unit",
+    "test:unit:ui": "playwright test --ui --project=unit",
+    "test:unit:debug": "playwright test --debug --project=unit",
+    "test": "playwright test",
+    "test:all": "npm run test:unit && npm run test:e2e"
   },
   "dependencies": {
     "@cosmjs/stargate": "^0.32.4",
