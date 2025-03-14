@@ -1,6 +1,4 @@
-import { Text } from "@babylonlabs-io/core-ui";
-
-import { WalletButton } from "@/components/WalletButton";
+import { ExternalWallets } from "@/components/ExternalWallets";
 import { ChainConfigArr } from "@/context/Chain.context";
 import { Network } from "@/core/types";
 
@@ -14,12 +12,7 @@ export const config: ChainConfigArr = [
     connectors: [
       {
         id: "tomo-connect",
-        widget: () => (
-          <div className="pt-10">
-            <Text className="mb-4 text-accent-secondary">More wallets with Tomo Connect</Text>
-            <WalletButton logo="/images/wallets/tomo.png" name="Tomo Connect" onClick={() => alert("Hello Tomo!")} />
-          </div>
-        ),
+        widget: () => <ExternalWallets chainName="bitcoin" />,
       },
     ],
     config: {
@@ -35,12 +28,7 @@ export const config: ChainConfigArr = [
     connectors: [
       {
         id: "tomo-connect",
-        widget: () => (
-          <div className="pt-10">
-            <Text className="mb-4 text-accent-secondary">More wallets with Tomo Connect</Text>
-            <WalletButton logo="/images/wallets/tomo.png" name="Tomo Connect" onClick={() => alert("Hello Tomo!")} />
-          </div>
-        ),
+        widget: () => <ExternalWallets chainName="cosmos" />,
       },
     ],
     config: {

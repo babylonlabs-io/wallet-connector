@@ -1,5 +1,35 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.4
+
+### Patch Changes
+
+- 69658df: remove canary
+
+## 0.6.3
+
+### Patch Changes
+
+- 734178c: don't disconnect both wallets on btc address verification
+
+## 0.6.2
+
+### Patch Changes
+
+- e53ff61: configurable ttl
+
+## 0.6.1
+
+### Patch Changes
+
+- a10d042: fix reconnect logic
+
+## 0.6.0
+
+### Minor Changes
+
+- e8bdfca: migrate Tomo
+
 ## 0.5.4
 
 ### Patch Changes
