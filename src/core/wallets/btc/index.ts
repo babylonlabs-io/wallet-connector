@@ -11,7 +11,7 @@ const metadata: ChainMetadata<"BTC", IBTCProvider, BTCConfig> = {
   chain: "BTC",
   name: "Bitcoin",
   icon,
-  wallets: [injectable, okx, onekey, unisat, keystone],
+  wallets: [okx, injectable, onekey, unisat, keystone],
 };
 
 export default metadata;
