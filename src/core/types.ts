@@ -150,20 +150,39 @@ export interface ExternalConnector<P extends IProvider = IProvider> {
   widget: WidgetComponent<P>;
 }
 
+// Used to determine the type of BTC transaction to sign
+export enum BTCSignType {
+  STAKING = "staking",
+}
+
+// Staking specific options for signing a BTC transaction using Ledger
+export interface StakingSignOptions {
+  type: BTCSignType.STAKING;
+  finalityProviderPk: string;
+  covenantPks: string[];
+  timelockBlocks: number;
+  covenantThreshold: number;
+}
+
+// Additional options for signing a BTC transaction
+export type BTCSignOptions = StakingSignOptions;
+
 export interface IBTCProvider extends IProvider {
   /**
    * Signs the given PSBT in hex format.
    * @param psbtHex - The hex string of the unsigned PSBT to sign.
+   * @param options - Additional options for signing the PSBT.
    * @returns A promise that resolves to the hex string of the signed PSBT.
    */
-  signPsbt(psbtHex: string): Promise<string>;
+  signPsbt(psbtHex: string, options?: BTCSignOptions): Promise<string>;
 
   /**
    * Signs multiple PSBTs in hex format.
    * @param psbtsHexes - The hex strings of the unsigned PSBTs to sign.
+   * @param options - Additional options for signing the PSBTs.
    * @returns A promise that resolves to an array of hex strings, each representing a signed PSBT.
    */
-  signPsbts(psbtsHexes: string[]): Promise<string[]>;
+  signPsbts(psbtsHexes: string[], options?: BTCSignOptions): Promise<string[]>;
 
   /**
    * Gets the network of the current account.
