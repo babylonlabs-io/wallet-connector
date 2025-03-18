@@ -70,36 +70,21 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   config,
   accountStorage,
 }: WalletConnectorProps<N, P, C>): Promise<WalletConnector<N, P, C>> => {
-  let injectableWallet: Wallet<P> | null = null;
   const wallets: Wallet<P>[] = [];
   const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
-  const injectableMetadata = metadata.wallets.find((metadata) => metadata.id === "injectable");
-
-  if (injectableMetadata) {
-    injectableWallet = await createWallet({
-      metadata: injectableMetadata,
-      context,
-      config,
-    });
-
-    wallets.push(injectableWallet);
-  }
 
   for (const walletMetadata of metadata.wallets) {
-    const wallet = await createWallet({
-      metadata: walletMetadata,
-      context,
-      config,
-    });
-
-    if (wallet.name.toLowerCase() === injectableWallet?.name.toLowerCase()) {
-      continue;
-    }
-
-    wallets.push(wallet);
+    wallets.push(
+      await createWallet({
+        metadata: walletMetadata,
+        context,
+        config,
+      }),
+    );
   }
-
-  const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets, config);
+  const injectableWallet = wallets.find((w) => w.id === "injectable" && w.installed);
+  const filteredWallets = wallets.filter((w) => w.name.toLowerCase() !== injectableWallet?.name.toLowerCase());
+  const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, filteredWallets, config);
 
   if (connectedWalletId && wallets.some((wallet) => wallet.id === connectedWalletId)) {
     await connector.connect(connectedWalletId);
