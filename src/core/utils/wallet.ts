@@ -90,7 +90,7 @@ export function validateAddress(network: Network, address: string): void {
   }
 
   if (!address.startsWith(addressPrefix.common)) {
-    throw new Error(`Incorrect address prefix for ${name}. Expected address to start with '${addressPrefix}'.`);
+    throw new Error(`Incorrect address prefix for ${name}. Expected address to start with '${addressPrefix.common}'.`);
   }
 }
 
