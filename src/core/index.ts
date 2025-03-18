@@ -1,7 +1,6 @@
 import { type WalletOptions, Wallet } from "./Wallet";
 import { WalletConnector } from "./WalletConnector";
 import { ExternalWalletProps, IProvider, Network, WalletConnectorProps, WalletProps } from "./types";
-import { shouldDisplayInjectable } from "./utils/device";
 
 const defaultWalletGetter = (key: string) => (context: any) => context[key];
 
@@ -71,42 +70,33 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   config,
   accountStorage,
 }: WalletConnectorProps<N, P, C>): Promise<WalletConnector<N, P, C>> => {
+  let injectableWallet: Wallet<P> | null = null;
   const wallets: Wallet<P>[] = [];
   const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
+  const injectableMetadata = metadata.wallets.find((metadata) => metadata.id === "injectable");
 
-  const nativeWalletNames: string[] = [];
+  if (injectableMetadata) {
+    injectableWallet = await createWallet({
+      metadata: injectableMetadata,
+      context,
+      config,
+    });
 
-  for (const walletMetadata of metadata.wallets) {
-    if (walletMetadata.id === "injectable") {
-      continue;
-    }
-
-    if (typeof walletMetadata.name === "string") {
-      nativeWalletNames.push(walletMetadata.name);
-    } else if (walletMetadata.name && typeof walletMetadata.name === "function") {
-      const providerModule = await import(`./wallets/${metadata.chain.toLowerCase()}/${walletMetadata.id}/provider`);
-      if (providerModule.WALLET_PROVIDER_NAME) {
-        nativeWalletNames.push(providerModule.WALLET_PROVIDER_NAME);
-      }
-    }
+    wallets.push(injectableWallet);
   }
 
   for (const walletMetadata of metadata.wallets) {
-    if (walletMetadata.id === "injectable") {
-      const chainId = metadata.chain.toLowerCase();
+    const wallet = await createWallet({
+      metadata: walletMetadata,
+      context,
+      config,
+    });
 
-      if (!(await shouldDisplayInjectable(context, chainId, nativeWalletNames))) {
-        continue;
-      }
+    if (wallet.name.toLowerCase() === injectableWallet?.name.toLowerCase()) {
+      continue;
     }
 
-    wallets.push(
-      await createWallet({
-        metadata: walletMetadata,
-        context,
-        config,
-      }),
-    );
+    wallets.push(wallet);
   }
 
   const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets, config);
