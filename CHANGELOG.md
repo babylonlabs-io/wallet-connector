@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.5
+
+### Patch Changes
+
+- 0ecf7e7: fix network error message
+
 ## 0.6.4
 
 ### Patch Changes
