@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.6
+
+### Patch Changes
+
+- 1dc4a5a: add @keplr-wallet/provider-extension
+
 ## 0.6.5
 
 ### Patch Changes
