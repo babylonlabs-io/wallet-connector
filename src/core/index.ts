@@ -30,7 +30,7 @@ export const createWallet = async <P extends IProvider, C>({ metadata, context, 
   if (walletGetter) {
     const getWallet = typeof walletGetter === "string" ? defaultWalletGetter(walletGetter) : walletGetter;
 
-    options.origin = getWallet(context, config) ?? null;
+    options.origin = (await getWallet(context, config)) ?? null;
     options.provider = options.origin ? createProvider(options.origin, config) : null;
   } else {
     options.origin = null;
