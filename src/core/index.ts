@@ -82,10 +82,11 @@ export const createWalletConnector = async <N extends string, P extends IProvide
       }),
     );
   }
+  const injectableWallet = wallets.find((w) => w.id === "injectable" && w.installed);
+  const filteredWallets = wallets.filter((w) => w.name.toLowerCase() !== injectableWallet?.name.toLowerCase());
+  const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, filteredWallets, config);
 
-  const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, wallets, config);
-
-  if (connectedWalletId) {
+  if (connectedWalletId && wallets.some((wallet) => wallet.id === connectedWalletId)) {
     await connector.connect(connectedWalletId);
   }
 

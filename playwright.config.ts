@@ -17,7 +17,8 @@ const baseURL = `http://localhost:${PORT}`;
  */
 export default defineConfig({
   globalSetup,
-  testDir: "./tests/e2e",
+  testDir: "./tests",
+  testMatch: ["**/*.spec.ts", "**/*.test.ts"],
   testIgnore: "**/fixtures/extensions/**/*.test.js",
   timeout: 120000, // 2 minutes
   /* Run tests in files in parallel */
@@ -44,7 +45,17 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium",
+      name: "unit",
+      testDir: "./tests/unit",
+      testMatch: "**/*.test.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+      },
+    },
+    {
+      name: "e2e",
+      testDir: "./tests/e2e",
+      testMatch: "**/*.spec.ts",
       use: {
         ...devices["Desktop Chrome"],
         locale: "en-US",
