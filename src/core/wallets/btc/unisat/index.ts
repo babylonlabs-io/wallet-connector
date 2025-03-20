@@ -8,7 +8,7 @@ const metadata: WalletMetadata<IBTCProvider, BTCConfig> = {
   name: WALLET_PROVIDER_NAME,
   icon: logo,
   docs: "https://unisat.io/download",
-  wallet: "unisat",
+  wallet: (context) => context.unisat_wallet ?? context.unisat,
   createProvider: (wallet, config) => new UnisatProvider(wallet, config),
   networks: [Network.MAINNET, Network.SIGNET],
 };
