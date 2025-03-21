@@ -1,5 +1,12 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.7
+
+### Patch Changes
+
+- 1e19876: chore: bump btc-staking-ts to canary 16
+- d2b444b: update unisat namespace
+
 ## 0.6.6
 
 ### Patch Changes
