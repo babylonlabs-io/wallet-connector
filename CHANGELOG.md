@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.8
+
+### Patch Changes
+
+- 12537f3: update onekey logo
+
 ## 0.6.7
 
 ### Patch Changes
