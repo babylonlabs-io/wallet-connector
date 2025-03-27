@@ -128,7 +128,7 @@ export class UnisatProvider implements IBTCProvider {
             initBTCCurve();
             addressToBeSigned = btcAddress.fromOutputScript(input.witnessUtxo.script, btcNetwork);
           } else {
-            throw new Error(error);
+            throw error;
           }
         }
         // check if the address is a taproot address
