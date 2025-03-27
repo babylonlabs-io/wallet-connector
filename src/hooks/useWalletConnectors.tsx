@@ -110,6 +110,9 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
           goToNextScreen();
         } catch (e: any) {
+          connector.disconnect();
+          removeWallet?.(connector.id);
+          displayChains?.();
           onError?.(e);
         }
       },
