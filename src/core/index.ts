@@ -83,7 +83,9 @@ export const createWalletConnector = async <N extends string, P extends IProvide
     );
   }
   const injectableWallet = wallets.find((w) => w.id === "injectable" && w.installed);
-  const filteredWallets = wallets.filter((w) => w.name.toLowerCase() !== injectableWallet?.name.toLowerCase());
+  const filteredWallets = wallets.filter(
+    (w) => w.name.toLowerCase() !== injectableWallet?.name.toLowerCase() || w.id === "injectable",
+  );
   const connector = new WalletConnector(metadata.chain, metadata.name, metadata.icon, filteredWallets, config);
 
   if (connectedWalletId && wallets.some((wallet) => wallet.id === connectedWalletId)) {
