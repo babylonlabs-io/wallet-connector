@@ -49,7 +49,7 @@ export const generateP2TRAddressFromXpub = (
       address = res.address!;
       output = res.output!;
     } else {
-      throw new Error(error);
+      throw error;
     }
   }
   return {
