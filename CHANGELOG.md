@@ -1,5 +1,12 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.9
+
+### Patch Changes
+
+- 25c49cb: fix injectable wallets
+- c79a9d2: disconnect wallet on validation error
+
 ## 0.6.8
 
 ### Patch Changes
