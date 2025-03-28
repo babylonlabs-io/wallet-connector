@@ -15,11 +15,10 @@ export interface WalletsProps {
 }
 
 export const Wallets = memo(({ chain, className, append, onClose, onBack, onSelectWallet }: WalletsProps) => {
-  const injectableWallet = useMemo(
-    () => chain.wallets.find((wallet) => wallet.id === "injectable" && wallet.installed),
+  const wallets = useMemo(
+    () => chain.wallets.filter((wallet) => (wallet.id === "injectable" ? wallet.installed : true)),
     [chain],
   );
-  const wallets = useMemo(() => chain.wallets.filter((wallet) => wallet.id !== "injectable"), [chain]);
   const countOfVisibleWallets = useMemo(
     () => chain.wallets.filter((wallet) => wallet.id !== "injectable" || wallet.installed).length,
     [chain],
@@ -35,16 +34,6 @@ export const Wallets = memo(({ chain, className, append, onClose, onBack, onSele
         <div
           className={twMerge("grid gap-6", countOfVisibleWallets > 1 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1")}
         >
-          {injectableWallet && (
-            <WalletButton
-              installed
-              name={injectableWallet.name}
-              logo={injectableWallet.icon}
-              label={injectableWallet.label}
-              onClick={() => onSelectWallet?.(chain, injectableWallet)}
-            />
-          )}
-
           {wallets.map((wallet) => (
             <WalletButton
               installed={wallet.installed}
