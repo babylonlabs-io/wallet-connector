@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 0.6.10
+
+### Patch Changes
+
+- 992347f: reorder wallets
+
 ## 0.6.9
 
 ### Patch Changes
