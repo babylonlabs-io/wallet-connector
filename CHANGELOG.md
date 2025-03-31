@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.1
+
+### Patch Changes
+
+- 37aff91: chore: bump core-ui to 1.0.0
+
 ## 1.0.0
 
 ### Major Changes
