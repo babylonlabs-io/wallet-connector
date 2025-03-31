@@ -60,7 +60,7 @@
   ],
   "peerDependencies": {
     "@babylonlabs-io/btc-staking-ts": "1.0.0",
-    "@babylonlabs-io/core-ui": "^0.11.0",
+    "@babylonlabs-io/core-ui": "1.0.0",
     "bitcoinjs-lib": "6.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
