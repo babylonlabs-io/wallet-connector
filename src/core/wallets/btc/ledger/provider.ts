@@ -3,11 +3,13 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { Transaction } from "@scure/btc-signer";
 import { Buffer } from "buffer";
 import AppClient, {
+  computeLeafHash,
   DefaultWalletPolicy,
   signMessage,
   signPsbt,
   stakingTxPolicy,
   tryParsePsbt,
+  unbondingPathPolicy,
 } from "ledger-bitcoin-babylon";
 
 import type { BTCConfig, BTCSignOptions, InscriptionIdentifier } from "@/core/types";
@@ -115,15 +117,9 @@ export class LedgerProvider implements IBTCProvider {
     return this.ledgerWalletInfo.publicKeyHex;
   };
 
-  signPsbt = async (psbtHex: string, options?: BTCSignOptions): Promise<string> => {
-    if (!this.ledgerWalletInfo?.address || !this.ledgerWalletInfo?.publicKeyHex) {
-      throw new Error("Ledger is not connected");
-    }
-    if (!psbtHex) throw new Error("psbt hex is required");
-    const psbtBase64 = Buffer.from(psbtHex, "hex").toString("base64");
-    const transport = this.ledgerWalletInfo.app.transport;
+  private async getPolicyForTransaction(psbtBase64: string, options?: BTCSignOptions): Promise<any> {
+    const transport = this.ledgerWalletInfo!.app.transport;
 
-    let policy = null;
     // Staking transaction requires additional parameters for the policy
     if (options?.type === BTCSignType.STAKING) {
       const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
@@ -133,13 +129,12 @@ export class LedgerProvider implements IBTCProvider {
       }
 
       // Covenant keys should be sorted for the policy generation
-      // -> Buffer -> sort -> HEX
       const covenantPksSorted = covenantPks
         .map((pk) => Buffer.from(pk, "hex"))
         .sort(Buffer.compare)
         .map((pk) => pk.toString("hex"));
 
-      policy = await stakingTxPolicy({
+      return stakingTxPolicy({
         policyName: "Staking transaction",
         transport,
         params: {
@@ -148,13 +143,55 @@ export class LedgerProvider implements IBTCProvider {
           covenantThreshold,
           covenantPks: covenantPksSorted,
         },
-        derivationPath: this.ledgerWalletInfo.path,
+        derivationPath: this.ledgerWalletInfo!.path,
         isTestnet: this.config.network !== Network.MAINNET,
       });
-    } else {
-      // Automatically detect the policy if not provided
-      policy = await tryParsePsbt(transport, psbtBase64, true);
+    } else if (options?.type === BTCSignType.UNBONDING) {
+      const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
+
+      if (!finalityProviderPk || !covenantPks || !timelockBlocks || !covenantThreshold) {
+        throw new Error("Missing staking options");
+      }
+
+      // Covenant keys should be sorted for the policy generation
+      const covenantPksSorted = covenantPks
+        .map((pk) => Buffer.from(pk, "hex"))
+        .sort(Buffer.compare)
+        .map((pk) => pk.toString("hex"));
+
+      // const leafHash = computeLeafHash(Buffer.from(psbtBase64, "base64"));
+      const leafHash = computeLeafHash(psbtBase64);
+
+      return unbondingPathPolicy({
+        policyName: "Unbonding",
+        transport,
+        params: {
+          leafHash,
+          timelockBlocks,
+          finalityProviderPk,
+          covenantThreshold,
+          covenantPks: covenantPksSorted,
+        },
+        derivationPath: this.ledgerWalletInfo!.path,
+        isTestnet: this.config.network !== Network.MAINNET,
+      });
     }
+
+    // Default: automatically detect the policy
+    return tryParsePsbt(transport, psbtBase64, true);
+  }
+
+  signPsbt = async (psbtHex: string, options?: BTCSignOptions): Promise<string> => {
+    console.log("options", options);
+    if (!this.ledgerWalletInfo?.address || !this.ledgerWalletInfo?.publicKeyHex) {
+      throw new Error("Ledger is not connected");
+    }
+    if (!psbtHex) throw new Error("psbt hex is required");
+    const psbtBase64 = Buffer.from(psbtHex, "hex").toString("base64");
+    const transport = this.ledgerWalletInfo.app.transport;
+
+    // Get the appropriate policy based on transaction type
+    const policy = await this.getPolicyForTransaction(psbtBase64, options);
 
     const deviceTransaction = await signPsbt({ transport, psbt: psbtBase64, policy: policy! });
     const tx = Transaction.fromPSBT(deviceTransaction.toPSBT(), {
