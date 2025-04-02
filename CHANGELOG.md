@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.4
+
+### Patch Changes
+
+- bb278c3: display external wallet errors
+
 ## 1.0.3
 
 ### Patch Changes
