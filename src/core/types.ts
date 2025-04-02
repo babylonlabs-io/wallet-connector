@@ -153,11 +153,21 @@ export interface ExternalConnector<P extends IProvider = IProvider> {
 // Used to determine the type of BTC transaction to sign
 export enum BTCSignType {
   STAKING = "staking",
+  UNBONDING = "unbonding",
 }
 
 // Staking specific options for signing a BTC transaction using Ledger
 export interface StakingSignOptions {
   type: BTCSignType.STAKING;
+  finalityProviderPk: string;
+  covenantPks: string[];
+  timelockBlocks: number;
+  covenantThreshold: number;
+}
+
+// Unbonding specific options for signing a BTC transaction using Ledger
+export interface UnbondingSignOptions {
+  type: BTCSignType.UNBONDING;
   finalityProviderPk: string;
   covenantPks: string[];
   timelockBlocks: number;
