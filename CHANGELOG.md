@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.3
+
+### Patch Changes
+
+- dfa640b: bump btc-staking-ts to 1.0.1
+
 ## 1.0.2
 
 ### Patch Changes
