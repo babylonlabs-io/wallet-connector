@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.2
+
+### Patch Changes
+
+- ae5ac45: update tomo to 0.3.15 to include Xverse
+
 ## 1.0.1
 
 ### Patch Changes
