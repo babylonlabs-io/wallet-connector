@@ -1,3 +1,4 @@
+import { SigningStep } from "@babylonlabs-io/btc-staking-ts";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { Transaction } from "@scure/btc-signer";
@@ -13,7 +14,7 @@ import AppClient, {
 } from "ledger-bitcoin-babylon";
 
 import type { BTCConfig, BTCSignOptions, InscriptionIdentifier } from "@/core/types";
-import { BTCSignType, IBTCProvider, Network } from "@/core/types";
+import { IBTCProvider, Network } from "@/core/types";
 import { toNetwork } from "@/core/utils/wallet";
 import { generateP2TRAddressFromXpub } from "@/utils/wallet";
 
@@ -145,16 +146,20 @@ export class LedgerProvider implements IBTCProvider {
       covenantThreshold,
       covenantPks: covenantPksSorted,
     };
+    console.log("commonParams", commonParams);
 
-    if (options.type === BTCSignType.STAKING) {
+    const derivationPath = this.ledgerWalletInfo!.path;
+    const isTestnet = this.config.network !== Network.MAINNET;
+
+    if (options.type === SigningStep.STAKING) {
       return stakingTxPolicy({
         policyName: "Staking transaction",
         transport,
         params: commonParams,
-        derivationPath: this.ledgerWalletInfo!.path,
-        isTestnet: this.config.network !== Network.MAINNET,
+        derivationPath,
+        isTestnet,
       });
-    } else if (options.type === BTCSignType.UNBONDING) {
+    } else if (options.type === SigningStep.UNBONDING) {
       const leafHash = computeLeafHash(psbtBase64);
       return unbondingPathPolicy({
         policyName: "Unbonding",
@@ -163,8 +168,8 @@ export class LedgerProvider implements IBTCProvider {
           ...commonParams,
           leafHash,
         },
-        derivationPath: this.ledgerWalletInfo!.path,
-        isTestnet: this.config.network !== Network.MAINNET,
+        derivationPath,
+        isTestnet,
       });
     } else {
       return tryParsePsbt(transport, psbtBase64, true);

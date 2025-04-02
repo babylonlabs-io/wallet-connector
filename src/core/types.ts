@@ -1,3 +1,4 @@
+import { SigningStep } from "@babylonlabs-io/btc-staking-ts";
 import { ChainInfo, OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types";
 import { ComponentType } from "react";
 
@@ -150,15 +151,9 @@ export interface ExternalConnector<P extends IProvider = IProvider> {
   widget: WidgetComponent<P>;
 }
 
-// Used to determine the type of BTC transaction to sign
-export enum BTCSignType {
-  STAKING = "staking",
-  UNBONDING = "unbonding",
-}
-
 // Staking specific options for signing a BTC transaction using Ledger
 export interface StakingSignOptions {
-  type: BTCSignType.STAKING;
+  type: SigningStep.STAKING;
   finalityProviderPk: string;
   covenantPks: string[];
   timelockBlocks: number;
@@ -167,7 +162,7 @@ export interface StakingSignOptions {
 
 // Unbonding specific options for signing a BTC transaction using Ledger
 export interface UnbondingSignOptions {
-  type: BTCSignType.UNBONDING;
+  type: SigningStep.UNBONDING;
   finalityProviderPk: string;
   covenantPks: string[];
   timelockBlocks: number;
