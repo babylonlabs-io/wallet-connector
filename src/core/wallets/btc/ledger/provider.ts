@@ -120,65 +120,55 @@ export class LedgerProvider implements IBTCProvider {
   private async getPolicyForTransaction(psbtBase64: string, options?: BTCSignOptions): Promise<any> {
     const transport = this.ledgerWalletInfo!.app.transport;
 
-    // Staking transaction requires additional parameters for the policy
-    if (options?.type === BTCSignType.STAKING) {
-      const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
+    // If no specific transaction type is specified, use default policy detection
+    if (!options?.type) {
+      return tryParsePsbt(transport, psbtBase64, true);
+    }
 
-      if (!finalityProviderPk || !covenantPks || !timelockBlocks || !covenantThreshold) {
-        throw new Error("Missing staking options");
-      }
+    // Extract and validate common options for special transaction types
+    const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
 
-      // Covenant keys should be sorted for the policy generation
-      const covenantPksSorted = covenantPks
-        .map((pk) => Buffer.from(pk, "hex"))
-        .sort(Buffer.compare)
-        .map((pk) => pk.toString("hex"));
+    if (!finalityProviderPk || !covenantPks || !timelockBlocks || !covenantThreshold) {
+      throw new Error("Missing staking options");
+    }
 
+    // Covenant keys should be sorted for policy generation (common operation)
+    const covenantPksSorted = covenantPks
+      .map((pk) => Buffer.from(pk, "hex"))
+      .sort(Buffer.compare)
+      .map((pk) => pk.toString("hex"));
+
+    // Common parameters for policies
+    const commonParams = {
+      timelockBlocks,
+      finalityProviderPk,
+      covenantThreshold,
+      covenantPks: covenantPksSorted,
+    };
+
+    if (options.type === BTCSignType.STAKING) {
       return stakingTxPolicy({
         policyName: "Staking transaction",
         transport,
-        params: {
-          timelockBlocks,
-          finalityProviderPk,
-          covenantThreshold,
-          covenantPks: covenantPksSorted,
-        },
+        params: commonParams,
         derivationPath: this.ledgerWalletInfo!.path,
         isTestnet: this.config.network !== Network.MAINNET,
       });
-    } else if (options?.type === BTCSignType.UNBONDING) {
-      const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
-
-      if (!finalityProviderPk || !covenantPks || !timelockBlocks || !covenantThreshold) {
-        throw new Error("Missing staking options");
-      }
-
-      // Covenant keys should be sorted for the policy generation
-      const covenantPksSorted = covenantPks
-        .map((pk) => Buffer.from(pk, "hex"))
-        .sort(Buffer.compare)
-        .map((pk) => pk.toString("hex"));
-
-      // const leafHash = computeLeafHash(Buffer.from(psbtBase64, "base64"));
+    } else if (options.type === BTCSignType.UNBONDING) {
       const leafHash = computeLeafHash(psbtBase64);
-
       return unbondingPathPolicy({
         policyName: "Unbonding",
         transport,
         params: {
+          ...commonParams,
           leafHash,
-          timelockBlocks,
-          finalityProviderPk,
-          covenantThreshold,
-          covenantPks: covenantPksSorted,
         },
         derivationPath: this.ledgerWalletInfo!.path,
         isTestnet: this.config.network !== Network.MAINNET,
       });
+    } else {
+      return tryParsePsbt(transport, psbtBase64, true);
     }
-
-    // Default: automatically detect the policy
-    return tryParsePsbt(transport, psbtBase64, true);
   }
 
   signPsbt = async (psbtHex: string, options?: BTCSignOptions): Promise<string> => {
