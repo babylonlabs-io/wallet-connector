@@ -170,7 +170,7 @@ export interface UnbondingSignOptions {
 }
 
 // Additional options for signing a BTC transaction
-export type BTCSignOptions = StakingSignOptions;
+export type BTCSignOptions = StakingSignOptions | UnbondingSignOptions;
 
 export interface IBTCProvider extends IProvider {
   /**
