@@ -156,7 +156,7 @@ export interface StakingSignOptions {
   type: SigningStep.STAKING;
   finalityProviderPk: string;
   covenantPks: string[];
-  timelockBlocks: number;
+  stakingTimelockBlocks: number;
   covenantThreshold: number;
 }
 
@@ -165,7 +165,7 @@ export interface UnbondingSignOptions {
   type: SigningStep.UNBONDING;
   finalityProviderPk: string;
   covenantPks: string[];
-  timelockBlocks: number;
+  unbondingTimelockBlocks: number;
   covenantThreshold: number;
 }
 

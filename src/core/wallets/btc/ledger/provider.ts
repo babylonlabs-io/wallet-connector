@@ -127,10 +127,10 @@ export class LedgerProvider implements IBTCProvider {
     }
 
     // Extract and validate common options for special transaction types
-    const { finalityProviderPk, covenantPks, timelockBlocks, covenantThreshold } = options;
+    const { finalityProviderPk, covenantPks, covenantThreshold } = options;
 
-    if (!finalityProviderPk || !covenantPks || !timelockBlocks || !covenantThreshold) {
-      throw new Error("Missing staking options");
+    if (!finalityProviderPk || !covenantPks || !covenantThreshold) {
+      throw new Error("Missing policy options");
     }
 
     // Covenant keys should be sorted for policy generation (common operation)
@@ -141,7 +141,6 @@ export class LedgerProvider implements IBTCProvider {
 
     // Common parameters for policies
     const commonParams = {
-      timelockBlocks,
       finalityProviderPk,
       covenantThreshold,
       covenantPks: covenantPksSorted,
@@ -152,21 +151,36 @@ export class LedgerProvider implements IBTCProvider {
     const isTestnet = this.config.network !== Network.MAINNET;
 
     if (options.type === SigningStep.STAKING) {
+      const timelockBlocks = options.stakingTimelockBlocks;
+      if (!timelockBlocks) {
+        throw new Error("Missing staking timelock blocks");
+      }
       return stakingTxPolicy({
         policyName: "Staking transaction",
         transport,
-        params: commonParams,
+        params: {
+          ...commonParams,
+          timelockBlocks,
+        },
         derivationPath,
         isTestnet,
       });
     } else if (options.type === SigningStep.UNBONDING) {
+      const timelockBlocks = options.unbondingTimelockBlocks;
+      if (!timelockBlocks) {
+        throw new Error("Missing unbonding timelock blocks");
+      }
       const leafHash = computeLeafHash(psbtBase64);
+      if (!leafHash) {
+        throw new Error("Could not compute leaf hash");
+      }
       return unbondingPathPolicy({
         policyName: "Unbonding",
         transport,
         params: {
           ...commonParams,
           leafHash,
+          timelockBlocks,
         },
         derivationPath,
         isTestnet,
