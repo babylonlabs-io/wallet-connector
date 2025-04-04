@@ -120,10 +120,11 @@ export class LedgerProvider implements IBTCProvider {
 
   private async getPolicyForTransaction(psbtBase64: string, options?: BTCSignOptions): Promise<any> {
     const transport = this.ledgerWalletInfo!.app.transport;
+    const isTestnet = this.config.network !== Network.MAINNET;
 
     // If no specific transaction type is specified, use default policy detection
     if (!options?.type) {
-      return tryParsePsbt(transport, psbtBase64, true);
+      return tryParsePsbt(transport, psbtBase64, isTestnet);
     }
 
     // Extract and validate common options for special transaction types
@@ -148,7 +149,6 @@ export class LedgerProvider implements IBTCProvider {
     console.log("commonParams", commonParams);
 
     const derivationPath = this.ledgerWalletInfo!.path;
-    const isTestnet = this.config.network !== Network.MAINNET;
 
     if (options.type === SigningStep.STAKING) {
       const timelockBlocks = options.stakingTimelockBlocks;
@@ -191,7 +191,7 @@ export class LedgerProvider implements IBTCProvider {
         isTestnet,
       });
     } else {
-      return tryParsePsbt(transport, psbtBase64, true);
+      return tryParsePsbt(transport, psbtBase64, isTestnet);
     }
   }
 
