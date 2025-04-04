@@ -174,6 +174,11 @@ export class LedgerProvider implements IBTCProvider {
       if (!leafHash) {
         throw new Error("Could not compute leaf hash");
       }
+      console.log("unbonding params", {
+        ...commonParams,
+        leafHash,
+        timelockBlocks,
+      });
       return unbondingPathPolicy({
         policyName: "Unbonding",
         transport,
