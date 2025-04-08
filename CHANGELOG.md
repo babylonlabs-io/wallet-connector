@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.7
+
+### Patch Changes
+
+- 86fade1: use address instead of PK
+
 ## 1.0.6
 
 ### Patch Changes
