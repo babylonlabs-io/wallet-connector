@@ -63,7 +63,7 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
           if (!visible) return;
 
-          validateAddress(connector.config.network, connectedWallet.account.publicKeyHex);
+          validateAddress(connector.config.network, connectedWallet.account.address);
 
           await acceptTermsOfService?.({
             address: connectedWallet.account.address,
