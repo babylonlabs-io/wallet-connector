@@ -49,7 +49,7 @@
     "@keystonehq/animated-qr": "0.10.0",
     "@keystonehq/keystone-sdk": "0.9.0",
     "@keystonehq/sdk": "0.22.1",
-    "@tomo-inc/wallet-connect-sdk": "^0.3.15",
+    "@tomo-inc/wallet-connect-sdk": "^0.3.16",
     "buffer": "^6.0.3",
     "nanoevents": "^9.1.0",
     "usehooks-ts": "^3.0.2",
