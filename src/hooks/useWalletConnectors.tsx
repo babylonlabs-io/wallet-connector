@@ -4,7 +4,7 @@ import { useChainProviders } from "@/context/Chain.context";
 import { useInscriptionProvider } from "@/context/Inscriptions.context";
 import { useLifeCycleHooks } from "@/context/LifecycleHooks.context";
 import { HashMap, IChain, IWallet } from "@/core/types";
-import { validateAddressWithPK } from "@/core/utils/wallet";
+import { validateAddress, validateAddressWithPK } from "@/core/utils/wallet";
 
 import { useWidgetState } from "./useWidgetState";
 
@@ -63,6 +63,8 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
           if (!visible) return;
 
+          validateAddress(connector.config.network, connectedWallet.account.publicKeyHex);
+
           await acceptTermsOfService?.({
             address: connectedWallet.account.address,
             public_key: connectedWallet.account.publicKeyHex,
@@ -112,8 +114,15 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
         } catch (e: any) {
           connector.disconnect();
           removeWallet?.(connector.id);
-          displayChains?.();
-          onError?.(e);
+          displayError?.({
+            title: "Connection Failed",
+            description: e.message,
+            submitButton: "",
+            cancelButton: "Done",
+            onCancel: async () => {
+              displayChains?.();
+            },
+          });
         }
       },
       BBN: (connector) => (connectedWallet) => {
