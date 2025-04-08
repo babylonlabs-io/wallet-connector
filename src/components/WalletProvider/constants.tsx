@@ -16,11 +16,11 @@ export const config: ChainConfigArr = [
       },
     ],
     config: {
-      coinName: "Signet BTC",
-      coinSymbol: "sBTC",
-      networkName: "BTC signet",
-      mempoolApiUrl: "https://mempool.space/signet",
-      network: Network.SIGNET,
+      coinName: "Mainnet BTC",
+      coinSymbol: "BTC",
+      networkName: "BTC",
+      mempoolApiUrl: "https://mempool.space/",
+      network: Network.MAINNET,
     },
   },
   {
