@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.5
+
+### Patch Changes
+
+- 867eab8: support keplr in BTC via tomo wallet connector
+
 ## 1.0.4
 
 ### Patch Changes
