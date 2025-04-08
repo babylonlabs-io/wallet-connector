@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.6
+
+### Patch Changes
+
+- 048ea29: add network error
+
 ## 1.0.5
 
 ### Patch Changes
