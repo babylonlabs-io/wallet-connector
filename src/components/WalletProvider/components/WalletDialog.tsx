@@ -24,7 +24,7 @@ export function WalletDialog({ persistent, storage, config, onError }: WalletDia
   const { visible, screen, confirmed, close, confirm, displayChains } = useWidgetState();
   const { toggleShowAgain, toggleLockInscriptions } = useInscriptionProvider();
   const connectors = useChainProviders();
-  const walletWidgets = useWalletWidgets(connectors, config);
+  const walletWidgets = useWalletWidgets(connectors, config, onError);
   const { connect, disconnect } = useWalletConnectors({ persistent, accountStorage: storage, onError });
   const { disconnect: disconnectAll } = useWalletConnect();
 

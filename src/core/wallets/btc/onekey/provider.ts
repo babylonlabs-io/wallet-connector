@@ -1,6 +1,5 @@
 import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
-import { validateAddress } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
 
@@ -40,8 +39,6 @@ export class OneKeyProvider implements IBTCProvider {
     }
 
     const address = await this.provider.getAddress();
-    validateAddress(this.config.network, address);
-
     const publicKeyHex = await this.provider.getPublicKeyHex();
 
     if (publicKeyHex && address) {

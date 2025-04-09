@@ -1,5 +1,29 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.7
+
+### Patch Changes
+
+- 86fade1: use address instead of PK
+
+## 1.0.6
+
+### Patch Changes
+
+- 048ea29: add network error
+
+## 1.0.5
+
+### Patch Changes
+
+- 867eab8: support keplr in BTC via tomo wallet connector
+
+## 1.0.4
+
+### Patch Changes
+
+- bb278c3: display external wallet errors
+
 ## 1.0.3
 
 ### Patch Changes

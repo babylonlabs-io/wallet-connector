@@ -12,7 +12,7 @@ export const config: ChainConfigArr = [
     connectors: [
       {
         id: "tomo-connect",
-        widget: () => <ExternalWallets chainName="bitcoin" />,
+        widget: ({ onError }) => <ExternalWallets chainName="bitcoin" onError={onError} />,
       },
     ],
     config: {
@@ -28,7 +28,7 @@ export const config: ChainConfigArr = [
     connectors: [
       {
         id: "tomo-connect",
-        widget: () => <ExternalWallets chainName="cosmos" />,
+        widget: ({ onError }) => <ExternalWallets chainName="cosmos" onError={onError} />,
       },
     ],
     config: {

@@ -141,6 +141,7 @@ export interface WidgetProps<P extends IProvider = IProvider> {
   id: string;
   connector: IConnector;
   createWallet: (props: ExternalWalletProps<P>) => IWallet<P>;
+  onError?: (e: Error) => void;
 }
 
 export type WidgetComponent<P extends IProvider = IProvider> = ComponentType<WidgetProps<P>>;

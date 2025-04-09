@@ -1,6 +1,5 @@
 import type { BTCConfig, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
-import { validateAddress } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
 
@@ -56,8 +55,6 @@ export class OKXProvider implements IBTCProvider {
     }
 
     const { address, compressedPublicKey } = result;
-
-    validateAddress(this.config.network, address);
 
     if (compressedPublicKey && address) {
       this.walletInfo = {

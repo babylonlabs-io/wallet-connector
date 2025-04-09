@@ -3,7 +3,6 @@ import { Psbt, address as btcAddress, networks } from "bitcoinjs-lib";
 
 import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
-import { validateAddress } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
 
@@ -53,8 +52,6 @@ export class UnisatProvider implements IBTCProvider {
     }
 
     const address = accounts[0];
-    validateAddress(this.config.network, address);
-
     const publicKeyHex = await this.provider.getPublicKey();
 
     if (publicKeyHex && address) {
