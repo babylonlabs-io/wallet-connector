@@ -23,7 +23,7 @@ export const ExternalWallets = ({ chainName, onError }: TomoWidgetProps) => {
     <div className="pt-10 text-accent-primary">
       <Text className="mb-4">More wallets with Tomo Connect</Text>
 
-      <div className="grid grid-cols-4 md:grid-cols-7 gap-6 items-center justify-between border border-secondary-strokeLight rounded p-6">
+      <div className="grid grid-cols-3 md:grid-cols-7 gap-6 items-center justify-between border border-secondary-strokeLight rounded p-6">
         {(wallets || []).map((wallet: any) => (
           <button
             disabled={!wallet.isInstall}
