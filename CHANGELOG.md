@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.12
+
+### Patch Changes
+
+- e224103: bummp tomo to 0.3.19 to include keystone for BABY
+
 ## 1.0.11
 
 ### Patch Changes
