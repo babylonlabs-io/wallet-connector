@@ -20,8 +20,8 @@ export const formatAddress = (str: string, symbols: number = 8) => {
  * @param network - The Bitcoin network.
  * @returns The public key as a Buffer.
  */
-export const getPublicKeyFromXpub = (xpub: string, path: string, network: BitcoinNetwork): Buffer => {
-  const hdNode = HDKey.fromExtendedKey(xpub, network.bip32);
+export const getPublicKeyFromXpub = (xpub: string, path: string, network?: BitcoinNetwork): Buffer => {
+  const hdNode = HDKey.fromExtendedKey(xpub, network?.bip32);
   const derivedNode = hdNode.derive(path);
   return Buffer.from(derivedNode.publicKey!);
 };
@@ -38,7 +38,8 @@ export const generateP2TRAddressFromXpub = (
   path: string,
   network: BitcoinNetwork,
 ): { address: string; publicKeyHex: string; scriptPubKeyHex: string } => {
-  const pubkeyBuffer = getPublicKeyFromXpub(xpub, path, network);
+  // Keystone uses xpub as the extended public key, hence we don't need to pass the network
+  const pubkeyBuffer = getPublicKeyFromXpub(xpub, path);
   const childNodeXOnlyPubkey = toXOnly(pubkeyBuffer);
   let address: string;
   let output: Buffer;

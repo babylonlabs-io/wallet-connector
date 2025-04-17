@@ -77,8 +77,6 @@ export class LedgerProvider implements IBTCProvider {
     );
     if (!firstTaprootAccountPolicy) throw new Error("Could not retrieve the policy");
 
-    const currentNetwork = await this.getNetwork();
-
     const firstTaprootAccountAddress = await app.getWalletAddress(
       firstTaprootAccountPolicy,
       null,
@@ -87,6 +85,7 @@ export class LedgerProvider implements IBTCProvider {
       true, // show address on the wallet's screen
     );
 
+    const currentNetwork = await this.getNetwork();
     const publicKeyBuffer = getPublicKeyFromXpub(firstTaprootAccountPubkey, "M/0/0", toNetwork(currentNetwork));
 
     this.ledgerWalletInfo = {
