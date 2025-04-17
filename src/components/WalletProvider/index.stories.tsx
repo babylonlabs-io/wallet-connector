@@ -158,11 +158,25 @@ export const WithBTCSigningFeatures: Story = {
           finalityProviderPk: "d23c2c25e1fcf8fd1c21b9a402c19e2e309e531e45e92fb1e9805b6056b0cc76",
           unbondingTimelockBlocks: 101,
         };
+        const unbondingSlashing =
+          "70736274ff01007d0200000001540b849d11684df77b81d066e14e7112572f77ffb2125e550ca648698a94e53f0000000000ffffffff02600900000000000016001421abbeb715ab348d2e793c029214bc3ed33941e3b09a00000000000022512067a67b2ad0c9c32bd9694932b4bd10315e905ea5b091d72f3134f6e2c94ec420000000000001012b80bb000000000000225120990ba526acc27730f0bb5ba4ccae69ee89f84385ac40becb76f21fa4194a07554215c150929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0d190c7cbcf13e3df7aaf71d9d68ec5a90162ef6b3c93a9254b1982059bcb4838ad208156406fa3a7e73ff514a9051c0a4554a7142524a41aaaaafc879c6897021167ad20d23c2c25e1fcf8fd1c21b9a402c19e2e309e531e45e92fb1e9805b6056b0cc76ad206f13a6d104446520d1757caec13eaf6fbcf29f488c31e0107e7351d4994cd068ac20a10a06bb3bae360db3aef0326413b55b9e46bf20b9a96fc8a806a99e644fe277ba20a5e21514682b87e37fb5d3c9862055041d1e6f4cc4f3034ceaf3d90f86b230a6ba529cc001172050929b74c1a04954b78b4b6035e97a5e078a5a0f28ec96d547bfee9ace803ac0000000";
+        const unbondingSlashingOptions = {
+          type: SigningStep.UNBONDING_SLASHING as const,
+          covenantPks: [
+            "a10a06bb3bae360db3aef0326413b55b9e46bf20b9a96fc8a806a99e644fe277",
+            "6f13a6d104446520d1757caec13eaf6fbcf29f488c31e0107e7351d4994cd068",
+            "a5e21514682b87e37fb5d3c9862055041d1e6f4cc4f3034ceaf3d90f86b230a6",
+          ],
+          covenantThreshold: 2,
+          finalityProviderPk: "d23c2c25e1fcf8fd1c21b9a402c19e2e309e531e45e92fb1e9805b6056b0cc76",
+        };
         let options;
         if (psbtToSign === st) {
           options = stakingOptions;
         } else if (psbtToSign === unb) {
           options = unbondingOptions;
+        } else if (psbtToSign === unbondingSlashing) {
+          options = unbondingSlashingOptions;
         }
         const signedPsbt = await btcProvider.signPsbt(psbtToSign, options);
         // const signedPsbt = await btcProvider.signPsbt(psbtToSign);

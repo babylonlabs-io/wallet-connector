@@ -8,6 +8,7 @@ import AppClient, {
   DefaultWalletPolicy,
   signMessage,
   signPsbt,
+  slashingPathPolicy,
   stakingTxPolicy,
   tryParsePsbt,
   unbondingPathPolicy,
@@ -179,6 +180,21 @@ export class LedgerProvider implements IBTCProvider {
           ...commonParams,
           leafHash,
           timelockBlocks,
+        },
+        derivationPath,
+        isTestnet,
+      });
+    } else if (options.type === SigningStep.UNBONDING_SLASHING) {
+      const leafHash = computeLeafHash(psbtBase64);
+      if (!leafHash) {
+        throw new Error("Could not compute leaf hash");
+      }
+      return slashingPathPolicy({
+        policyName: "Consent to unbonding slashing",
+        transport,
+        params: {
+          ...commonParams,
+          leafHash,
         },
         derivationPath,
         isTestnet,

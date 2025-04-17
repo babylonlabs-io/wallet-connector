@@ -169,8 +169,16 @@ export interface UnbondingSignOptions {
   covenantThreshold: number;
 }
 
+// Unbonding slashing specific options for signing a BTC transaction using Ledger
+export interface UnbondingSlashingSignOptions {
+  type: SigningStep.UNBONDING_SLASHING;
+  finalityProviderPk: string;
+  covenantPks: string[];
+  covenantThreshold: number;
+}
+
 // Additional options for signing a BTC transaction
-export type BTCSignOptions = StakingSignOptions | UnbondingSignOptions;
+export type BTCSignOptions = StakingSignOptions | UnbondingSignOptions | UnbondingSlashingSignOptions;
 
 export interface IBTCProvider extends IProvider {
   /**
