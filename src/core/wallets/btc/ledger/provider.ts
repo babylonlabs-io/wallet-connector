@@ -16,7 +16,7 @@ import AppClient, {
 import type { BTCConfig, BTCSignOptions, InscriptionIdentifier } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
 import { toNetwork } from "@/core/utils/wallet";
-import { generateP2TRAddressFromXpub } from "@/utils/wallet";
+import { getPublicKeyFromXpub } from "@/utils/wallet";
 
 import logo from "./logo.svg";
 
@@ -28,7 +28,6 @@ type LedgerWalletInfo = {
   address: string | undefined;
   path: string | undefined;
   publicKeyHex: string | undefined;
-  scriptPubKeyHex: string | undefined;
 };
 
 export const WALLET_PROVIDER_NAME = "Ledger";
@@ -87,12 +86,7 @@ export class LedgerProvider implements IBTCProvider {
       true, // show address on the wallet's screen
     );
 
-    // Additional information for the wallet
-    const { publicKeyHex, scriptPubKeyHex } = generateP2TRAddressFromXpub(
-      firstTaprootAccountPubkey,
-      "M/0/0",
-      toNetwork(currentNetwork),
-    );
+    const publicKeyBuffer = getPublicKeyFromXpub(firstTaprootAccountPubkey, "M/0/0", toNetwork(currentNetwork));
 
     this.ledgerWalletInfo = {
       app,
@@ -101,8 +95,7 @@ export class LedgerProvider implements IBTCProvider {
       extendedPublicKey: firstTaprootAccountPubkey,
       path: taprootPath,
       address: firstTaprootAccountAddress,
-      publicKeyHex,
-      scriptPubKeyHex,
+      publicKeyHex: publicKeyBuffer.toString("hex"),
     };
   };
 
