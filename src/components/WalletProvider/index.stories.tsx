@@ -130,6 +130,7 @@ export const WithBTCSigningFeatures: Story = {
 
     const handleSignPsbt = async () => {
       if (!btcProvider || !psbtToSign) return;
+      // TODO this should be removed, debugging only
       try {
         const st =
           "70736274ff0100890200000001e0bed72d5e55bfdac79b4e4b8812b1fc414e4dd50c728524bc48365dd1b22c5b0100000000ffffffff0250c3000000000000225120f253728a3dbeae8529ceea4796641396981e8bae79b9d1aebe1d32000f6c9b48b93a0000000000002251203a18ecbd4cd6cb2e00ce03dcc85dab18bbb6d637943350fa3d9c77f65ec88f01000000000001012bc2fe0000000000002251203a18ecbd4cd6cb2e00ce03dcc85dab18bbb6d637943350fa3d9c77f65ec88f010117208156406fa3a7e73ff514a9051c0a4554a7142524a41aaaaafc879c6897021167000000";
