@@ -212,6 +212,12 @@ export interface IBTCProvider extends IProvider {
    * @returns A promise that resolves to the icon of the wallet provider.
    */
   getWalletProviderIcon(): Promise<string>;
+
+  /**
+   * Gets the version of the wallet provider.
+   * @returns A promise that resolves to the version of the wallet provider.
+   */
+  getVersion?(): Promise<string>;
 }
 
 export interface IBBNProvider extends IProvider {
@@ -260,6 +266,12 @@ export interface IBBNProvider extends IProvider {
    * @param callBack - The callback function to be executed when the event occurs.
    */
   off(eventName: string, callBack: () => void): void;
+
+  /**
+   * Gets the version of the wallet provider.
+   * @returns A promise that resolves to the version of the wallet provider.
+   */
+  getVersion?(): Promise<string>;
 }
 
 export interface HashMap {
