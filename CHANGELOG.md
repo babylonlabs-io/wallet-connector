@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.13
+
+### Patch Changes
+
+- 06e196d: Bump Tomo wallet connector
+
 ## 1.0.12
 
 ### Patch Changes
