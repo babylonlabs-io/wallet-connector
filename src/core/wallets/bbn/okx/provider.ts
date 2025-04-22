@@ -30,6 +30,17 @@ export class OKXBabylonProvider implements IBBNProvider {
     if (!this.rpc) throw new Error("RPC URL is not initialized");
     if (!this.wallet.keplr) throw new Error("OKX Wallet extension not found");
 
+    // Version check - BABY Token
+    const compatibleVersion = "3.50.0";
+    const version = await this.wallet.getVersion();
+
+    // Check that version is higher than or equal to compatibleVersion
+    if (version && version < compatibleVersion) {
+      throw new Error(
+        `OKX Wallet version ${version} is not compatible. Please update to version ${compatibleVersion} or higher.`,
+      );
+    }
+
     try {
       await this.wallet.keplr.enable(this.chainId);
     } catch (error: Error | any) {
@@ -122,4 +133,8 @@ export class OKXBabylonProvider implements IBBNProvider {
       window.removeEventListener("okx_keystorechange", callBack);
     }
   };
+
+  getVersion(): Promise<string> {
+    return this.wallet.getVersion();
+  }
 }
