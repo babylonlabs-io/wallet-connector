@@ -1,5 +1,13 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.14
+
+### Patch Changes
+
+- a64e667: chore: bump btc-staking-ts to keep the peer dependency version
+  aligned. no changed to the wallet side
+- 712cdbb: OKX version check
+
 ## 1.0.13
 
 ### Patch Changes
