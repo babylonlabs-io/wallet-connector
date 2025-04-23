@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.16
+
+### Patch Changes
+
+- 256e9e8: disable ts sourcemaps
+
 ## 1.0.15
 
 ### Patch Changes
