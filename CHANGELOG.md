@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.15
+
+### Patch Changes
+
+- 4c7a7e8: add ts source maps
+
 ## 1.0.14
 
 ### Patch Changes
