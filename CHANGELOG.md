@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.17
+
+### Patch Changes
+
+- 88b99c3: update core-ui
+
 ## 1.0.16
 
 ### Patch Changes
