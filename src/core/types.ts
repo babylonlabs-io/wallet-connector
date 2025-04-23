@@ -1,3 +1,4 @@
+import { SigningStep } from "@babylonlabs-io/btc-staking-ts";
 import { ChainInfo, OfflineAminoSigner, OfflineDirectSigner } from "@keplr-wallet/types";
 import { ComponentType } from "react";
 
@@ -151,20 +152,45 @@ export interface ExternalConnector<P extends IProvider = IProvider> {
   widget: WidgetComponent<P>;
 }
 
+export interface ContractParams {
+  // Manual type of the contract can be used by the wallets without
+  // automatic contract detection capabilities - Ledger
+  type?: SigningStep;
+  stakerPk: string;
+  covenantPks: string[];
+  finalityProviders: string[];
+  covenantThreshold: number;
+  minUnbondingTime: number;
+  stakingDuration: number;
+  magicBytes: string;
+}
+
+export interface Contract {
+  id: string;
+  params: ContractParams;
+}
+
+export interface SignPsbtOptions {
+  autoFinalized?: boolean;
+  contracts?: Contract[];
+}
+
 export interface IBTCProvider extends IProvider {
   /**
    * Signs the given PSBT in hex format.
    * @param psbtHex - The hex string of the unsigned PSBT to sign.
+   * @param options - Optional parameters for signing the PSBT.
    * @returns A promise that resolves to the hex string of the signed PSBT.
    */
-  signPsbt(psbtHex: string): Promise<string>;
+  signPsbt(psbtHex: string, options?: SignPsbtOptions): Promise<string>;
 
   /**
    * Signs multiple PSBTs in hex format.
    * @param psbtsHexes - The hex strings of the unsigned PSBTs to sign.
+   * @param options - Optional parameters for signing the PSBTs.
    * @returns A promise that resolves to an array of hex strings, each representing a signed PSBT.
    */
-  signPsbts(psbtsHexes: string[]): Promise<string[]>;
+  signPsbts(psbtsHexes: string[], options?: SignPsbtOptions[]): Promise<string[]>;
 
   /**
    * Gets the network of the current account.
