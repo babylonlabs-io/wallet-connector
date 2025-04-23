@@ -39,7 +39,7 @@ export default defineConfig({
         "@keystonehq/sdk",
       ],
       output: {
-        sourcemapExcludeSources: true,
+        sourcemapExcludeSources: false,
       },
     },
   },
