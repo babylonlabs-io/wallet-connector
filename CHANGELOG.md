@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.18
+
+### Patch Changes
+
+- ebed8b9: bump btc-staking-ts
+
 ## 1.0.17
 
 ### Patch Changes
