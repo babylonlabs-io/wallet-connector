@@ -1,5 +1,11 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.19
+
+### Patch Changes
+
+- d7e53ff: feat: bump tomo to support cactus on BABY wallet
+
 ## 1.0.18
 
 ### Patch Changes
