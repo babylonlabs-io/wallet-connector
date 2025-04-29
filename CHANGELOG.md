@@ -1,5 +1,35 @@
 # @babylonlabs-io/wallet-connect
 
+## 1.0.19
+
+### Patch Changes
+
+- d7e53ff: feat: bump tomo to support cactus on BABY wallet
+
+## 1.0.18
+
+### Patch Changes
+
+- ebed8b9: bump btc-staking-ts
+
+## 1.0.17
+
+### Patch Changes
+
+- 88b99c3: update core-ui
+
+## 1.0.16
+
+### Patch Changes
+
+- 256e9e8: disable ts sourcemaps
+
+## 1.0.15
+
+### Patch Changes
+
+- 4c7a7e8: add ts source maps
+
 ## 1.0.14
 
 ### Patch Changes
