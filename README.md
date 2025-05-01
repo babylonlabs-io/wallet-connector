@@ -26,7 +26,7 @@ The Babylon Wallet Connector repository provides the wallet connection component
 used in the Babylon Staking Dashboard. This component enables the connection of
 both Bitcoin and Babylon chain wallets.
 
-## Key Features
+## 🔑 Key Features
 
 - Unified interfaces for Bitcoin and Babylon wallet connections
 - Support for browser extension wallets
@@ -34,7 +34,7 @@ both Bitcoin and Babylon chain wallets.
 - Mobile wallet compatibility through injectable interfaces
 - Tomo Connect integration for broader wallet ecosystem
 
-## Overview
+## 🧐 Overview
 
 The Babylon Wallet Connector provides a unified interface for integrating both
 Bitcoin and Babylon wallets into Babylon dApp. It supports both native wallet
@@ -44,25 +44,53 @@ The main architectural difference is that native wallets are built into the
 library, while injectable wallets can be dynamically added by injecting their
 implementation into the webpage's `window` object before the dApp loads.
 
-## Installation
+## 👨🏻‍💻 Installation
 
 ```bash
 npm i @babylonlabs-io/wallet-connect
 ```
 
-## Version Release
+## 📝 Commit Format & Automated Releases
 
-### Stable version
+This project uses [**Conventional Commits**](https://www.conventionalcommits.org/en/v1.0.0/)
+and [**semantic-release**](https://semantic-release.gitbook.io/) to automate
+versioning, changelog generation, and npm publishing.
 
-Stable release versions are manually released from the main branch.
+### ✅ How It Works
 
-## Storybook
+1. All commits must follow the **Conventional Commits** format.
+2. When changes are merged into the `main` branch:
+   - `semantic-release` analyzes commit messages
+   - Determines the appropriate semantic version bump (`major`, `minor`, `patch`)
+   - Tags the release in Git with release change log
+   - Publishes the new version to npm
+
+### 🧱 Commit Message Examples
+
+```console
+feat: add support for slashing script
+fix: handle invalid staking tx gracefully
+docs: update README with commit conventions
+refactor!: remove deprecated method and cleanup types
+```
+
+> **Note:** For breaking changes, add a `!` after the type (
+> e.g. `feat!:` or `refactor!:`) and include a description of the breaking
+> change in the commit body.
+
+### 🚀 Releasing
+
+Just commit your changes using the proper format and merge to `main`.
+The CI pipeline will handle versioning and releasing automatically — no manual
+tagging or version bumps needed.
+
+## 📖 Storybook
 
 ```bash
 npm run dev
 ```
 
-## Wallet Integration
+## 💳 Wallet Integration
 
 > ⚠️ **IMPORTANT**: Breaking changes to the wallet methods used by the Babylon
 > web application are likely to cause incompatibility with it or lead to
