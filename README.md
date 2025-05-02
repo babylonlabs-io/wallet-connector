@@ -24,7 +24,7 @@
 
 The Babylon Wallet Connector repository provides the wallet connection component
 used in the Babylon Staking Dashboard. This component enables the connection of
-both Bitcoin and Babylon chain wallets.
+both Bitcoin and Babylon Genesis chain wallets.
 
 ## 🔑 Key Features
 
