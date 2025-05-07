@@ -1,20 +1,22 @@
+interface ErrorParams {
+  code: string;
+  message: string;
+  wallet: string;
+  version?: string;
+  chainId?: string;
+}
+
 export class WalletError extends Error {
-  public code: string;
+  readonly code: string;
+  readonly wallet: string;
+  readonly version?: string;
+  readonly chainId?: string;
 
-  constructor(code: string, message?: string) {
-    super(message);
+  constructor({ code, message, wallet, version, chainId }: ErrorParams, options?: ErrorOptions) {
+    super(message, options);
     this.code = code;
-  }
-
-  static fromUnknown(error: unknown, code: string, fallbackMsg?: string): WalletError {
-    if (error instanceof WalletError) {
-      return error;
-    }
-
-    if (error instanceof Error) {
-      const message = fallbackMsg && (!error.message || error.message === "Error") ? fallbackMsg : error.message;
-      return new WalletError(code, message);
-    }
-    return new WalletError(code, fallbackMsg || "An unknown error occurred");
+    this.wallet = wallet;
+    this.version = version;
+    this.chainId = chainId;
   }
 }
