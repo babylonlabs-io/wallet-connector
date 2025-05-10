@@ -1,5 +1,6 @@
 import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
+import { ERROR_CODES, WalletError } from "@/error";
 
 import logo from "./logo.svg";
 
@@ -21,7 +22,11 @@ export class OneKeyProvider implements IBTCProvider {
 
     // check whether there is an OneKey extension
     if (!wallet?.btcwallet) {
-      throw new Error("OneKey Wallet extension not found");
+      throw new WalletError({
+        code: ERROR_CODES.EXTENSION_NOT_FOUND,
+        message: "OneKey Wallet extension not found",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     this.provider = wallet.btcwallet;
@@ -32,9 +37,17 @@ export class OneKeyProvider implements IBTCProvider {
       await this.provider.connectWallet();
     } catch (error) {
       if ((error as Error)?.message?.includes("rejected")) {
-        throw new Error("Connection to OneKey Wallet was rejected");
+        throw new WalletError({
+          code: ERROR_CODES.CONNECTION_REJECTED,
+          message: "Connection to OneKey Wallet was rejected",
+          wallet: WALLET_PROVIDER_NAME,
+        });
       } else {
-        throw new Error((error as Error)?.message);
+        throw new WalletError({
+          code: ERROR_CODES.CONNECTION_FAILED,
+          message: (error as Error)?.message || "Failed to connect to OneKey Wallet",
+          wallet: WALLET_PROVIDER_NAME,
+        });
       }
     }
 
@@ -47,32 +60,67 @@ export class OneKeyProvider implements IBTCProvider {
         address,
       };
     } else {
-      throw new Error("Could not connect to OneKey Wallet");
+      throw new WalletError({
+        code: ERROR_CODES.CONNECTION_FAILED,
+        message: "Could not connect to OneKey Wallet",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
   };
 
   getAddress = async (): Promise<string> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return this.walletInfo.address;
   };
 
   getPublicKeyHex = async (): Promise<string> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return this.walletInfo.publicKeyHex;
   };
 
   signPsbt = async (psbtHex: string): Promise<string> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-    if (!psbtHex) throw new Error("psbt hex is required");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
+    if (!psbtHex)
+      throw new WalletError({
+        code: ERROR_CODES.PSBT_HEX_REQUIRED,
+        message: "psbt hex is required",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return this.provider.signPsbt(psbtHex);
   };
 
   signPsbts = async (psbtsHexes: string[]): Promise<string[]> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
-    if (!psbtsHexes && !Array.isArray(psbtsHexes)) throw new Error("psbts hexes are required");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
+    if (!psbtsHexes || !Array.isArray(psbtsHexes) || psbtsHexes.length === 0) {
+      throw new WalletError({
+        code: ERROR_CODES.PSBTS_HEXES_REQUIRED,
+        message: "psbts hexes are required and must be a non-empty array",
+        wallet: WALLET_PROVIDER_NAME,
+      });
+    }
 
     return this.provider.signPsbts(psbtsHexes);
   };
@@ -90,20 +138,39 @@ export class OneKeyProvider implements IBTCProvider {
       }
     }
 
-    throw new Error("Unsupported network");
+    throw new WalletError({
+      code: ERROR_CODES.UNSUPPORTED_NETWORK,
+      message: "Unsupported network from OneKey Wallet",
+      wallet: WALLET_PROVIDER_NAME,
+    });
   };
 
   signMessage = async (message: string, type: "bip322-simple" | "ecdsa"): Promise<string> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return await this.provider.signMessage(message, type);
   };
 
   // Inscriptions are only available on OneKey Wallet BTC mainnet
   getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     if (this.config.network !== Network.MAINNET) {
-      throw new Error("Inscriptions are only available on OneKey Wallet BTC Mainnet");
+      throw new WalletError({
+        code: ERROR_CODES.INSCRIPTIONS_UNSUPPORTED_NETWORK,
+        message: "Inscriptions are only available on OneKey Wallet BTC Mainnet",
+        wallet: WALLET_PROVIDER_NAME,
+        chainId: this.config.network,
+      });
     }
 
     // max num of iterations to prevent infinite loop
@@ -130,18 +197,31 @@ export class OneKeyProvider implements IBTCProvider {
         cursor += limit;
         iterations++;
         if (iterations >= MAX_ITERATIONS) {
-          throw new Error("Exceeded maximum iterations when fetching inscriptions");
+          throw new WalletError({
+            code: ERROR_CODES.MAX_ITERATION_EXCEEDED,
+            message: "Exceeded maximum iterations when fetching inscriptions",
+            wallet: WALLET_PROVIDER_NAME,
+          });
         }
       }
     } catch {
-      throw new Error("Failed to get inscriptions from OneKey Wallet");
+      throw new WalletError({
+        code: ERROR_CODES.INSCRIPTION_FETCH_ERROR,
+        message: "Failed to get inscriptions from OneKey Wallet",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     return inscriptionIdentifiers;
   };
 
   on = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     // subscribe to account change event
     if (eventName === "accountChanged") {
@@ -150,7 +230,12 @@ export class OneKeyProvider implements IBTCProvider {
   };
 
   off = (eventName: string, callBack: () => void) => {
-    if (!this.walletInfo) throw new Error("OneKey Wallet not connected");
+    if (!this.walletInfo)
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "OneKey Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     // unsubscribe from account change event
     if (eventName === "accountChanged") {
