@@ -1,14 +1,14 @@
 interface ErrorParams {
   code: string;
   message: string;
-  wallet: string;
+  wallet?: string;
   version?: string;
   chainId?: string;
 }
 
 export class WalletError extends Error {
   readonly code: string;
-  readonly wallet: string;
+  readonly wallet?: string;
   readonly version?: string;
   readonly chainId?: string;
 
@@ -20,3 +20,5 @@ export class WalletError extends Error {
     this.chainId = chainId;
   }
 }
+
+export * from "./codes";

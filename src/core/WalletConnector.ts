@@ -2,6 +2,7 @@ import { createNanoEvents } from "nanoevents";
 
 import { Wallet } from "@/core/Wallet";
 import type { IConnector, IProvider } from "@/core/types";
+import { ERROR_CODES, WalletError } from "@/error";
 
 export interface ConnectorEvents<P extends IProvider> {
   connecting: (message?: string) => void;
@@ -31,7 +32,10 @@ export class WalletConnector<N extends string, P extends IProvider, C> implement
       const selectedWallet = typeof wallet === "string" ? this.wallets.find((w) => w.id === wallet) : wallet;
 
       if (!selectedWallet) {
-        throw new Error("Wallet not found");
+        throw new WalletError({
+          code: ERROR_CODES.INVALID_PARAMS,
+          message: "Wallet not found",
+        });
       }
       this._ee.emit("connecting", `Connecting ${selectedWallet.name}`);
 

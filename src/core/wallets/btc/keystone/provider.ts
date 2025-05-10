@@ -14,6 +14,7 @@ import type { BTCConfig, InscriptionIdentifier } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
 import BIP322 from "@/core/utils/bip322";
 import { toNetwork } from "@/core/utils/wallet";
+import { ERROR_CODES, WalletError } from "@/error";
 
 import logo from "./logo.svg";
 
@@ -71,9 +72,17 @@ export class KeystoneProvider implements IBTCProvider {
     });
 
     if (decodedResult.status === ReadStatus.canceled) {
-      throw new Error("Connection to Keystone was canceled");
+      throw new WalletError({
+        code: ERROR_CODES.CONNECTION_CANCELED,
+        message: "Connection to Keystone was canceled",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     } else if (decodedResult.status !== ReadStatus.success) {
-      throw new Error("Error reading QR code, Please try again.");
+      throw new WalletError({
+        code: ERROR_CODES.QR_READ_ERROR,
+        message: "Error reading QR code, Please try again.",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     // parse the QR Code and get extended public key and other required information
@@ -92,7 +101,12 @@ export class KeystoneProvider implements IBTCProvider {
       scriptPubKeyHex: undefined,
     };
 
-    if (!this.keystoneWaleltInfo.extendedPublicKey) throw new Error("Could not retrieve the extended public key");
+    if (!this.keystoneWaleltInfo.extendedPublicKey)
+      throw new WalletError({
+        code: ERROR_CODES.EXTENSION_NOT_FOUND,
+        message: "Could not retrieve the extended public key",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     // generate the address and public key based on the xpub
     const { address, pubkeyHex, scriptPubKeyHex } = generateP2trAddressFromXpub(
@@ -106,22 +120,41 @@ export class KeystoneProvider implements IBTCProvider {
   };
 
   getAddress = async (): Promise<string> => {
-    if (!this.keystoneWaleltInfo?.address) throw new Error("Could not retrieve the address");
+    if (!this.keystoneWaleltInfo?.address)
+      throw new WalletError({
+        code: ERROR_CODES.ADDRESS_NOT_FOUND,
+        message: "Could not retrieve the address",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return this.keystoneWaleltInfo.address;
   };
 
   getPublicKeyHex = async (): Promise<string> => {
-    if (!this.keystoneWaleltInfo?.publicKeyHex) throw new Error("Could not retrieve the BTC public key");
+    if (!this.keystoneWaleltInfo?.publicKeyHex)
+      throw new WalletError({
+        code: ERROR_CODES.PUBLIC_KEY_NOT_FOUND,
+        message: "Could not retrieve the BTC public key",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     return this.keystoneWaleltInfo.publicKeyHex;
   };
 
   signPsbt = async (psbtHex: string): Promise<string> => {
     if (!this.keystoneWaleltInfo?.address || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "Keystone Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
-    if (!psbtHex) throw new Error("psbt hex is required");
+    if (!psbtHex)
+      throw new WalletError({
+        code: ERROR_CODES.PSBT_HEX_REQUIRED,
+        message: "psbt hex is required",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     // enhance the PSBT with the BIP32 derivation information
     // to tell keystone which key to use to sign the PSBT
@@ -135,9 +168,18 @@ export class KeystoneProvider implements IBTCProvider {
 
   signPsbts = async (psbtsHexes: string[]): Promise<string[]> => {
     if (!this.keystoneWaleltInfo?.address || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "Keystone Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
-    if (!psbtsHexes && !Array.isArray(psbtsHexes)) throw new Error("psbts hexes are required");
+    if (!psbtsHexes && !Array.isArray(psbtsHexes))
+      throw new WalletError({
+        code: ERROR_CODES.PSBTS_HEXES_REQUIRED,
+        message: "psbts hexes are required",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     const result = [];
     for (const psbt of psbtsHexes) {
@@ -167,7 +209,11 @@ export class KeystoneProvider implements IBTCProvider {
    */
   signMessageBIP322 = async (message: string): Promise<string> => {
     if (!this.keystoneWaleltInfo?.scriptPubKeyHex || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "Keystone Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     // Construct the psbt of Bip322 message signing
@@ -189,7 +235,11 @@ export class KeystoneProvider implements IBTCProvider {
 
   signMessageECDSA = async (message: string): Promise<string> => {
     if (!this.keystoneWaleltInfo?.address || !this.keystoneWaleltInfo?.publicKeyHex) {
-      throw new Error("Keystone Wallet not connected");
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "Keystone Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     const ur = this.dataSdk.btc.generateSignRequest({
@@ -216,7 +266,11 @@ export class KeystoneProvider implements IBTCProvider {
   };
 
   getInscriptions = async (): Promise<InscriptionIdentifier[]> => {
-    throw new Error("Method not implemented.");
+    throw new WalletError({
+      code: ERROR_CODES.METHOD_NOT_IMPLEMENTED,
+      message: "Method not implemented.",
+      wallet: WALLET_PROVIDER_NAME,
+    });
   };
 
   // Not implemented because of the Airgapped HW nature
@@ -238,7 +292,12 @@ export class KeystoneProvider implements IBTCProvider {
    * @returns The signed PSBT in hex format.
    * */
   private sign = async (psbtHex: string): Promise<Psbt> => {
-    if (!psbtHex) throw new Error("psbt hex is required");
+    if (!psbtHex)
+      throw new WalletError({
+        code: ERROR_CODES.PSBT_HEX_REQUIRED,
+        message: "psbt hex is required",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     const ur = this.dataSdk.btc.generatePSBT(Buffer.from(psbtHex, "hex"));
 
     // compose the signing process for the Keystone device
@@ -269,7 +328,11 @@ export class KeystoneProvider implements IBTCProvider {
       !this.keystoneWaleltInfo?.mfp ||
       !this.keystoneWaleltInfo?.path
     ) {
-      throw new Error("Keystone Wallet not connected");
+      throw new WalletError({
+        code: ERROR_CODES.WALLET_NOT_CONNECTED,
+        message: "Keystone Wallet not connected",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
 
     const bip32Derivation = {
@@ -307,7 +370,12 @@ const composeQRProcess =
     });
 
     // if the QR code is scanned successfully, read the result
-    if (status !== PlayStatus.success) throw new Error("Could not generate the QR code, please try again.");
+    if (status !== PlayStatus.success)
+      throw new WalletError({
+        code: ERROR_CODES.QR_SCAN_ERROR,
+        message: "Could not generate the QR code, please try again.",
+        wallet: WALLET_PROVIDER_NAME,
+      });
 
     const urResult = await container.read([destinationDataType], {
       title: "Get the Signature from Keystone",
@@ -316,7 +384,12 @@ const composeQRProcess =
     });
 
     // return the result if the QR code data(UR) of scanned successfully
-    if (urResult.status !== ReadStatus.success) throw new Error("Could not extract the signature, please try again.");
+    if (urResult.status !== ReadStatus.success)
+      throw new WalletError({
+        code: ERROR_CODES.SIGNATURE_EXTRACT_ERROR,
+        message: "Could not extract the signature, please try again.",
+        wallet: WALLET_PROVIDER_NAME,
+      });
     return urResult.result;
   };
 
@@ -356,7 +429,11 @@ const generateP2trAddressFromXpub = (
       address = res.address!;
       output = res.output!;
     } else {
-      throw new Error(error);
+      throw new WalletError({
+        code: ERROR_CODES.GENERATION_ERROR,
+        message: error.message,
+        wallet: WALLET_PROVIDER_NAME,
+      });
     }
   }
   return {

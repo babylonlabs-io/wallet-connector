@@ -2,6 +2,7 @@ import { networks, payments } from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
 import { Network } from "@/core/types";
+import { ERROR_CODES, WalletError } from "@/error";
 export const COMPRESSED_PUBLIC_KEY_HEX_LENGTH = 66;
 
 const NETWORKS = {
@@ -46,7 +47,10 @@ export const getTaprootAddress = (publicKey: string, network: Network) => {
   });
 
   if (!address || !scriptPubKey) {
-    throw new Error("Failed to generate taproot address or script from public key");
+    throw new WalletError({
+      code: ERROR_CODES.ADDRESS_GENERATION_FAILED,
+      message: "Failed to generate taproot address or script from public key",
+    });
   }
 
   return address;
@@ -54,7 +58,10 @@ export const getTaprootAddress = (publicKey: string, network: Network) => {
 
 export const getNativeSegwitAddress = (publicKey: string, network: Network) => {
   if (publicKey.length !== COMPRESSED_PUBLIC_KEY_HEX_LENGTH) {
-    throw new Error("Invalid public key length for generating native segwit address");
+    throw new WalletError({
+      code: ERROR_CODES.INVALID_PUBLIC_KEY,
+      message: "Invalid public key length for generating native segwit address",
+    });
   }
 
   const internalPubkey = Buffer.from(publicKey, "hex");
@@ -64,7 +71,10 @@ export const getNativeSegwitAddress = (publicKey: string, network: Network) => {
   });
 
   if (!address || !scriptPubKey) {
-    throw new Error("Failed to generate native segwit address or script from public key");
+    throw new WalletError({
+      code: ERROR_CODES.ADDRESS_GENERATION_FAILED,
+      message: "Failed to generate native segwit address or script from public key",
+    });
   }
 
   return address;
@@ -86,11 +96,17 @@ export function validateAddress(network: Network, address: string): void {
   const { addressPrefix, name } = NETWORKS[network];
 
   if (!(network in NETWORKS)) {
-    throw new Error(`Unsupported network: ${network}. Please provide a valid network.`);
+    throw new WalletError({
+      code: ERROR_CODES.UNSUPPORTED_NETWORK,
+      message: `Unsupported network: ${network}. Please provide a valid network.`,
+    });
   }
 
   if (!address.startsWith(addressPrefix.common)) {
-    throw new Error(`Incorrect address prefix for ${name}. Expected address to start with '${addressPrefix.common}'.`);
+    throw new WalletError({
+      code: ERROR_CODES.INVALID_ADDRESS_PREFIX,
+      message: `Incorrect address prefix for ${name}. Expected address to start with '${addressPrefix.common}'.`,
+    });
   }
 }
 
