@@ -15,6 +15,7 @@ export const ERROR_CODES = {
   RPC_URL_NOT_INITIALIZED: "RPC_URL_NOT_INITIALIZED", // RPC URL missing
   FAILED_TO_ADD_CHAIN: "FAILED_TO_ADD_CHAIN", // Add chain failed
   FAILED_TO_GET_KEY: "FAILED_TO_GET_KEY", // Key fetch failed
+  WALLET_INITIALIZATION_FAILED: "WALLET_INITIALIZATION_FAILED", // Wallet initialization failed
   WALLET_NOT_CONNECTED: "WALLET_NOT_CONNECTED", // Not connected
   INCOMPATIBLE_WALLET_VERSION: "INCOMPATIBLE_WALLET_VERSION", // Version mismatch
   NETWORK_NOT_ENABLED_IN_WALLET: "NETWORK_NOT_ENABLED_IN_WALLET", // Network not enabled
@@ -31,6 +32,7 @@ export const ERROR_CODES = {
   GENERATION_ERROR: "GENERATION_ERROR", // General generation error
   ADDRESS_NOT_FOUND: "ADDRESS_NOT_FOUND", // Address not found
   PUBLIC_KEY_NOT_FOUND: "PUBLIC_KEY_NOT_FOUND", // Public key not found
+  EMPTY_WITNESS_STACK: "EMPTY_WITNESS_STACK", // Witness stack is empty
 
   // ===== QR/Hardware Wallet =====
   QR_READ_ERROR: "QR_READ_ERROR", // QR read failed

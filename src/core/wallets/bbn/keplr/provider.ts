@@ -37,24 +37,13 @@ export class KeplrProvider implements IBBNProvider {
   }
 
   async connectWallet(): Promise<void> {
-    if (!this.chainId)
+    if (!this.chainId || !this.rpc || !this.keplr) {
       throw new WalletError({
-        code: ERROR_CODES.CHAIN_ID_NOT_INITIALIZED,
-        message: "Chain ID is not initialized",
+        code: ERROR_CODES.WALLET_INITIALIZATION_FAILED,
+        message: `Keplr provider initialization failed: Missing ${!this.chainId ? "Chain ID" : !this.rpc ? "RPC URL" : "Keplr extension"}`,
         wallet: WALLET_PROVIDER_NAME,
       });
-    if (!this.rpc)
-      throw new WalletError({
-        code: ERROR_CODES.RPC_URL_NOT_INITIALIZED,
-        message: "RPC URL is not initialized",
-        wallet: WALLET_PROVIDER_NAME,
-      });
-    if (!this.keplr)
-      throw new WalletError({
-        code: ERROR_CODES.EXTENSION_NOT_FOUND,
-        message: "Keplr extension not found",
-        wallet: WALLET_PROVIDER_NAME,
-      });
+    }
 
     try {
       await this.keplr.enable(this.chainId);
@@ -97,7 +86,7 @@ export class KeplrProvider implements IBBNProvider {
 
     if (!key)
       throw new WalletError({
-        code: ERROR_CODES.FAILED_TO_GET_KEY,
+        code: ERROR_CODES.WALLET_INITIALIZATION_FAILED,
         message: "Failed to get Keplr key",
         wallet: WALLET_PROVIDER_NAME,
       });
@@ -147,16 +136,10 @@ export class KeplrProvider implements IBBNProvider {
   }
 
   async getOfflineSigner(): Promise<OfflineAminoSigner & OfflineDirectSigner> {
-    if (!this.keplr)
+    if (!this.keplr || !this.chainId)
       throw new WalletError({
-        code: ERROR_CODES.EXTENSION_NOT_FOUND,
-        message: "Keplr extension not found",
-        wallet: WALLET_PROVIDER_NAME,
-      });
-    if (!this.chainId)
-      throw new WalletError({
-        code: ERROR_CODES.CHAIN_ID_NOT_INITIALIZED,
-        message: "Chain ID is not initialized",
+        code: ERROR_CODES.WALLET_INITIALIZATION_FAILED,
+        message: !this.keplr ? "Keplr extension not found" : "Chain ID is not initialized",
         wallet: WALLET_PROVIDER_NAME,
       });
 
@@ -164,7 +147,7 @@ export class KeplrProvider implements IBBNProvider {
       return this.keplr.getOfflineSigner(this.chainId);
     } catch {
       throw new WalletError({
-        code: ERROR_CODES.UNKNOWN_ERROR, // Or a more specific one if available
+        code: ERROR_CODES.WALLET_INITIALIZATION_FAILED,
         message: "Failed to get offline signer",
         wallet: WALLET_PROVIDER_NAME,
       });
@@ -172,16 +155,10 @@ export class KeplrProvider implements IBBNProvider {
   }
 
   async getOfflineSignerAuto(): Promise<OfflineAminoSigner | OfflineDirectSigner> {
-    if (!this.keplr)
+    if (!this.keplr || !this.chainId)
       throw new WalletError({
-        code: ERROR_CODES.EXTENSION_NOT_FOUND,
-        message: "Keplr extension not found",
-        wallet: WALLET_PROVIDER_NAME,
-      });
-    if (!this.chainId)
-      throw new WalletError({
-        code: ERROR_CODES.CHAIN_ID_NOT_INITIALIZED,
-        message: "Chain ID is not initialized",
+        code: ERROR_CODES.WALLET_INITIALIZATION_FAILED,
+        message: !this.keplr ? "Keplr extension not found" : "Chain ID is not initialized",
         wallet: WALLET_PROVIDER_NAME,
       });
 

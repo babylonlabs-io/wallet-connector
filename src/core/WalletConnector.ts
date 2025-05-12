@@ -33,7 +33,7 @@ export class WalletConnector<N extends string, P extends IProvider, C> implement
 
       if (!selectedWallet) {
         throw new WalletError({
-          code: ERROR_CODES.INVALID_PARAMS,
+          code: ERROR_CODES.EXTENSION_NOT_FOUND,
           message: "Wallet not found",
         });
       }

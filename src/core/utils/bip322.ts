@@ -126,7 +126,7 @@ class BIP322 {
     // Check if the witness data is present
     if (!witness) {
       throw new WalletError({
-        code: ERROR_CODES.INVALID_PARAMS,
+        code: ERROR_CODES.EMPTY_WITNESS_STACK,
         message: "Cannot encode empty witness stack.",
       });
     }
