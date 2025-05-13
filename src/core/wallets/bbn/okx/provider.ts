@@ -52,7 +52,7 @@ export class OKXBabylonProvider implements IBBNProvider {
     }
 
     // Version check - BABY Token
-    const compatibleVersion = "3.50.0";
+    const compatibleVersion = "3.54.12";
     const version = await this.wallet.getVersion();
 
     // Check that version is higher than or equal to compatibleVersion
