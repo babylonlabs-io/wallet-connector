@@ -31,7 +31,7 @@ export class OKXBabylonProvider implements IBBNProvider {
     if (!this.wallet.keplr) throw new Error("OKX Wallet extension not found");
 
     // Version check - BABY Token
-    const compatibleVersion = "3.50.0";
+    const compatibleVersion = "3.54.12";
     const version = await this.wallet.getVersion();
 
     // Check that version is higher than or equal to compatibleVersion
