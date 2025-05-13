@@ -1,7 +1,7 @@
 import { initBTCCurve } from "@babylonlabs-io/btc-staking-ts";
 import { Psbt, address as btcAddress, networks } from "bitcoinjs-lib";
 
-import type { BTCConfig, IBTCProvider, InscriptionIdentifier, WalletInfo } from "@/core/types";
+import type { BTCConfig, IBTCProvider, InscriptionIdentifier, SignPsbtOptions, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
 
 import logo from "./logo.svg";
@@ -76,29 +76,37 @@ export class UnisatProvider implements IBTCProvider {
     return this.walletInfo.publicKeyHex;
   };
 
-  signPsbt = async (psbtHex: string): Promise<string> => {
+  signPsbt = async (psbtHex: string, options?: SignPsbtOptions): Promise<string> => {
     if (!this.walletInfo) throw new Error("Unisat Wallet not connected");
     if (!psbtHex) throw new Error("psbt hex is required");
 
     const network = await this.getNetwork();
     try {
-      const signedHex = await this.provider.signPsbt(psbtHex, this.getSignPsbtDefaultOptions(psbtHex, network));
+      const defaultOptions = this.getSignPsbtDefaultOptions(psbtHex, network);
+      const signOptions = {
+        ...defaultOptions,
+        ...options,
+      };
+      const signedHex = await this.provider.signPsbt(psbtHex, signOptions);
       return signedHex;
     } catch (error: Error | any) {
       throw new Error(error?.message || error);
     }
   };
 
-  signPsbts = async (psbtsHexes: string[]): Promise<string[]> => {
+  // Order of PSBTs in the array must be the same as the order of options
+  signPsbts = async (psbtsHexes: string[], options?: SignPsbtOptions[]): Promise<string[]> => {
     if (!this.walletInfo) throw new Error("Unisat Wallet not connected");
     if (!psbtsHexes && !Array.isArray(psbtsHexes)) throw new Error("psbts hexes are required");
 
     const network = await this.getNetwork();
     try {
-      return await this.provider.signPsbts(
-        psbtsHexes,
-        psbtsHexes.map((psbtHex) => this.getSignPsbtDefaultOptions(psbtHex, network)),
-      );
+      const defaultOptions = psbtsHexes.map((psbtHex) => this.getSignPsbtDefaultOptions(psbtHex, network));
+      const signOptions = options?.map((option, index) => ({
+        ...defaultOptions[index],
+        ...option,
+      }));
+      return await this.provider.signPsbts(psbtsHexes, signOptions);
     } catch (error: Error | any) {
       throw new Error(error?.message || error);
     }
