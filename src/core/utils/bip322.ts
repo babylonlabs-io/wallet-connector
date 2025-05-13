@@ -1,5 +1,7 @@
 import * as bitcoin from "bitcoinjs-lib";
 
+import { ERROR_CODES, WalletError } from "@/error";
+
 /**
  * https://github.com/ACken2/bip322-js/blob/main/src/BIP322.ts
  * use the existing the bip322-js file with some modification, use the file directly instead of install the whole package,
@@ -123,7 +125,10 @@ class BIP322 {
     const witness = signedPsbt.data.inputs[0].finalScriptWitness;
     // Check if the witness data is present
     if (!witness) {
-      throw new Error("Cannot encode empty witness stack.");
+      throw new WalletError({
+        code: ERROR_CODES.EMPTY_WITNESS_STACK,
+        message: "Cannot encode empty witness stack.",
+      });
     }
     // Return the base-64 encoded witness stack
     return witness.toString("base64");
