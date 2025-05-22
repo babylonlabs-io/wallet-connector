@@ -9,7 +9,7 @@ import {
 import { memo, useCallback, useEffect, useMemo } from "react";
 
 import { createExternalWallet } from "@/core";
-import { HashMap, IBTCProvider } from "@/core/types";
+import { HashMap, IBTCProvider, SignPsbtOptions } from "@/core/types";
 import { useChainConnector } from "@/hooks/useChainConnector";
 
 const createProvider = (provider: BTCProvider): IBTCProvider => {
@@ -17,8 +17,8 @@ const createProvider = (provider: BTCProvider): IBTCProvider => {
     connectWallet: async () => void (await provider.connectWallet()),
     getAddress: () => provider.getAddress(),
     getPublicKeyHex: () => provider.getPublicKeyHex(),
-    signPsbt: (psbtHex: string) => provider.signPsbt(psbtHex),
-    signPsbts: (psbtsHexes: string[]) => provider.signPsbts(psbtsHexes),
+    signPsbt: (psbtHex: string, options?: SignPsbtOptions) => provider.signPsbt(psbtHex, options),
+    signPsbts: (psbtsHexes: string[], options?: SignPsbtOptions[]) => provider.signPsbts(psbtsHexes, options),
     getNetwork: () => provider.getNetwork(),
     signMessage: (message: string, type: "ecdsa") => provider.signMessage(message, type),
     on: (eventName: string, callBack: () => void) => provider.on(eventName, callBack),
