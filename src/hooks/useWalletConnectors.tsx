@@ -96,8 +96,9 @@ export function useWalletConnectors({ persistent, accountStorage, onError }: Pro
 
           if (verifyBTCAddress && !(await verifyBTCAddress(connectedWallet.account?.address ?? ""))) {
             displayError?.({
-              title: "Connection Failed",
-              description: "The wallet cannot be connected.",
+              title: "Staking Currently Unavailable",
+              description:
+                "Staking is temporarily disabled due to network downtime. New stakes are paused until the network resumes.",
               submitButton: "",
               cancelButton: "Done",
               onCancel: async () => {
