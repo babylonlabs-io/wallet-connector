@@ -31,7 +31,7 @@ export default defineConfig({
         "tailwind-merge",
         "@cosmjs/stargate",
         "@babylonlabs-io/core-ui",
-        "@babylonlabs-io/btc-staking-ts",
+        "@bitcoin-js/tiny-secp256k1-asmjs",
         "bitcoinjs-lib",
         "@keystonehq/animated-qr",
         // Issues linking with Next.js
