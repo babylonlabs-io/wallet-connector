@@ -60,7 +60,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "@bitcoin-js/tiny-secp256k1-asmjs": "2.2.3",
+    "@babylonlabs-io/btc-staking-ts": "1.0.9",
     "@babylonlabs-io/core-ui": "1.1.1",
     "bitcoinjs-lib": "6.1.5",
     "react": "^18.3.1",
