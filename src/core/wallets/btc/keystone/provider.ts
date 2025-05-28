@@ -1,4 +1,3 @@
-import { initBTCCurve } from "@babylonlabs-io/btc-staking-ts";
 import { KeystoneBitcoinSDK, KeystoneSDK, UR } from "@keystonehq/keystone-sdk";
 import { viewSdk as keystoneViewSDK, PlayStatus, ReadStatus, SDK, SupportedResult } from "@keystonehq/sdk";
 import { HDKey } from "@scure/bip32";
@@ -15,6 +14,7 @@ import { IBTCProvider, Network } from "@/core/types";
 import BIP322 from "@/core/utils/bip322";
 import { toNetwork } from "@/core/utils/wallet";
 import { ERROR_CODES, WalletError } from "@/error";
+import { initBTCCurve } from "@/utils/btc";
 
 import logo from "./logo.svg";
 
