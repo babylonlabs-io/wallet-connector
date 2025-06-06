@@ -42,44 +42,60 @@ export class LedgerProvider implements IBTCProvider {
     this.config = config;
   }
 
-  private createTransportWebUSB = async () => {
-    return await TransportWebUSB.create();
-  };
-
-  private createTransportWebHID = async () => {
-    return await TransportWebHID.create();
-  };
-
-  connectWallet = async (): Promise<void> => {
-    const transport = await this.createTransportWebUSB().catch(async (usbError) => {
-      // If WebUSB fails, try WebHID
-      return await this.createTransportWebHID().catch((hidError) => {
+  // Create a transport instance for Ledger devices
+  // It first tries to create a WebUSB transport
+  // and if that fails, it falls back to WebHID
+  private async createTransport(): Promise<Transport> {
+    try {
+      return await TransportWebUSB.create();
+    } catch (usbError: Error | any) {
+      try {
+        return await TransportWebHID.create();
+      } catch (hidError: Error | any) {
         throw new Error(
           `Could not connect to Ledger device: ${usbError.message || usbError}, ${hidError.message || hidError}`,
         );
-      });
-    });
+      }
+    }
+  }
 
-    const app = new AppClient(transport);
+  // Get the network derivation index based on the network
+  // 0 for MAINNET, 1 for TESTNET
+  private getNetworkDerivationIndex(): number {
+    return this.config.network === Network.MAINNET ? 0 : 1;
+  }
 
-    // Get the master key fingerprint
-    const fpr = await app.getMasterFingerprint();
+  private getDerivationPath(): string {
+    const networkDerivationIndex = this.getNetworkDerivationIndex();
+    return `m/86'/${networkDerivationIndex}'/0'`;
+  }
 
-    const networkDerivationIndex = this.config.network === Network.MAINNET ? 0 : 1;
-    const taprootPath = `m/86'/${networkDerivationIndex}'/0'`;
+  // Create a new AppClient instance using the transport
+  private async createAppClient(): Promise<AppClient> {
+    const transport = await this.createTransport();
+    return new AppClient(transport);
+  }
 
-    // Get and display on the screen the first taproot address
-    const firstTaprootAccountPubkey = await app.getExtendedPubkey(taprootPath);
-    if (!firstTaprootAccountPubkey) throw new Error("Could not retrieve the extended public key");
+  private async getWalletPolicy(app: AppClient, fpr: string, derivationPath: string): Promise<DefaultWalletPolicy> {
+    const extendedPubKey = await app.getExtendedPubkey(derivationPath);
+    if (!extendedPubKey) {
+      throw new Error("Could not retrieve the extended public key for policy");
+    }
+    const networkDerivationIndex = this.getNetworkDerivationIndex();
+    const policy = new DefaultWalletPolicy("tr(@0/**)", `[${fpr}/86'/${networkDerivationIndex}'/0']${extendedPubKey}`);
+    if (!policy) {
+      throw new Error("Could not create the wallet policy");
+    }
+    return policy;
+  }
 
-    const firstTaprootAccountPolicy = new DefaultWalletPolicy(
-      "tr(@0/**)",
-      `[${fpr}/86'/${networkDerivationIndex}'/0']${firstTaprootAccountPubkey}`,
-    );
-    if (!firstTaprootAccountPolicy) throw new Error("Could not retrieve the policy");
-
-    const firstTaprootAccountAddress = await app.getWalletAddress(
-      firstTaprootAccountPolicy,
+  private async getTaprootAccount(
+    app: AppClient,
+    policy: DefaultWalletPolicy,
+    extendedPublicKey: string,
+  ): Promise<{ address: string; publicKeyHex: string }> {
+    const address = await app.getWalletAddress(
+      policy,
       null,
       0, // 0 - normal, 1 - change
       0, // address index
@@ -87,16 +103,40 @@ export class LedgerProvider implements IBTCProvider {
     );
 
     const currentNetwork = await this.getNetwork();
-    const publicKeyBuffer = getPublicKeyFromXpub(firstTaprootAccountPubkey, "M/0/0", toNetwork(currentNetwork));
+    const publicKeyBuffer = getPublicKeyFromXpub(extendedPublicKey, "M/0/0", toNetwork(currentNetwork));
+
+    return { address, publicKeyHex: publicKeyBuffer.toString("hex") };
+  }
+
+  connectWallet = async (): Promise<void> => {
+    const app = await this.createAppClient();
+
+    // Get the master key fingerprint
+    const fpr = await app.getMasterFingerprint();
+
+    const taprootPath = this.getDerivationPath();
+
+    // Get and display on the screen the first taproot address
+    const firstTaprootAccountExtendedPubkey = await app.getExtendedPubkey(taprootPath);
+
+    const firstTaprootAccountPolicy = await this.getWalletPolicy(app, fpr, taprootPath);
+
+    if (!firstTaprootAccountPolicy) throw new Error("Could not retrieve the policy");
+
+    const { address, publicKeyHex } = await this.getTaprootAccount(
+      app,
+      firstTaprootAccountPolicy,
+      firstTaprootAccountExtendedPubkey,
+    );
 
     this.ledgerWalletInfo = {
       app,
       policy: firstTaprootAccountPolicy,
       mfp: fpr,
-      extendedPublicKey: firstTaprootAccountPubkey,
+      extendedPublicKey: firstTaprootAccountExtendedPubkey,
       path: taprootPath,
-      address: firstTaprootAccountAddress,
-      publicKeyHex: publicKeyBuffer.toString("hex"),
+      address,
+      publicKeyHex,
     };
   };
 
