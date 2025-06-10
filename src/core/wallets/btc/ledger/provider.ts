@@ -3,24 +3,14 @@ import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { Transaction } from "@scure/btc-signer";
 import { Buffer } from "buffer";
-import AppClient, {
-  computeLeafHash,
-  DefaultWalletPolicy,
-  signMessage,
-  signPsbt,
-  slashingPathPolicy,
-  stakingTxPolicy,
-  tryParsePsbt,
-  unbondingPathPolicy,
-  WalletPolicy,
-} from "ledger-bitcoin-babylon";
+import AppClient, { DefaultWalletPolicy, signMessage, signPsbt } from "ledger-bitcoin-babylon";
 
 import type { BTCConfig, InscriptionIdentifier, SignPsbtOptions } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
-import { ContractType, getContractType } from "@/core/utils/getContractType";
 import { getPublicKeyFromXpub, toNetwork } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
+import { getPolicyForTransaction } from "./policy";
 
 type LedgerWalletInfo = {
   app: AppClient;
@@ -159,11 +149,31 @@ export class LedgerProvider implements IBTCProvider {
     if (!psbtHex) throw new Error("psbt hex is required");
     const psbtBase64 = Buffer.from(psbtHex, "hex").toString("base64");
     const transport = this.ledgerWalletInfo.app.transport;
+    if (!transport || !(transport instanceof Transport)) {
+      throw new Error("Transport is required to sign psbt");
+    }
+    if (!this.ledgerWalletInfo.path) {
+      throw new Error("Derivation path is required to sign psbt");
+    }
+
+    if (!options?.contracts || options?.contracts.length === 0) {
+      throw new Error("Contracts are required to sign psbt");
+    }
 
     // Get the appropriate policy based on transaction type
-    const policy = await this.getPolicyForTransaction(psbtBase64, options);
+    const policy = await getPolicyForTransaction(
+      transport,
+      this.config.network,
+      this.ledgerWalletInfo.path,
+      psbtBase64,
+      options.contracts,
+    );
 
-    const deviceTransaction = await signPsbt({ transport, psbt: psbtBase64, policy: policy! });
+    const deviceTransaction = await signPsbt({
+      transport,
+      psbt: psbtBase64,
+      policy,
+    });
     const tx = Transaction.fromPSBT(deviceTransaction.toPSBT(), {
       allowUnknownInputs: true,
       allowUnknownOutputs: true,
@@ -178,7 +188,9 @@ export class LedgerProvider implements IBTCProvider {
     if (!this.ledgerWalletInfo?.address || !this.ledgerWalletInfo?.publicKeyHex || !this.ledgerWalletInfo?.policy) {
       throw new Error("Ledger is not connected");
     }
-    if (!psbtsHexes && !Array.isArray(psbtsHexes)) throw new Error("psbts hexes are required");
+    if (!psbtsHexes || !Array.isArray(psbtsHexes) || psbtsHexes.length === 0) {
+      throw new Error("psbts hexes are required");
+    }
 
     const result = [];
 
@@ -186,215 +198,17 @@ export class LedgerProvider implements IBTCProvider {
     for (let i = 0; i < psbtsHexes.length; i++) {
       const psbt = psbtsHexes[i];
       const optionsForPsbt = options ? options[i] : undefined;
-      if (!psbt) throw new Error(`psbt hex at index ${i} is required`);
-      if (typeof psbt !== "string") throw new Error(`psbt hex at index ${i} must be a string`);
+      if (!psbt) {
+        throw new Error(`psbt hex at index ${i} is required`);
+      }
+      if (typeof psbt !== "string") {
+        throw new Error(`psbt hex at index ${i} must be a string`);
+      }
       const signedPsbtHex = await this.signPsbt(psbt, optionsForPsbt);
       result.push(signedPsbtHex);
     }
 
     return result;
-  };
-
-  private async getPolicyForTransaction(psbtBase64: string, options?: SignPsbtOptions): Promise<WalletPolicy | void> {
-    const transport = this.ledgerWalletInfo!.app.transport;
-    if (!transport || !(transport instanceof Transport)) {
-      throw new Error("Transport is required to determine the transaction type");
-    }
-
-    const isTestnet = this.config.network !== Network.MAINNET;
-
-    const contract = getContractType(options);
-
-    if (!contract || !options) {
-      // If no contract is specified, try to use the default policy
-      return tryParsePsbt(transport, psbtBase64, isTestnet);
-    }
-
-    const derivationPath = this.ledgerWalletInfo!.path;
-    if (!derivationPath) {
-      throw new Error("Derivation path is required to determine the transaction type");
-    }
-
-    switch (contract) {
-      case ContractType.STAKING:
-        return this.getStakingPolicy(options, derivationPath, transport, isTestnet);
-      case ContractType.UNBONDING:
-        return this.getUnbondingPolicy(options, derivationPath, transport, isTestnet, psbtBase64);
-      case ContractType.UNBONDING_SLASHING:
-        return this.getUnbondingSlashingPolicy(options, derivationPath, transport, isTestnet, psbtBase64);
-      default:
-        return tryParsePsbt(transport, psbtBase64, isTestnet);
-    }
-  }
-
-  getStakingPolicy = (
-    options: SignPsbtOptions,
-    derivationPath: string,
-    transport: Transport,
-    isTestnet: boolean,
-  ): Promise<WalletPolicy> => {
-    const params = options.contracts?.[0]?.params;
-    if (!params) {
-      throw new Error("Staking contract parameters are required");
-    }
-
-    if (!Array.isArray(params.covenantPks)) {
-      throw new Error("Covenant public keys must be an array");
-    }
-
-    const covenantPksSorted = params.covenantPks
-      .map((pk) => Buffer.from(pk.toString(), "hex"))
-      .sort(Buffer.compare)
-      .map((pk) => pk.toString("hex"));
-
-    const timelockBlocks = params.stakingDuration;
-    if (!timelockBlocks || typeof timelockBlocks !== "number") {
-      throw new Error("Staking duration must be a number");
-    }
-
-    const finalityProviders = params.finalityProviders;
-    if (!Array.isArray(finalityProviders) || finalityProviders.length === 0) {
-      throw new Error("Finality provider public keys must be a non-empty array");
-    }
-
-    const finalityProviderPk = finalityProviders[0];
-    if (typeof finalityProviderPk !== "string") {
-      throw new Error("Finality provider public key must be a string");
-    }
-
-    const covenantThreshold = params.covenantThreshold;
-    if (typeof covenantThreshold !== "number") {
-      throw new Error("Covenant threshold must be a number");
-    }
-
-    return stakingTxPolicy({
-      policyName: "Staking transaction",
-      transport,
-      params: {
-        finalityProviderPk,
-        covenantThreshold,
-        covenantPks: covenantPksSorted,
-        timelockBlocks,
-      },
-      derivationPath,
-      isTestnet,
-    });
-  };
-
-  getUnbondingPolicy = (
-    options: SignPsbtOptions,
-    derivationPath: string,
-    transport: Transport,
-    isTestnet: boolean,
-    psbtBase64: string,
-  ): Promise<WalletPolicy> => {
-    const params = options.contracts?.[1]?.params;
-    if (!params) {
-      throw new Error("Staking contract parameters are required");
-    }
-
-    if (!Array.isArray(params.covenantPks)) {
-      throw new Error("Covenant public keys must be an array");
-    }
-
-    const covenantPksSorted = params.covenantPks
-      .map((pk) => Buffer.from(pk.toString(), "hex"))
-      .sort(Buffer.compare)
-      .map((pk) => pk.toString("hex"));
-
-    const timelockBlocks = params.unbondingTimeBlocks;
-    if (!timelockBlocks || typeof timelockBlocks !== "number") {
-      throw new Error("Staking duration must be a number");
-    }
-
-    const finalityProviders = params.finalityProviders;
-    if (!Array.isArray(finalityProviders) || finalityProviders.length === 0) {
-      throw new Error("Finality provider public keys must be a non-empty array");
-    }
-
-    const finalityProviderPk = finalityProviders[0];
-    if (typeof finalityProviderPk !== "string") {
-      throw new Error("Finality provider public key must be a string");
-    }
-
-    const covenantThreshold = params.covenantThreshold;
-    if (typeof covenantThreshold !== "number") {
-      throw new Error("Covenant threshold must be a number");
-    }
-
-    const leafHash = computeLeafHash(psbtBase64);
-    if (!leafHash) {
-      throw new Error("Could not compute leaf hash");
-    }
-
-    return unbondingPathPolicy({
-      policyName: "Unbonding",
-      transport,
-      params: {
-        finalityProviderPk,
-        covenantThreshold,
-        covenantPks: covenantPksSorted,
-        leafHash,
-        timelockBlocks,
-      },
-      derivationPath,
-      isTestnet,
-    });
-  };
-
-  getUnbondingSlashingPolicy = (
-    options: SignPsbtOptions,
-    derivationPath: string,
-    transport: Transport,
-    isTestnet: boolean,
-    psbtBase64: string,
-  ): Promise<WalletPolicy> => {
-    const params = options.contracts?.[0]?.params;
-    if (!params) {
-      throw new Error("Staking contract parameters are required");
-    }
-
-    if (!Array.isArray(params.covenantPks)) {
-      throw new Error("Covenant public keys must be an array");
-    }
-
-    const covenantPksSorted = params.covenantPks
-      .map((pk) => Buffer.from(pk.toString(), "hex"))
-      .sort(Buffer.compare)
-      .map((pk) => pk.toString("hex"));
-
-    const finalityProviders = params.finalityProviders;
-    if (!Array.isArray(finalityProviders) || finalityProviders.length === 0) {
-      throw new Error("Finality provider public keys must be a non-empty array");
-    }
-
-    const finalityProviderPk = finalityProviders[0];
-    if (typeof finalityProviderPk !== "string") {
-      throw new Error("Finality provider public key must be a string");
-    }
-
-    const covenantThreshold = params.covenantThreshold;
-    if (typeof covenantThreshold !== "number") {
-      throw new Error("Covenant threshold must be a number");
-    }
-
-    const leafHash = computeLeafHash(psbtBase64);
-    if (!leafHash) {
-      throw new Error("Could not compute leaf hash");
-    }
-
-    return slashingPathPolicy({
-      policyName: "Consent to unbonding slashing",
-      transport,
-      params: {
-        finalityProviderPk,
-        covenantThreshold,
-        covenantPks: covenantPksSorted,
-        leafHash,
-      },
-      derivationPath,
-      isTestnet,
-    });
   };
 
   getNetwork = async (): Promise<Network> => {
