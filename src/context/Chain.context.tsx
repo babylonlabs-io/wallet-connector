@@ -35,6 +35,7 @@ interface ProviderProps {
   context: any;
   config: Readonly<ChainConfigArr>;
   onError?: (e: Error) => void;
+  disabledWallets?: string[];
 }
 
 export interface Connectors {
@@ -56,6 +57,7 @@ export function ChainProvider({
   context,
   config,
   onError,
+  disabledWallets,
 }: PropsWithChildren<ProviderProps>) {
   const [connectors, setConnectors] = useState(defaultState);
 
@@ -69,6 +71,7 @@ export function ChainProvider({
           context,
           config,
           accountStorage: storage,
+          disabledWallets,
         }),
       );
     const connectorArr = await Promise.all(connectorPromises);

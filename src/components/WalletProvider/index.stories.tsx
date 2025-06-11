@@ -38,6 +38,29 @@ export const Default: Story = {
   },
 };
 
+export const WithDisabledWallets: Story = {
+  decorators: [
+    (Story) => (
+      <ScrollLocker>
+        <WalletProvider
+          persistent
+          context={window.parent}
+          config={config}
+          onError={console.log}
+          disabledWallets={["ledget_btc"]}
+        >
+          <Story />
+        </WalletProvider>
+      </ScrollLocker>
+    ),
+  ],
+  render: () => {
+    const { open } = useWidgetState();
+
+    return <Button onClick={open}>Connect Wallet</Button>;
+  },
+};
+
 export const WithConnectedData: Story = {
   decorators: [
     (Story) => (
