@@ -1,4 +1,4 @@
-import * as bitcoin from "bitcoinjs-lib";
+import { Psbt, Transaction, crypto } from "bitcoinjs-lib";
 
 import { ERROR_CODES, WalletError } from "@/error";
 
@@ -21,7 +21,7 @@ class BIP322 {
    */
   public static hashMessage(message: string): Buffer {
     // Compute the message hash - SHA256(SHA256(tag) || SHA256(tag) || message)
-    const { sha256 } = bitcoin.crypto;
+    const { sha256 } = crypto;
     const tagHash = sha256(this.TAG);
     const result = sha256(Buffer.concat([tagHash, tagHash, Buffer.from(message)]));
     return result;
@@ -33,9 +33,9 @@ class BIP322 {
    * @param scriptPublicKey The script public key for the signing wallet
    * @returns Bitcoin transaction that correspond to the to_spend transaction
    */
-  public static buildToSpendTx(message: string, scriptPublicKey: Buffer): bitcoin.Transaction {
+  public static buildToSpendTx(message: string, scriptPublicKey: Buffer): Transaction {
     // Create PSBT object for constructing the transaction
-    const psbt = new bitcoin.Psbt();
+    const psbt = new Psbt();
     // Set default value for nVersion and nLockTime
     psbt.setVersion(0); // nVersion = 0
     psbt.setLocktime(0); // nLockTime = 0
@@ -78,9 +78,9 @@ class BIP322 {
     witnessScript: Buffer,
     isRedeemScript: boolean = false,
     tapInternalKey?: Buffer,
-  ): bitcoin.Psbt {
+  ): Psbt {
     // Create PSBT object for constructing the transaction
-    const psbt = new bitcoin.Psbt();
+    const psbt = new Psbt();
     // Set default value for nVersion and nLockTime
     psbt.setVersion(0); // nVersion = 0
     psbt.setLocktime(0); // nLockTime = 0
@@ -120,7 +120,7 @@ class BIP322 {
    * @param signedPsbt Signed PSBT
    * @returns Base-64 encoded witness data
    */
-  public static encodeWitness(signedPsbt: bitcoin.Psbt): string {
+  public static encodeWitness(signedPsbt: Psbt): string {
     // Obtain the signed witness data
     const witness = signedPsbt.data.inputs[0].finalScriptWitness;
     // Check if the witness data is present
