@@ -157,7 +157,9 @@ export class LedgerProvider implements IBTCProvider {
     }
 
     if (!options?.contracts || options?.contracts.length === 0) {
-      throw new Error("Contracts are required to sign psbt");
+      throw new Error("Contracts are required to sign psbt in ledger");
+    } else if (!options?.action?.name) {
+      throw new Error("Action name is required to sign psbt in ledger");
     }
 
     // Get the appropriate policy based on transaction type
@@ -166,7 +168,10 @@ export class LedgerProvider implements IBTCProvider {
       this.config.network,
       this.ledgerWalletInfo.path,
       psbtBase64,
-      options.contracts,
+      {
+        contracts: options.contracts,
+        action: options.action,
+      },
     );
 
     const deviceTransaction = await signPsbt({

@@ -12,10 +12,9 @@ import {
   WalletPolicy,
 } from "ledger-bitcoin-babylon";
 
-import { Contract, Network } from "@/core/types";
+import { Action, Contract, Network } from "@/core/types";
+import { ActionName } from "@/core/utils/action";
 import { BABYLON_SIGNING_CONTRACTS } from "@/core/utils/contracts";
-
-import { getSigningStep, SignginStep } from "./signingStep";
 
 export const UNBONDING_POLICY: UnbondingPolicy = "Unbonding";
 export const SLASHING_POLICY: SlashingPolicy = "Consent to slashing";
@@ -28,27 +27,29 @@ export const getPolicyForTransaction = async (
   network: Network,
   derivationPath: string,
   psbtBase64: string,
-  constracts: Contract[],
+  {
+    contracts,
+    action,
+  }: {
+    contracts: Contract[];
+    action: Action;
+  },
 ): Promise<WalletPolicy> => {
   const isTestnet = network !== Network.MAINNET;
 
-  // TODO: A temporary solution to determine the signing step from dApp.
-  // This will be replaced once dApp is able to passdown the signing step.
-  const signingStep = getSigningStep(constracts);
-
-  switch (signingStep) {
-    case SignginStep.STAKING:
-      return getStakingPolicy(constracts, derivationPath, transport, isTestnet);
-    case SignginStep.UNBONDING:
-      return getUnbondingPolicy(constracts, derivationPath, transport, isTestnet, psbtBase64);
-    case SignginStep.SLASHING:
-      return getSlashingPolicy(constracts, derivationPath, transport, isTestnet, psbtBase64);
-    case SignginStep.UNBONDING_SLASHING:
-      return getUnbondingSlashingPolicy(constracts, derivationPath, transport, isTestnet, psbtBase64);
-    case SignginStep.WITHDRAW:
-      return getWithdrawPolicy(constracts, derivationPath, psbtBase64, transport, isTestnet);
+  switch (action.name) {
+    case ActionName.SIGN_BTC_STAKING_TRANSACTION:
+      return getStakingPolicy(contracts, derivationPath, transport, isTestnet);
+    case ActionName.SIGN_BTC_UNBONDING_TRANSACTION:
+      return getUnbondingPolicy(contracts, derivationPath, transport, isTestnet, psbtBase64);
+    case ActionName.SIGN_BTC_SLASHING_TRANSACTION:
+      return getSlashingPolicy(contracts, derivationPath, transport, isTestnet, psbtBase64);
+    case ActionName.SIGN_BTC_UNBONDING_SLASHING_TRANSACTION:
+      return getUnbondingSlashingPolicy(contracts, derivationPath, transport, isTestnet, psbtBase64);
+    case ActionName.SIGN_BTC_WITHDRAW_TRANSACTION:
+      return getWithdrawPolicy(contracts, derivationPath, psbtBase64, transport, isTestnet);
     default:
-      throw new Error(`Unknown signing step: ${signingStep}`);
+      throw new Error(`Unknown action: ${action.name}`);
   }
 };
 

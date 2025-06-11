@@ -156,9 +156,14 @@ export interface Contract {
   params: Record<string, string | number | string[] | number[]>;
 }
 
+export interface Action {
+  name: string;
+}
+
 export interface SignPsbtOptions {
   autoFinalized?: boolean;
   contracts?: Contract[];
+  action?: Action;
 }
 
 export interface IBTCProvider extends IProvider {
