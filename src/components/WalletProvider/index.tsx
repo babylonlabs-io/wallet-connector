@@ -18,6 +18,7 @@ interface WalletProviderProps {
   context?: any;
   config: Readonly<ChainConfigArr>;
   onError?: (e: Error) => void;
+  disabledWallets?: string[];
 }
 
 export function WalletProvider({
@@ -29,13 +30,21 @@ export function WalletProvider({
   config,
   context = window,
   onError,
+  disabledWallets,
 }: PropsWithChildren<WalletProviderProps>) {
   const storage = useMemo(() => createAccountStorage(ttl), [ttl]);
 
   return (
     <TomoConnectionProvider theme={theme} config={config}>
       <LifeCycleHooksProvider value={lifecycleHooks}>
-        <ChainProvider persistent={persistent} storage={storage} context={context} config={config} onError={onError}>
+        <ChainProvider
+          persistent={persistent}
+          storage={storage}
+          context={context}
+          config={config}
+          onError={onError}
+          disabledWallets={disabledWallets}
+        >
           {children}
           <TomoBTCConnector persistent={persistent} storage={storage} />
           <TomoBBNConnector persistent={persistent} storage={storage} />

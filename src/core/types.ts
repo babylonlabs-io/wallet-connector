@@ -129,6 +129,7 @@ export interface WalletConnectorProps<N extends string, P extends IProvider, C> 
   context: any;
   config: C;
   accountStorage: HashMap;
+  disabledWallets?: string[];
 }
 
 export interface WalletProps<P extends IProvider, C> {
@@ -156,9 +157,14 @@ export interface Contract {
   params: Record<string, string | number | string[] | number[]>;
 }
 
+export interface Action {
+  name: string;
+}
+
 export interface SignPsbtOptions {
   autoFinalized?: boolean;
   contracts?: Contract[];
+  action?: Action;
 }
 
 export interface IBTCProvider extends IProvider {
