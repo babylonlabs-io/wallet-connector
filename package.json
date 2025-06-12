@@ -58,7 +58,8 @@
     "ledger-bitcoin-babylon": "^0.3.0-alpha.2",
     "nanoevents": "^9.1.0",
     "usehooks-ts": "^3.0.2",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "bitcoinjs-lib": "6.1.5"
   },
   "files": [
     "dist"
@@ -66,7 +67,6 @@
   "peerDependencies": {
     "@babylonlabs-io/btc-staking-ts": "2.2.0",
     "@babylonlabs-io/core-ui": "1.1.1",
-    "bitcoinjs-lib": "6.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4"

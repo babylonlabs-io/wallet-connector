@@ -32,7 +32,7 @@ export default defineConfig({
         "@cosmjs/stargate",
         "@babylonlabs-io/core-ui",
         "@babylonlabs-io/btc-staking-ts",
-        "bitcoinjs-lib",
+        // "bitcoinjs-lib",
         "@keystonehq/animated-qr",
         // Issues linking with Next.js
         // "@keystonehq/keystone-sdk",
