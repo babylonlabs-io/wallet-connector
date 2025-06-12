@@ -69,11 +69,15 @@ export const createWalletConnector = async <N extends string, P extends IProvide
   context,
   config,
   accountStorage,
+  disabledWallets,
 }: WalletConnectorProps<N, P, C>): Promise<WalletConnector<N, P, C>> => {
   const wallets: Wallet<P>[] = [];
   const connectedWalletId = persistent ? accountStorage.get(metadata.chain) : undefined;
 
   for (const walletMetadata of metadata.wallets) {
+    if (disabledWallets?.includes(walletMetadata.id)) {
+      continue;
+    }
     wallets.push(
       await createWallet({
         metadata: walletMetadata,
