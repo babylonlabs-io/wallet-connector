@@ -66,13 +66,16 @@ export const getStakingPolicy = (
 
   const { finalityProviders, covenantThreshold, covenantPks, stakingDuration } = stakingContract.params;
 
+  const covenantPksBuffer = (covenantPks as string[]).map((pk) => Buffer.from(pk, "hex"));
+  const sortedPks = covenantPksBuffer.sort(Buffer.compare).map((pk) => pk.toString("hex"));
+
   return stakingTxPolicy({
     policyName: STAKING_POLICY,
     transport,
     params: {
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortedPks,
       timelockBlocks: stakingDuration as number,
     },
     derivationPath,
@@ -100,13 +103,16 @@ export const getUnbondingPolicy = (
   const { finalityProviders, covenantThreshold, covenantPks, unbondingTimeBlocks, unbondingFeeSat } =
     unbondingContract.params;
 
+  const covenantPksBuffer = (covenantPks as string[]).map((pk) => Buffer.from(pk, "hex"));
+  const sortedPks = covenantPksBuffer.sort(Buffer.compare).map((pk) => pk.toString("hex"));
+
   return unbondingPathPolicy({
     policyName: UNBONDING_POLICY,
     transport,
     params: {
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortedPks,
       leafHash,
       timelockBlocks: unbondingTimeBlocks as number,
       unbondingFeeSat: unbondingFeeSat as number,
@@ -140,7 +146,10 @@ export const getSlashingPolicy = (
   const { unbondingTimeBlocks, slashingFeeSat } = slashingContract.params;
   const { covenantPks, finalityProviders, covenantThreshold } = stakingContract.params;
 
-  const { slashingPkScriptHex } = slashingBurnContract.params;
+  const covenantPksSorted = (covenantPks as string[])
+    .map((pk) => Buffer.from(pk, "hex"))
+    .sort(Buffer.compare)
+    .map((pk) => pk.toString("hex"));
 
   const leafHash = computeLeafHash(psbtBase64);
   if (!leafHash) {
@@ -155,8 +164,8 @@ export const getSlashingPolicy = (
       timelockBlocks: unbondingTimeBlocks as number,
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
-      slashingPkScriptHex: slashingPkScriptHex as string,
+      covenantPks: covenantPksSorted,
+      slashingPkScriptHex: "00145BE12624D08A2B424095D7C07221C33450D14BF100000000000000000000",
       slashingFeeSat: slashingFeeSat as number,
     },
     derivationPath,
@@ -188,12 +197,15 @@ export const getUnbondingSlashingPolicy = (
   const { unbondingTimeBlocks, slashingFeeSat } = slashingContract.params;
   const { covenantPks, finalityProviders, covenantThreshold } = unbondingContract.params;
 
-  const { slashingPkScriptHex } = slashingBurnContract.params;
+  // const { slashingPkScriptHex } = slashingBurnContract.params;
 
   const leafHash = computeLeafHash(psbtBase64);
   if (!leafHash) {
     throw new Error("Could not compute leaf hash");
   }
+
+  const covenantPksBuffer = (covenantPks as string[]).map((pk) => Buffer.from(pk, "hex"));
+  const sortedPks = covenantPksBuffer.sort(Buffer.compare).map((pk) => pk.toString("hex"));
 
   return slashingPathPolicy({
     policyName: UNBONDING_SLASHING_POLICY,
@@ -203,8 +215,8 @@ export const getUnbondingSlashingPolicy = (
       timelockBlocks: unbondingTimeBlocks as number,
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
-      slashingPkScriptHex: slashingPkScriptHex as string,
+      covenantPks: sortedPks,
+      slashingPkScriptHex: "00145BE12624D08A2B424095D7C07221C33450D14BF100000000000000000000",
       slashingFeeSat: slashingFeeSat as number,
     },
     derivationPath,

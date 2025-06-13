@@ -63,6 +63,7 @@ export class LedgerProvider implements IBTCProvider {
   // Create a new AppClient instance using the transport
   private async createAppClient(): Promise<AppClient> {
     const transport = await this.createTransport();
+    console.log("transport", transport);
     return new AppClient(transport);
   }
 
@@ -99,17 +100,32 @@ export class LedgerProvider implements IBTCProvider {
   }
 
   connectWallet = async (): Promise<void> => {
+    console.log("connecting");
     const app = await this.createAppClient();
+    console.log("app", app);
 
     // Get the master key fingerprint
-    const fpr = await app.getMasterFingerprint();
+    let fpr;
+    try {
+      fpr = await app.getMasterFingerprint();
+      console.log("fpr", fpr);
+    } catch (error) {
+      console.log("Error getting master fingerprint:", error);
+    }
+
+    if (!fpr) {
+      throw new Error("Could not retrieve the master fingerprint");
+    }
 
     const taprootPath = this.getDerivationPath();
+    console.log("taprootPath", taprootPath);
 
     // Get and display on the screen the first taproot address
     const firstTaprootAccountExtendedPubkey = await app.getExtendedPubkey(taprootPath);
+    console.log("firstTaprootAccountExtendedPubkey", firstTaprootAccountExtendedPubkey);
 
     const firstTaprootAccountPolicy = await this.getWalletPolicy(app, fpr, taprootPath);
+    console.log("firstTaprootAccountPolicy", firstTaprootAccountPolicy);
 
     if (!firstTaprootAccountPolicy) throw new Error("Could not retrieve the policy");
 
@@ -118,6 +134,9 @@ export class LedgerProvider implements IBTCProvider {
       firstTaprootAccountPolicy,
       firstTaprootAccountExtendedPubkey,
     );
+
+    console.log("address", address);
+    console.log("publicKeyHex", publicKeyHex);
 
     this.ledgerWalletInfo = {
       app,
@@ -128,6 +147,8 @@ export class LedgerProvider implements IBTCProvider {
       address,
       publicKeyHex,
     };
+
+    console.log("Ledger wallet connected:", this.ledgerWalletInfo);
   };
 
   getAddress = async (): Promise<string> => {
@@ -143,6 +164,8 @@ export class LedgerProvider implements IBTCProvider {
   };
 
   signPsbt = async (psbtHex: string, options?: SignPsbtOptions): Promise<string> => {
+    console.log("signPsbt called with psbtHex:", psbtHex);
+    console.log("signPsbt called with options:", options);
     if (!this.ledgerWalletInfo?.address || !this.ledgerWalletInfo?.publicKeyHex) {
       throw new Error("Ledger is not connected");
     }
