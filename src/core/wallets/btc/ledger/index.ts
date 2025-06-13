@@ -9,7 +9,7 @@ const metadata: WalletMetadata<IBTCProvider, BTCConfig> = {
   icon: logo,
   docs: "https://www.ledger.com/ledger-live",
   createProvider: (wallet, config) => new LedgerProvider(wallet, config),
-  networks: [Network.SIGNET],
+  networks: [Network.SIGNET, Network.MAINNET],
   label: "Hardware wallet",
 };
 
