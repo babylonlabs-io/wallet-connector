@@ -15,6 +15,7 @@ import {
 import { Action, Contract, Network } from "@/core/types";
 import { ActionName } from "@/core/utils/action";
 import { BABYLON_SIGNING_CONTRACTS } from "@/core/utils/contracts";
+import { sortPkHexes } from "@/core/utils/sortPkHexes";
 
 export const UNBONDING_POLICY: UnbondingPolicy = "Unbonding";
 export const SLASHING_POLICY: SlashingPolicy = "Consent to slashing";
@@ -72,7 +73,7 @@ export const getStakingPolicy = (
     params: {
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortPkHexes(covenantPks as string[]),
       timelockBlocks: stakingDuration as number,
     },
     derivationPath,
@@ -106,7 +107,7 @@ export const getUnbondingPolicy = (
     params: {
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortPkHexes(covenantPks as string[]),
       leafHash,
       timelockBlocks: unbondingTimeBlocks as number,
       unbondingFeeSat: unbondingFeeSat as number,
@@ -155,7 +156,7 @@ export const getSlashingPolicy = (
       timelockBlocks: unbondingTimeBlocks as number,
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortPkHexes(covenantPks as string[]),
       slashingPkScriptHex: slashingPkScriptHex as string,
       slashingFeeSat: slashingFeeSat as number,
     },
@@ -203,7 +204,7 @@ export const getUnbondingSlashingPolicy = (
       timelockBlocks: unbondingTimeBlocks as number,
       finalityProviders: finalityProviders as string[],
       covenantThreshold: covenantThreshold as number,
-      covenantPks: covenantPks as string[],
+      covenantPks: sortPkHexes(covenantPks as string[]),
       slashingPkScriptHex: slashingPkScriptHex as string,
       slashingFeeSat: slashingFeeSat as number,
     },
