@@ -52,8 +52,9 @@ npm i @babylonlabs-io/wallet-connect
 
 ## 📝 Commit Format & Automated Releases
 
-This project uses [**Conventional Commits**](https://www.conventionalcommits.org/en/v1.0.0/)
-and [**semantic-release**](https://semantic-release.gitbook.io/) to automate
+This project uses
+[**Conventional Commits**](https://www.conventionalcommits.org/en/v1.0.0/) and
+[**semantic-release**](https://semantic-release.gitbook.io/) to automate
 versioning, changelog generation, and npm publishing.
 
 ### ✅ How It Works
@@ -61,7 +62,8 @@ versioning, changelog generation, and npm publishing.
 1. All commits must follow the **Conventional Commits** format.
 2. When changes are merged into the `main` branch:
    - `semantic-release` analyzes commit messages
-   - Determines the appropriate semantic version bump (`major`, `minor`, `patch`)
+   - Determines the appropriate semantic version bump (`major`, `minor`,
+     `patch`)
    - Tags the release in Git with release change log
    - Publishes the new version to npm
 
@@ -74,15 +76,15 @@ docs: update README with commit conventions
 refactor!: remove deprecated method and cleanup types
 ```
 
-> **Note:** For breaking changes, add a `!` after the type (
-> e.g. `feat!:` or `refactor!:`) and include a description of the breaking
-> change in the commit body.
+> **Note:** For breaking changes, add a `!` after the type ( e.g. `feat!:` or
+> `refactor!:`) and include a description of the breaking change in the commit
+> body.
 
 ### 🚀 Releasing
 
-Just commit your changes using the proper format and merge to `main`.
-The CI pipeline will handle versioning and releasing automatically — no manual
-tagging or version bumps needed.
+Just commit your changes using the proper format and merge to `main`. The CI
+pipeline will handle versioning and releasing automatically — no manual tagging
+or version bumps needed.
 
 ## 📖 Storybook
 
