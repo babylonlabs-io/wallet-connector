@@ -1,9 +1,9 @@
-import { initBTCCurve } from "@babylonlabs-io/btc-staking-ts";
 import { HDKey } from "@scure/bip32";
 import { Network as BitcoinNetwork, networks, payments } from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
 import { Network } from "@/core/types";
+import { initBTCCurve } from "@/core/utils/initBTCCurve";
 import { ERROR_CODES, WalletError } from "@/error";
 export const COMPRESSED_PUBLIC_KEY_HEX_LENGTH = 66;
 
