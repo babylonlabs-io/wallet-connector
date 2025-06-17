@@ -1,8 +1,8 @@
-import { initBTCCurve } from "@babylonlabs-io/btc-staking-ts";
 import { Psbt, address as btcAddress, networks } from "bitcoinjs-lib";
 
 import type { BTCConfig, IBTCProvider, InscriptionIdentifier, SignPsbtOptions, WalletInfo } from "@/core/types";
 import { Network } from "@/core/types";
+import { initBTCCurve } from "@/core/utils/initBTCCurve";
 import { ERROR_CODES, WalletError } from "@/error";
 
 import logo from "./logo.svg";
