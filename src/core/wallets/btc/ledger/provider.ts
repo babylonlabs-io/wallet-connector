@@ -1,4 +1,6 @@
 import Transport from "@ledgerhq/hw-transport";
+import type { SpeculosHttpTransportOpts } from "@ledgerhq/hw-transport-node-speculos-http";
+import SpeculosTransport from "@ledgerhq/hw-transport-node-speculos-http";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { Transaction } from "@scure/btc-signer";
@@ -7,6 +9,7 @@ import AppClient, { DefaultWalletPolicy, signMessage, signPsbt } from "ledger-bi
 
 import type { BTCConfig, InscriptionIdentifier, SignPsbtOptions } from "@/core/types";
 import { IBTCProvider, Network } from "@/core/types";
+import { retry } from "@/core/utils/retry";
 import { getPublicKeyFromXpub, toNetwork } from "@/core/utils/wallet";
 
 import logo from "./logo.svg";
@@ -60,9 +63,38 @@ export class LedgerProvider implements IBTCProvider {
     return `m/86'/${networkDerivationIndex}'/0'`;
   }
 
+  private async openSpeculousAndWait(
+    opts: SpeculosHttpTransportOpts = {},
+    maxRetries = 51,
+    retryDelay = 100,
+  ): Promise<SpeculosTransport> {
+    const transport = await retry(
+      async () => {
+        return SpeculosTransport.open(opts).catch(() => null);
+      },
+      (transport) => Boolean(transport),
+      retryDelay,
+      maxRetries,
+    );
+
+    if (!transport) {
+      throw new Error("Failed to connect to Speculos transport after maximum retries");
+    }
+
+    return transport;
+  }
+
   // Create a new AppClient instance using the transport
   private async createAppClient(): Promise<AppClient> {
-    const transport = await this.createTransport();
+    let transport: Transport;
+    if (process.env.NODE_ENV === "development") {
+      transport = await this.openSpeculousAndWait({
+        apiPort: "3344",
+        baseURL: "http://localhost:3344",
+      });
+    } else {
+      transport = await this.createTransport();
+    }
     return new AppClient(transport);
   }
 

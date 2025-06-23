@@ -52,6 +52,7 @@
     "@keystonehq/animated-qr": "0.10.0",
     "@keystonehq/keystone-sdk": "0.9.0",
     "@keystonehq/sdk": "0.22.1",
+    "@ledgerhq/hw-transport-node-speculos-http": "^6.29.7",
     "@ledgerhq/hw-transport-webhid": "^6.30.1",
     "@ledgerhq/hw-transport-webusb": "^6.29.5",
     "@tomo-inc/wallet-connect-sdk": "^0.3.23",
