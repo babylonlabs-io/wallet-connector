@@ -17,10 +17,7 @@ export class OKXProvider implements IBTCProvider {
   private walletInfo: WalletInfo | undefined;
   private config: BTCConfig;
 
-  constructor(
-    private wallet: any,
-    config: BTCConfig,
-  ) {
+  constructor(wallet: any, config: BTCConfig) {
     this.config = config;
 
     // check whether there is an OKX Wallet extension
@@ -46,8 +43,9 @@ export class OKXProvider implements IBTCProvider {
   }
 
   connectWallet = async (): Promise<void> => {
+    let result;
     try {
-      await this.wallet.enable(); // Connect to OKX Wallet extension
+      result = await this.provider.connect();
     } catch (error) {
       if ((error as Error)?.message?.includes("rejected")) {
         throw new WalletError({
@@ -55,24 +53,12 @@ export class OKXProvider implements IBTCProvider {
           message: "Connection to OKX Wallet was rejected",
           wallet: WALLET_PROVIDER_NAME,
         });
-      } else {
-        throw new WalletError({
-          code: ERROR_CODES.CONNECTION_FAILED,
-          message: (error as Error)?.message || "Failed to enable OKX Wallet",
-          wallet: WALLET_PROVIDER_NAME,
-        });
       }
-    }
-    let result;
-    try {
-      // this will not throw an error even if user has no network enabled
-      result = await this.provider.connect();
-    } catch {
+
       throw new WalletError({
-        code: ERROR_CODES.NETWORK_NOT_ENABLED_IN_WALLET,
-        message: `BTC ${this.config.network} is not enabled in OKX Wallet`,
+        code: ERROR_CODES.CONNECTION_FAILED,
+        message: (error as Error)?.message || "Failed to connect to OKX Wallet",
         wallet: WALLET_PROVIDER_NAME,
-        chainId: this.config.network, // Using network as chainId identifier
       });
     }
 
