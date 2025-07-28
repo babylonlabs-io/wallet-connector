@@ -1,3 +1,13 @@
+# 🚨 ARCHIVED REPOSITORY
+
+**This repository has been archived and is no longer maintained.**
+
+The Babylon Wallet Connector has been moved to the [Babylon Toolkit monorepo](https://github.com/babylonlabs-io/babylon-toolkit/tree/main/packages/babylon-wallet-connector).
+
+**Please use the new location for all future development and contributions.**
+
+---
+
 <p align="center">
     <img
         alt="Babylon Logo"
